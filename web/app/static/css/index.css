@@ -1,133 +1,137 @@
-  /* Apply general styles to buttons */
-  .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    
-  }
+/*-----------------------------------Three main buttons-----------------------------------*/
+.btn-act {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 10px;
 
-  /* Apply styles to the primary buttons */
-  .btn-primary {
-    background-color: #022851;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+}
 
+.btn-primary {
+  background-color: #022851;
+  color: #fff;
+  border: none;
+}
 
-  }
- 
-  .btn.btn-primary.btn-create {
-    height: 80px;
-    width: 180px;
-  }
+.btn-act.btn-primary.btn-create {
+  height: 80px;
+  width: 180px;
+}
 
-  .btn.btn-primary.d-sm-table {
+.btn-act.btn-primary.d-sm-table {
 
-    width: 130px;
-    margin-left: 25px;
-    margin-bottom: 5px;
-  }
+  width: 130px;
+  margin-left: 25px;
+  margin-bottom: 5px;
+}
 
 
+/* Apply styles to the first column */
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
 
-  /* Apply styles to the row */
+.btn-create i {
+  display: flex;
+  font-size: 35px;
+  padding-bottom: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* Apply styles to the first column */
-  .col-md-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-
-  .btn-create i {
-    display: flex;
-    font-size: 35px;
-    padding-bottom: 5px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-      
-  }
+}
 
 
-  /* Apply styles to the second column */
-  .col-md-6.d-sm-flex {
-    display: table;
+/* Apply styles to the second column */
+.col-md-6.d-sm-flex {
+  display: table;
 
-    width: 100%;
-  }
+  width: 100%;
+}
 
-  .d-sm-table i{
-    display: flex;
-    font-size: 30px;
-    padding-bottom: 5px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+.d-sm-table i {
+  display: flex;
+  font-size: 30px;
+  padding-bottom: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  /* Apply styles to the buttons inside the second column */
-  .col-md-6.d-sm-flex .btn {
-    display: table-cell;
-  }
-
-
-  /* Styling for the buttons inside the table cell */
-  .table .btn {
-    width: 130px;
-    /* Change this value to adjust the button width */
-    padding: 0px;
-    padding-top: 0px;
-    margin-bottom: 10px;
-  }
+/* Apply styles to the buttons inside the second column */
+.col-md-6.d-sm-flex .btn {
+  display: table-cell;
+}
 
 
-  .btn-edit-del {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* Align buttons horizontally in the center */
-  }
+/*-----------------------------------Table-----------------------------------*/
+.table-container {
+  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.1);
+  /* Add drop shadow */
+  border-radius: 8px;
+  border-bottom: 1px solid #dadada;
+  border-right: 1px solid #dadada;
+  border-left: 1px solid #dadada;
+  /* For making space between table and footer */
+  /* Might remove when add nav page */
+  margin-bottom: 120px; 
+}
 
-  .btn-edit-del .btn-edit {
-    color: #ffffff;
-  }
-
-  
-  .btn-edit-del .btn-del {
-    margin-bottom: 20%;
-    color: #ffffff;
-    background-color: #DE4545 ;
-   
-  }
-
-
-  /* Table head  */
-  .table th {
-
-    background-color: #022851;
-    color: #fff;
-  }
-
-  .table-container {
- 
-    box-shadow: 0 5px 3px rgba(0, 0, 0, 0.1); /* Add drop shadow */
-    border-radius: 8px;
-    border-bottom: 1px solid  #dadada;
-    border-right: 1px solid #dadada;
-    border-left: 1px solid #dadada;
+.table th {
+  background-color: #022851;
+  color: #fff;
+}
 
 
-  }
+h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D9D9D9;
+}
 
-  h2{
-    padding-bottom: 10px;
-    border-bottom: 1px solid #D9D9D9;
-  }
-
-.even-row .text-center, .even-row .text-start{
+.even-row .text-center,
+.even-row .text-start {
   background: #e0e0e0;
+}
+
+
+/* Apply styles to the row */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+/*-----------------------------------Edit & Del button----------------------------------- */
+.btn-edit-del {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Align buttons horizontally in the center */
+}
+
+/* Styling for the buttons inside the table cell */
+.table .btn-edit {
+  width: 130px;
+  /* Change this value to adjust the button width */
+  padding: 0px;
+  padding-top: 0px;
+  margin-bottom: 7px;
+  border-radius: 7px;
+  border: none;
+  color: #ffffff;
+  background-color: #FAA849;
+
+}
+
+.table .btn-del {
+  width: 130px;
+  padding: 0px;
+  padding-top: 0px;
+  margin-bottom: 20%;
+  border-radius: 7px;
+  border: none;
+  color: #ffffff;
+  background-color: #DE4545;
+  cursor: pointer;
 }

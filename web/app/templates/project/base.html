@@ -28,11 +28,11 @@
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
 
-  <!-- toggleNavbar --> 
+  <!-- toggleNavbar -->
   <!-- Do not change the version of this or the code will fuck up (5.3.1) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-  crossorigin="anonymous"></script>
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
 
   <title>CS Doc</title>
 
@@ -45,24 +45,19 @@
         <img class="navbar-img" src="/static/img/cs_cmu_1.png" alt="Computer Science CMU">
         <span class="navbar-text">Computer Science CMU</span>
       </a>
-  
+
       <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
         <span class="navbar-toggler-icon"></span>
       </button>
-  
+
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ml-md-auto">
           <!-- Use ml-md-auto to push the dropdown to the right -->
           <li class="nav-item">
             <div class="dropdown">
-              <button
-                class="btn btn-primary dropdown-toggle"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-              <i class="bi bi-person-circle"></i> user_name
+              <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="bi bi-person-circle"></i> user_name
               </button>
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
@@ -74,9 +69,6 @@
       </div>
     </div>
   </nav>
-  
-  
-
 
   <div class="container" id="main_screen">
     {% block content %}
