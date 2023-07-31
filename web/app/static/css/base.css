@@ -1,5 +1,4 @@
 .container {
-
   padding: 0px 10px 0px 10px;
 }
 
@@ -9,7 +8,6 @@
 }
 
 .navbar .container {
-
   padding: 0px 20px 0px 20px;
 }
 
@@ -81,28 +79,24 @@ footer {
   position: fixed;
   width: 100%;
   bottom: 0px;
-  background-color: #000000;
   /* Dark background color */
-  color: #fff;
+  background-color: #000000;
   /* Text color */
+  color: #fff;
   font-size: 12px;
-  
 }
 
 footer a {
   color: #fff;
-  text-decoration: none;
   /* Remove underline from links */
+  text-decoration: none;
 }
 
 footer ul {
-  list-style: none;
   /* Remove bullet points from the list */
-  padding-top: 8px;
-  /* Remove default padding from the list */
-  padding-bottom: 8px;
-  margin: 0 0 0 0;
-  /* Remove default margin from the list */
+  list-style: none;
+  /* Margin for top and bottom */
+  margin: 10px 0 15px 0;
 }
 
 footer li {
