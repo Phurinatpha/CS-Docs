@@ -4,51 +4,101 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-  <!-- Bootstrap Table -->
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
-  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-  <!-- our own css -->
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+  <!-- Bootstrap Table -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css"> -->
+  <!-- <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script> -->
+
+  <!-- Bootstrap-Icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+  <!-- our own css -->
+  <link rel="stylesheet" href="/static/css/base.css">
 
   <script src="https://kit.fontawesome.com/87f04edde9.js" crossorigin="anonymous"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
+
+  <!-- toggleNavbar --> 
+  <!-- Do not change the version of this or the code will fuck up (5.3.1) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"></script>
 
   <title>CS Doc</title>
+
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-md navbar-light " >
-    <div class="container" style="border-bottom: 1px solid #ffffff;">
-      <a href="{{ url_for('home') }}">
-        <img class="navbar-brand" id="logo" src="">
+  <nav class="navbar navbar-expand-md">
+    <div class="container">
+      <a href="{{ url_for('home') }}" class="navbar-brand">
+        <img class="navbar-img" src="/static/img/cs_cmu_1.png" alt="Computer Science CMU">
+        <span class="navbar-text">Computer Science CMU</span>
       </a>
-      <button class="navbar-toggler" trype="button" onclick="toggleNavbar()">
+  
+      <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
         <span class="navbar-toggler-icon"></span>
       </button>
+  
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-md" > 
+        <ul class="navbar-nav ml-md-auto">
+          <!-- Use ml-md-auto to push the dropdown to the right -->
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('home') }}"><div><span class="oi oi-home"></span> Home</div></a>
+            <div class="dropdown">
+              <button
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+              <i class="bi bi-person-circle"></i> user_name
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#"><i class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
+                <a class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket"></i>ออกจากระบบ</a>
+              </div>
+            </div>
           </li>
-          
         </ul>
       </div>
     </div>
-  </nav>  
+  </nav>
+  
+  
+
 
   <div class="container" id="main_screen">
     {% block content %}
     {% endblock %}
   </div>
+
+  <footer class="text-center">
+    <div class="container py-md-2">
+      <ul>
+        <li><a style="font-size: 16px;font-weight:bold;">Computer Science CMU</a></li><br>
+        <li><a>ภาควิชาวิทยาการคอมพิวเตอร์
+            คณะวิทยาศาสตร์ มหาวิทยาลัยเชียงใหม่</a></li><br>
+        <li><a>
+            239 ถ. ห้วยแก้ว ต.สุเทพ อ. เมือง จ. เชียงใหม่ 50200
+            โทรศัพท์ : 0-5394-3412-16 , 063-080-7969
+            ธุรการ : กด 0 หรือ 101
+            หลักสูตรปริญญาตรี : กด 103
+            หลักสูตรปริญญาโท-เอก : กด 105</a></li>
+      </ul>
+    </div>
+  </footer>
+
   <!-- <img class="image" src="/static/img/cute-orange.png" alt="Normal Image"> -->
   <script>
     function showDropdownMenu(event) {
@@ -67,16 +117,17 @@
     }
 
     function toggleNavbar() {
-  var navbarCollapse = document.getElementById("navbarCollapse");
-  if (navbarCollapse.classList.contains("show")) {
-    navbarCollapse.classList.remove("show");
-  } else {
-    navbarCollapse.classList.add("show");
-  }
-}
+      var navbarCollapse = document.getElementById("navbarCollapse");
+      if (navbarCollapse.classList.contains("show")) {
+        navbarCollapse.classList.remove("show");
+      } else {
+        navbarCollapse.classList.add("show");
+      }
+    }
 
   </script>
 
 </body>
+
 
 </html>

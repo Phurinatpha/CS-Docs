@@ -1,7 +1,123 @@
 {% extends "project/base.html" %}
 {% block content %}
-<h1 class="title">
-  dashboard
-</h1>
+<link rel="stylesheet" href="/static/css/index.css">
+
+<div class="container">
+    <div class="row" style="padding-top: 20px;">
+        <div class="col-md-6">
+            <button class="btn btn-primary btn-create" type="button">
+                <i class="bi bi-plus-circle-fill"></i>
+                สร้างคำสั่ง
+            </button>
+        </div>
+
+        <div
+            class="col-md-6 d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
+            <button class="btn btn-primary d-sm-table " type="button">
+                <i class="bi bi-book"></i>
+                เอกสารคำสั่ง
+            </button>
+            <button class="btn btn-primary d-sm-table " type="button">
+                <i class="bi bi-search"></i>
+                ค้นหาเอกสาร
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="container">
+        <div class="col-md-12" style="margin-top: 30px;">
+            <h2>รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
+            <div>
+                <p>มีเอกสารทั้งหมด x รายการ แสดงหน้าละ 10 รายการ</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">ลำดับ</th>
+                                    <th class="text-center" style="width: 100px;">เลขที่คำสั่ง</th>
+                                    <th class="text-center" style="width: 480px;">เรื่อง</th>
+                                    <th class="text-center">ผู้สร้างเอกสาร</th>
+                                    <th class="text-center">วันที่ออกคำสั่ง</th>
+                                    <th class="text-center">ไฟล์แนบ</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- this part will use for return AJAX when submit form  -->
+                                <!-- For odd row will be white row -->
+                                <tr class="odd-row">
+                                    <td class="text-center">99999</td>
+                                    <td class="text-center">99/2566</td>
+                                    <td class="text-start">
+                                        <a><span>ภาควิชาวิทยาการคอมพิวเตอร์ ได้เข้าร่วมจัดแสดงนิทรรศการ
+                                                ในการประชุมสัมมนาวิชาการ</span></a>
+                                    </td>
+                                    <td class="text-center">Mr. Compsci ChiangMai University</td>
+                                    <td class="text-center">29 ก.ค. 2566</td>
+                                    <td>
+                                        <div class="text-center d-xxl-flex justify-content-xxl-center">
+                                            <span
+                                                class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
+                                                <i class="bi bi-paperclip"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center">
+                                            <div class="btn-edit-del">
+                                                <button class="btn btn-edit btn-warning" type="button">แก้ไข</button>
+                                                <button class="btn btn-del btn-danger" type="button">ลบ</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- For even row will be grey row -->
+                                <tr class="even-row">
+                                    <td class="text-center">99999999</td>
+                                    <td class="text-center">999/2566</td>
+                                    <td class="text-start">
+                                        <a><span>เปิดรับสมัครหลักสูตรอบรมระยะสั้น "การวิเคราะห์ข้อมูลอัจฉริยะด้วย
+                                                RapidMiner
+                                                (Intelligence Data analysis with RapidMiner)" รุ่นที่ 2</span></a>
+                                    </td>
+                                    <td class="text-center">Mr. Compsci ChiangMai
+                                        University
+                                    </td>
+                                    <td class="text-center">29 ก.ค. 2566</td>
+                                    <td class="text-center">
+                                        <div class="text-center d-xxl-flex justify-content-xxl-center">
+                                            <span
+                                                class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
+                                                <i class="bi bi-paperclip"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="text-center">
+                                            <div class="btn-edit-del ">
+                                                <button class="btn btn-edit btn-warning" type="button">แก้ไข</button>
+                                                <button class="btn btn-del btn-danger" type="button">ลบ</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- End of AJAX -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
