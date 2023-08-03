@@ -23,6 +23,10 @@ from app.models.authuser import AuthUser
 def home():
     return render_template("project/index.html")
 
+@app.route('/form')
+def form():
+    return render_template("project/form.html")
+
 @app.route('/crash')
 def crash():
     return 1/0

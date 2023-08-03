@@ -127,3 +127,11 @@ h2 {
   background-color: #DE4545;
   cursor: pointer;
 }
+
+/*-----------------------------------Modal-----------------------------------*/
+.modal-dialog.modal-xl {
+  max-width: 67.6%;
+  /* max-width: 80%; */
+
+  margin: 4.7rem auto;
+}
