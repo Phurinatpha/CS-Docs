@@ -135,3 +135,22 @@ h2 {
 
   margin: 4.7rem auto;
 }
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  /* Choose your preferred color for the close button */
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Adding a hover effect to the close button */
+.close:hover {
+  color: #ff0000;
+  /* Choose your preferred color for the close button on hover */
+}

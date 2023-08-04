@@ -8,20 +8,28 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <!-- Bootstrap-Icon -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+  <script src="https://kit.fontawesome.com/87f04edde9.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
   <form id="myForm" action="" method="post" autocomplete="off">
 
-    <div style="text-align:center;">
-      <span class="step" id="step-1">1</span>
-      <span class="step" id="step-2">2</span>
-      <span class="step" id="step-3">3</span>
-      <span class="step" id="step-4">4</span>
+    <div class="prog-bar" style="text-align:center;">
+
+      <span class="step" id="step-1">1 ) ส่วนหัวข้อของเอกสาร</span>
+      <i class="bi bi-caret-right-fill"></i>
+      <span class="step" id="step-2">2 ) รายชื่อคณะกรรมการ</span>
+      <i class="bi bi-caret-right-fill"></i>
+      <span class="step" id="step-3">3 ) ไฟล์แนบ</span>
+      <!-- <i class="fa-solid fa-chevron-right"></i> -->
+      <i class="bi bi-caret-right-fill"></i>
+      <span class="step" id="step-4">4 ) preview</span>
+
     </div>
     <p class="pop-up-header">เอกสารคำสั่ง</p>
 
-    <!-----------------------------------1st page----------------------------------->
+    <!-----------------------------------1st tab----------------------------------->
     <div class="tab" id="tab-1">
       <div class="tab-container">
         <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
@@ -64,28 +72,28 @@
       </div>
 
       <div class="index-btn-wrapper-first">
-        <div class="index-btn next" onclick="run(1, 2);">Next</div>
+        <div class="index-btn next" onclick="move(1);">ส่วนถัดไป</div>
       </div>
     </div>
 
-    <!-----------------------------------2nd page----------------------------------->
+    <!-----------------------------------2nd tab----------------------------------->
     <div class="tab" id="tab-2">
       <div class="tab-container">
         <p class="attachment">2 ) รายชื่อคณะกรรมการ</p>
         <div class="form-group-2">
           <div class="form-head">
-            <p>รายชื่อคณะกรรมการ</p>
+            <h3>รายชื่อคณะกรรมการ</h3>
             <textarea id="name_list"></textarea>
           </div>
         </div>
       </div>
       <div class="index-btn-wrapper">
-        <div class="index-btn prev" onclick="run(2, 1);">Previous</div>
-        <div class="index-btn next" onclick="run(2, 3);">Next</div>
+        <div class="index-btn prev" onclick="move(-1);">ส่วนก่อนหน้า</div>
+        <div class="index-btn next" onclick="move(1);">ส่วนถัดไป</div>
       </div>
     </div>
 
-    <!-----------------------------------3rd page----------------------------------->
+    <!-----------------------------------3rd tab----------------------------------->
     <div class="tab" id="tab-3">
       <div class="tab-container">
         <p class="attachment">3 ) ไฟล์แนบ</p>
@@ -110,12 +118,12 @@
       </div>
 
       <div class="index-btn-wrapper">
-        <div class="index-btn" onclick="run(3, 2);">Previous</div>
-        <div class="index-btn" onclick="run(3, 4);">Next</div>
+        <div class="index-btn prev" onclick="move(-1);">ส่วนก่อนหน้า</div>
+        <div class="index-btn next" onclick="move(1);">ส่วนถัดไป</div>
       </div>
     </div>
 
-    <!-----------------------------------4th page----------------------------------->
+    <!-----------------------------------4th tab ----------------------------------->
     <div class="tab" id="tab-4">
       <div class="tab-container">
         <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
@@ -132,14 +140,14 @@
 
         <div class="form-group-subject">
           <label for="subject">เรื่อง</label>
-          <span id="preview-descrip"></span>
+          <p id="preview-descrip"></p>
         </div>
 
         <p class="attachment">2 ) รายชื่อคณะกรรมการ</p>
         <div class="form-group-2">
           <div class="form-head">
-            <p>รายชื่อคณะกรรมการ</p>
-            <span id="preview-name_list"></span>
+            <h3 style="color: #ccc;">รายชื่อคณะกรรมการ</h3>
+            <p id="preview-name_list"></p>
           </div>
         </div>
 
@@ -159,58 +167,89 @@
       </div>
 
       <div class="index-btn-wrapper">
-        <div class="index-btn" onclick="run(4, 3);">Previous</div>
-        <!-- <div class="index-btn" onclick="run(4, 5);">Next</div> -->
-        <button class="index-btn" type="submit" name="submit" style="background: blue;">Submit</button>
+        <div class="index-btn prev" onclick="move(-1);">ส่วนก่อนหน้า</div>
+        <button class="index-btn" type="submit" name="submit" style="background: blue;">บันทึกเอกสารคำสั่ง</button>
       </div>
     </div>
-
-    <!-- <div class="tab" id="tab-5">
-      <div class="tab-container">
-      </div>
-
-      <div class="index-btn-wrapper">
-        <div class="index-btn" onclick="run(5, 4);">Previous</div>
-        <button class="index-btn" type="submit" name="submit" style="background: blue;">Submit</button>
-      </div>
-    </div> -->
   </form>
 
 
 
-  <!-- tab 1 -->
+  <!------------------------------------------tab 1------------------------------------------>
   <script>
-    // Default tab
-    $(".tab").css("display", "none");
-    $("#tab-1").css("display", "block");
+    let currentStep = 1;
 
-    function run(hideTab, showTab) {
-      if (hideTab < showTab) { // If not press previous button
-        // Validation if press next button
-        // var currentTab = 0;
-        // x = $('#tab-'+hideTab);
-        // y = $(x).find("input")
-        // for (i = 0; i < y.length; i++){
-        //   if (y[i].value == ""){
-        //     $(y[i]).css("background", "#ffdddd");
-        //     return false;
-        //   }
-        // }
-      }
+    // Function to reset the form fields and uploaded file name
+    function resetForm() {
+      // Reset the form fields to their default values
+      document.getElementById('myForm').reset();
 
-      // Progress bar
-      for (i = 1; i < showTab; i++) {
-        $("#step-" + i).css("opacity", "1");
-      }
+      // Reset uploaded file related elements
+      uploadedFileName = ''; // Clear the global variable
+      const uploadedFileContainer = document.getElementById('uploaded-file-container');
+      const dragAndDropZone = document.getElementById('drag-and-drop');
+      const uploadedFileNameElement = document.getElementById('uploaded-file-name');
+      uploadedFileNameElement.textContent = '';
+      uploadedFileContainer.style.display = 'none';
+      dragAndDropZone.style.display = 'flex';
 
-      // Switch tab
-      $("#tab-" + hideTab).css("display", "none");
-      $("#tab-" + showTab).css("display", "block");
-      $("input").css("background", "#fff");
+      // Show the first step of the form
+      showStep(1);
+
+      // Update the preview to show the default file name
+      updatePreview(null);
     }
+
+    // Function to update the progress bar and show/hide tabs
+    function updateProgressBar(step) {
+      // Update progress bar
+      for (let i = 1; i <= 4; i++) {
+        if (i <= step) {
+          $("#step-" + i).css("background", "#FAD349");
+        } else {
+          $("#step-" + i).css("background", "#D9D9D9");
+        }
+      }
+
+      // Show/hide tabs
+      $(".tab").css("display", "none");
+      $("#tab-" + step).css("display", "block");
+
+      // Enable/disable previous and next buttons
+      $(".prev").prop("disabled", step === 1);
+      $(".next").prop("disabled", step === 4);
+    }
+
+    // Function to show the desired step of the form
+    function showStep(stepNum) {
+      currentStep = stepNum;
+      updateProgressBar(currentStep);
+    }
+
+    // Function to move to the next or previous step
+    function move(stepOffset) {
+      const newStep = currentStep + stepOffset;
+
+      if (newStep >= 1 && newStep <= 4) {
+        showStep(newStep);
+      }
+    }
+
+    // Event delegation to handle the close button click event
+    document.addEventListener('click', function (event) {
+      if (event.target && event.target.id === 'closeModal') {
+        resetForm();
+      }
+    });
+
+    // Initial update
+    updateProgressBar(currentStep);
+
+
   </script>
 
-  <!-- tab 2 -->
+
+  <!------------------------------------------tab 2------------------------------------------>
   <script>
     // Populate day and year options dynamically
     function populateDaysAndYears() {
@@ -239,7 +278,7 @@
     populateDaysAndYears();
   </script>
 
-  <!-- tab 3 -->
+  <!--------------------------------------------tab 3-------------------------------------------->
   <script>
     let uploadedFileName = '';
 
@@ -274,11 +313,24 @@
     function removeUploadedFile() {
       const uploadedFileContainer = document.getElementById('uploaded-file-container');
       const dragAndDropZone = document.getElementById('drag-and-drop');
-      const uploadedFileName = document.getElementById('uploaded-file-name');
-      uploadedFileName.textContent = '';
+      const uploadedFileNameElement = document.getElementById('uploaded-file-name');
+
+      // Clear the global variable for the uploaded file name
+      uploadedFileName = '';
+
+      // Reset the file input element
+      const fileInput = document.getElementById('file-input');
+      fileInput.value = '';
+      const newFileInput = fileInput.cloneNode(true);
+      fileInput.parentNode.replaceChild(newFileInput, fileInput);
+
+      // Hide the uploaded file container and show the drag and drop zone
+      uploadedFileNameElement.textContent = '';
       uploadedFileContainer.style.display = 'none';
       dragAndDropZone.style.display = 'flex';
 
+      // Update the preview to show the default file name
+      updatePreview(null);
     }
 
     // Function to update the preview content
@@ -288,8 +340,8 @@
       const descrip = document.getElementById('descrip').value;
       const nameList = document.getElementById('name_list').value;
 
-      // Use the global variable to display the uploaded file name in the preview
-      document.getElementById('preview-uploaded-file-name').textContent = uploadedFileName;
+      // Use the file parameter to display the uploaded file name in the preview
+      document.getElementById('preview-uploaded-file-name').textContent = file ? file.name : "Your file name here";
       document.getElementById('preview-ref_num').textContent = refNum;
       document.getElementById('preview-date').textContent = date;
       document.getElementById('preview-descrip').textContent = descrip;

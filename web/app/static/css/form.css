@@ -21,13 +21,15 @@ input {
 
 .index-btn-wrapper-first {
     display: flex;
-    justify-content: end; /* To push the buttons to the start and end */
-  }
+    justify-content: end;
+    /* To push the buttons to the start and end */
+}
 
 .index-btn-wrapper {
     display: flex;
-    justify-content: space-between; /* To push the buttons to the start and end */
-  }
+    justify-content: space-between;
+    /* To push the buttons to the start and end */
+}
 
 .index-btn {
     margin: 20px 15px 0 0;
@@ -40,7 +42,7 @@ input {
     transition: 0.3s;
 }
 
-.index-btn-wrapper .index-btn .next{
+.index-btn-wrapper .index-btn .next {
     display: flex;
     justify-content: end;
 }
@@ -49,20 +51,39 @@ input {
     opacity: 0.8;
 }
 
+.prog-bar {
+    /* Remove comment if want to use the same chevron icon as wireframe
+    this is same icon as wireframe (put it in form.html -> prog-bar) 
+    <i class="fa-solid fa-chevron-right"></i> 
+    */
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+
+    margin-bottom: 20px;
+}
+
+.prog-bar i {
+
+    color: #FAD349;
+    font-size: 25px;
+    font-weight: 900;
+}
+
 .step {
     height: 30px;
-    width: 30px;
+    width: 190px;
     line-height: 30px;
     margin: 0 2px;
-    color: white;
-    background: green;
-    border-radius: 50%;
+    color: black;
+    background: #D9D9D9;
+    border-radius: 15px;
     display: inline-block;
-    opacity: 0.25;
+    /* opacity: 0.25; */
 }
 
 
-.tab-container{
+.tab-container {
     padding: 0px 25px 0px 25px;
 }
 
@@ -73,8 +94,8 @@ label {
 
 }
 
-.pop-up-header{
-    font-size:28px;
+.pop-up-header {
+    font-size: 28px;
     color: #ffffff;
     background-color: #022851;
     padding: 5px 15px 5px 15px;
@@ -101,7 +122,7 @@ label {
 .form-group-subject {
     display: flex;
     align-items: start;
-    justify-content: end;
+
     /* Aligns items vertically within the flex container */
     margin-bottom: 10px;
     /* Adds space between this and other form groups */
@@ -125,8 +146,9 @@ input {
     margin-right: 5px;
 }
 
-#descrip, #preview-descrip {
-   
+#descrip,
+#preview-descrip {
+
     /* Add your desired styles for the textarea here */
     margin-top: 10px;
     padding: 10px;
@@ -149,7 +171,7 @@ input {
 }
 
 /* Style the label to make it look like a header */
-.form-group-2 p {
+.form-group-2 h3 {
     margin: 0 0 0 0;
     padding: 5px 15px 5px 15px;
     font-size: 16px;
@@ -159,7 +181,8 @@ input {
 
 }
 
-#name_list, #preview-descrip {
+#name_list,
+#preview-name_list {
     font-size: 16px;
     border: 1px solid #ccc;
     width: 700px;
@@ -178,7 +201,7 @@ input {
         justify-content: center;
     }
 
-    #name_list  {
+    #name_list {
         width: 500px;
         background-color: #f31111;
     }
@@ -194,7 +217,8 @@ input {
         justify-content: center;
     }
 
-    #name_list  {
+    #name_list,
+    #preview-name_list {
         width: 370px;
         background-color: #0aee3b;
     }
@@ -208,14 +232,15 @@ input {
         justify-content: center;
     }
 
-    #name_list  {
+    #name_list,
+    #preview-name_list {
         width: 350px;
         background-color: #0a7cf7;
     }
 }
 
 
-  /* Extra small devices (phones, 600px and down) */
+/* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 768px) {
     .form-group-2 {
         display: flex;
@@ -224,7 +249,8 @@ input {
         justify-content: center;
     }
 
-    #name_list  {
+    #name_list,
+    #preview-name_list {
         width: 310px;
         background-color: #cffc06;
     }
@@ -243,7 +269,8 @@ input {
     width: auto;
 }
 
-#tab-3 h3, #tab-4 h3{
+#tab-3 h3,
+#tab-4 h3 {
     font-size: 18px;
     border-bottom: 1px solid #D9D9D9;
 }
@@ -277,14 +304,14 @@ input {
 }
 
 #uploaded-file-container {
-    width: 90%;
+    width: 100%;
     height: 200px;
     border: 1px dashed #aaa;
     padding: 20px;
     /* DO NOT REMOVE this "display setting" is a part of upload file 
     this will make part of display uploaded file to be hidden
     before upload file*/
-    display: none; 
+    display: none;
     text-align: left;
 }
 
@@ -293,7 +320,8 @@ input {
     align-items: center;
 }
 
-#uploaded-file-name, #preview-uploaded-file-name {
+#uploaded-file-name,
+#preview-uploaded-file-name {
     flex: 1;
     /* This will make the paragraph take up remaining space */
 }
