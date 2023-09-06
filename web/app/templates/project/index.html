@@ -74,17 +74,19 @@
                                 </tr>
                             </thead>
                             <tbody id="document-list">
+                                {% for document in documents %}
                                 <!-- this part will use for return AJAX when submit form  -->
                                 <!-- For odd row will be white row -->
+                                <!-- because we use Desc order so swap Odd to Even-->
+                                {% if document.id%2 !=      0 %}
                                 <tr class="odd-row">
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">2/2566</td>
+                                    <td class="text-center">99999</td>
+                                    <td class="text-center">{{document.ref_num}}</td>
                                     <td class="text-start">
-                                        <a><span>ภาควิชาวิทยาการคอมพิวเตอร์ ได้เข้าร่วมจัดแสดงนิทรรศการ
-                                                ในการประชุมสัมมนาวิชาการ</span></a>
+                                        <a><span>{{document.subject}}</span></a>
                                     </td>
-                                    <td class="text-center">Mr. Compsci ChiangMai University</td>
-                                    <td class="text-center">29 ก.ค. 2566</td>
+                                    <td class="text-center">ความว่างเปล่า</td>
+                                    <td class="text-center">{{document.doc_date}}</td>
                                     <td>
                                         <div class="text-center d-xxl-flex justify-content-xxl-center">
                                             <span
@@ -102,20 +104,18 @@
                                         </div>
                                     </td>
                                 </tr>
-
+                            
                                 <!-- For even row will be grey row -->
+                                {% else %}
                                 <tr class="even-row">
-                                    <td class="text-center">2</td>
-                                    <td class="text-center">1/2566</td>
+                                    <td class="text-center">{{document.id}}</td>
+                                    <td class="text-center">{{document.ref_num}}</td>
                                     <td class="text-start">
-                                        <a><span>เปิดรับสมัครหลักสูตรอบรมระยะสั้น "การวิเคราะห์ข้อมูลอัจฉริยะด้วย
-                                                RapidMiner
-                                                (Intelligence Data analysis with RapidMiner)" รุ่นที่ 2</span></a>
+                                        <a><span>{{document.subject}}</span></a>
                                     </td>
-                                    <td class="text-center">Mr. Compsci ChiangMai
-                                        University
+                                    <td class="text-center">{{document.ref_name}}
                                     </td>
-                                    <td class="text-center">29 ก.ค. 2566</td>
+                                    <td class="text-center">{{document.doc_date}}</td>
                                     <td class="text-center">
                                         <div class="text-center d-xxl-flex justify-content-xxl-center">
                                             <span
@@ -133,6 +133,8 @@
                                         </div>
                                     </td>
                                 </tr>
+                                {% endif %}
+                                {% endfor %}
                                 <!-- End of AJAX -->
                             </tbody>
                         </table>

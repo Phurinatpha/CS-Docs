@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <form id="myForm" action="" method="post" autocomplete="off">
+  <form id="myForm" action="/form" method="post" autocomplete="off" enctype="multipart/form-data"> 
 
 
     <p class="pop-up-header">เอกสารคำสั่ง</p>
@@ -31,7 +31,7 @@
 
         <div class="form-group">
           <label>เลขที่คำสั่ง</label>
-          <input type="text" placeholder="เลขที่คำสั่ง" id="ref_num">
+          <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
         </div>
 
         <div class="form-group">
@@ -59,10 +59,10 @@
             <option value="" disabled selected>ปี</option>
           </select>
         </div>
-
+          <input type ="hidden" id="date_combind" name="doc_date"></input>
         <div class="form-group-subject">
           <label for="subject">เรื่อง</label>
-          <textarea id="descrip"></textarea>
+          <textarea id="descrip" name="subject"></textarea>
         </div>
       </div>
       
@@ -75,7 +75,7 @@
         <div class="form-group-2">
           <div class="form-head">
             <h3>รายชื่อคณะกรรมการ</h3>
-            <textarea id="name_list"></textarea>
+            <textarea id="name_list" name="ref_name"></textarea>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
           <div id="drag-and-drop" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
             <h1>ลากและวางไฟล์ที่นี่</h1>
             <p class="or">หรือ</p>
-            <input type="file" id="file-input" style="display:none;" onchange="handleFileSelect(event)" accept=".pdf">
+            <input type="file" id="file-input" name="doc_path" style="display:none;" onchange="handleFileSelect(event)" accept=".pdf">
             <p class="click-to-add"><label for="file-input">กดเพื่อเลือกไฟล์แนบ</label></p>
           </div>
 
@@ -115,5 +115,51 @@
   <script src="/static/js/form.js"></script>
 
 </body>
+<!-----------------------------------database----------------------------------->
+<script>
+  $(document).ready(function() {  
+$("#myForm").submit(function (event) {
+  // prevent default html form submission action
+  //event.preventDefault();
+  document.getElementById("date_combind").value =document.getElementById("daySelect").value+" "+document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
+  
+  event.preventDefault();
+  // Create a new FormData object
+  console.log($('#descrip').val(), $('#date_combind').val(), $('#refer_num').val(), $('#name_list').val(), $('#user_id').val());
+  var formData = new FormData();
 
+  // Log the formData to verify its content
+  console.log(formData);
+
+  // Append the file to the FormData object
+  var file = $('input[name="doc_path"]')[0].files[0];
+  formData.append('doc_path', file);
+
+  // Add other form data to the FormData object
+  formData.append('subject', $('#descrip').val());
+  formData.append('doc_date', $('#date_combind').val());
+  formData.append('ref_num', $('#refer_num').val());
+  formData.append('ref_name', $('#name_list').val());
+  formData.append('user_id', 2);
+
+
+  console.log(formData);  
+  var $form = $(this);
+  var url = $form.attr("action");  
+  $.ajax({
+    type: 'POST',
+    url: url,
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function(response) {
+      console.log('Success', response);
+    },
+    error: function(error) {
+      console.error('Error', error);
+    }
+  });
+  });
+});
+  </script>
 </html>

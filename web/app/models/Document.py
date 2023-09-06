@@ -6,11 +6,11 @@ class Document(db.Model, SerializerMixin):
 
 
     id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String(300))
-    doc_path = db.Column(db.String(200))
-    doc_date = db.Column(db.Datetime())
-    ref_num = db.Column(db.Integer)
-    ref_name = db.Column(db.String(500))
+    subject = db.Column(db.String(500))
+    doc_path = db.Column(db.LargeBinary)
+    doc_date = db.Column(db.String(300))
+    ref_num = db.Column(db.String(20))
+    ref_name = db.Column(db.String(200))
     user_id = db.Column(db.Integer)
 
     def __init__(self, subject, doc_path, doc_date, ref_num,ref_name,user_id):
