@@ -24,6 +24,16 @@
 
   <script src="https://kit.fontawesome.com/87f04edde9.js" crossorigin="anonymous"></script>
 
+  <!-- font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+
+  <!-- Include SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
@@ -72,11 +82,13 @@
   </nav>
 
   <div class="container" id="main_screen">
+
     {% block content %}
     {% endblock %}
   </div>
 
   <footer class="text-center">
+
     <div class="container py-md-2">
       <ul>
         <li><a style="font-size: 16px;font-weight:bold;">Computer Science CMU</a></li><br>
@@ -92,35 +104,9 @@
     </div>
   </footer>
 
-  <!-- <img class="image" src="/static/img/cute-orange.png" alt="Normal Image"> -->
-  <script>
-    function showDropdownMenu(event) {
-      var dropdown = event.target.nextElementSibling;
-      if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-      } else {
-        dropdown.style.display = "block";
-      }
-
-      document.addEventListener("click", function (event) {
-        if (!event.target.matches('#user_pic')) {
-          dropdown.style.display = "none";
-        }
-      });
-    }
-
-    function toggleNavbar() {
-      var navbarCollapse = document.getElementById("navbarCollapse");
-      if (navbarCollapse.classList.contains("show")) {
-        navbarCollapse.classList.remove("show");
-      } else {
-        navbarCollapse.classList.add("show");
-      }
-    }
-
-  </script>
+  <script src="/static/js/base.js"></script>
+  <script src="/static/js/sweetalert.js"></script>
 
 </body>
-
 
 </html>

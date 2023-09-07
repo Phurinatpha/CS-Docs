@@ -1,3 +1,11 @@
+body {
+  background: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
 .container {
   padding: 0px 10px 0px 10px;
 }
@@ -76,7 +84,7 @@
 
 /*-----------------------------------footer-----------------------------------*/
 footer {
-  position: fixed;
+  margin-top: auto;
   width: 100%;
   bottom: 0px;
   /* Dark background color */
@@ -102,4 +110,13 @@ footer ul {
 footer li {
   margin-top: -9px;
   margin-bottom: -9px;
+}
+
+/*-----------------------------------SweetAlert Button-----------------------------------*/
+.swal2-styled.swal2-confirm {
+  width: 100px;
+}
+
+.swal2-styled.swal2-cancel {
+  width: 100px;
 }

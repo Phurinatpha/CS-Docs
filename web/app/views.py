@@ -23,9 +23,21 @@ from app.models.authuser import AuthUser
 def home():
     return render_template("project/index.html")
 
+@app.route('/base')
+def base():
+    return render_template("project/base.html")
+
 @app.route('/form')
 def form():
     return render_template("project/form.html")
+
+@app.route('/search')
+def search():
+    return render_template("project/search.html")
+
+@app.route('/access')
+def access():
+    return render_template("project/manage-access.html")
 
 @app.route('/crash')
 def crash():

@@ -1,0 +1,165 @@
+form {
+  background: #ffffff;
+  margin: 10px auto;
+  padding: 15px 40px 40px 40px;
+  width: 90%;
+}
+
+
+input {
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 17px;
+  border: 1px solid #aaaaaa;
+  border-radius: 7px;
+}
+
+
+.search-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.search-btn {
+  margin: 20px 15px 0 0;
+  background: #022851;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+
+
+.search-btn:hover {
+  opacity: 0.8;
+}
+
+.search-container {
+  padding: 0px 25px 25px 25px;
+  margin-top: 30px;
+  border-radius: 8px;
+  /* Add drop shadow */
+  border: 1px solid #000;
+
+
+}
+
+.search-header {
+  font-size: 24px;
+  color: #ffffff;
+  background-color: #022851;
+  margin: 28px 0;
+  padding: 5px 15px 5px 15px;
+}
+
+.search-header i {
+  display: inline;
+  margin-right: 5px; /* Add some spacing between the icon and text if needed */
+}
+
+
+.found-container {
+  margin-top: 30px;
+}
+
+.found-header {
+  font-size: 24px;
+  color: #022851;
+  background-color: #FAA849;
+  margin: 28px 0;
+  padding: 5px 15px 5px 15px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+#doc-founded{
+  color: white;
+}
+
+label {
+  /* Optional styling for the label text */
+  width: 180px;
+  font-weight: bold;
+
+}
+
+.pop-up-header {
+  font-size: 28px;
+  color: #ffffff;
+  background-color: #022851;
+  padding: 5px 15px 5px 15px;
+}
+
+.tab .attachment {
+  font-size: 18px;
+  border-bottom: 1px solid #D9D9D9;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/*-----------------------------------------tab-1-----------------------------------------*/
+.search-group {
+  display: flex;
+  align-items: center;
+  /* Aligns items vertically within the flex container */
+  margin-bottom: 10px;
+  /* Adds space between this and other form groups */
+}
+
+.search-group-subject {
+  display: flex;
+  align-items: start;
+  /* Aligns items vertically within the flex container */
+  margin-bottom: 10px;
+  /* Adds space between this and other form groups */
+}
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* Allow the textarea to expand and fill the available space */
+ 
+}
+
+.textarea-container p.warn-add-name {
+  margin-top: 10px;
+  color: red;
+}
+
+input {
+  width: 200px;
+}
+
+/* Styles for the date select */
+.search-group select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+/* Optional style to add space between the selects */
+.search-group select:not(:last-child) {
+  margin-right: 5px;
+}
+
+#s-descrip{
+  /* Add your desired styles for the textarea here */
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 90px;
+  width: 100%;
+  resize: vertical;
+  /* Allow vertical resizing of the textarea */
+}

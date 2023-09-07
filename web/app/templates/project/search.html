@@ -1,6 +1,7 @@
 {% extends "project/base.html" %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/index.css">
+<link rel="stylesheet" href="/static/css/search.css">
 
 <div class="container">
     <div class="row" style="padding-top: 20px;">
@@ -13,22 +14,16 @@
             <div class="modal fade bd-modal-xl" data-backdrop="static" data-keyboard="false">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-
-
                         <!-- Modal body -->
                         <div class="modal-body">
                             <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
                             <!-- Add your content here -->
                             <div id="includeHtml"></div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
             <!-- End of Modal zone -->
-
         </div>
 
         <div
@@ -37,24 +32,78 @@
                 <i class="bi bi-book"></i>
                 เอกสารคำสั่ง
             </button>
-
-            <a href="{{ url_for('search') }}" style="text-decoration: none;">
-                <button class="btn-act btn-primary d-sm-table " type="button">
-                    <i class="bi bi-search"></i>
-                    ค้นหาเอกสาร
-                </button>
-            </a>
+            <button class="btn-act btn-primary d-sm-table " type="button">
+                <i class="bi bi-search"></i>
+                ค้นหาเอกสาร
+            </button>
         </div>
     </div>
 </div>
 
+<div class="search-container">
+    <p class="search-header"><i class="bi bi-search"></i>ค้นหาเอกสาร</p>
+
+    <div class="search-group">
+        <label>เลขที่คำสั่ง</label>
+        <input type="text" placeholder="เลขที่คำสั่ง" id="ref_num">
+    </div>
+
+    <div class="search-group">
+        <label>เอกสารลงวันที่</label>
+        <!-- Separate select elements for day, month, and year -->
+        <select name="month" id="monthSelect">
+            <option value="" disabled selected>เดือน</option>
+            <option value="1">มกราคม</option>
+            <option value="2">กุมภาพันธ์</option>
+            <option value="3">มีนาคม</option>
+            <option value="4">เมษายน</option>
+            <option value="5">พฤษภาคม</option>
+            <option value="6">มิถุนายน</option>
+            <option value="7">กรกฎาคม</option>
+            <option value="8">สิงหาคม</option>
+            <option value="9">กันยายน</option>
+            <option value="10">ตุลาคม</option>
+            <option value="11">พฤศจิกายน</option>
+            <option value="12">ธันวาคม</option>
+        </select>
+        <select name="year" id="yearSelect">
+            <option value="" disabled selected>ปี</option>
+        </select>
+    </div>
+
+    <div class="search-group-subject">
+        <label for="subject">เรื่อง</label>
+        <div class="textarea-container">
+            <textarea id="s-descrip"></textarea>
+        </div>
+    </div>
+
+    <div class="search-group-subject">
+        <label for="subject">รายชื่อคณะกรรมการ</label>
+        <div class="textarea-container">
+            <textarea id="s-descrip"></textarea>
+            <p class="warn-add-name">กรุณาใส่ , (Comma) คั่นชื่อจริง-นามสกุลของ ผู้ที่เกี่ยวข้อง กรณีมากกว่า 1 รายชื่อ
+            </p>
+        </div>
+    </div>
+
+    <div class="search-btn-wrapper">
+        <button class="search-btn" type="submit" name="submit"><i class="bi bi-search"></i>ค้นหาเอกสารคำสั่ง</button>
+    </div>
+</div>
+
+<div class="found-container">
+    <p class="found-header">พบเอกสารคำสั่งทั้งหมด <span id="doc-founded">10</span> รายการ</p>
+</div>
+
 <div class="table-container">
+
+
     <div class="container">
         <div class="col-md-12" style="margin-top: 30px;">
             <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
             <div>
-                <p class="sub-doc">มีเอกสารทั้งหมด <span id="all-doc"></span> รายการ แสดงหน้าละ <span
-                        id="show-per-page">10</span> รายการ</p>
+                <p class="sub-doc">มีเอกสารทั้งหมด <span id="all-founded">x</span> รายการ แสดงหน้าละ <span id="show-per-page">10</span> รายการ</p>
             </div>
         </div>
         <div class="row">
@@ -77,8 +126,8 @@
                                 <!-- this part will use for return AJAX when submit form  -->
                                 <!-- For odd row will be white row -->
                                 <tr class="odd-row">
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">2/2566</td>
+                                    <td class="text-center">99999</td>
+                                    <td class="text-center">99/2566</td>
                                     <td class="text-start">
                                         <a><span>ภาควิชาวิทยาการคอมพิวเตอร์ ได้เข้าร่วมจัดแสดงนิทรรศการ
                                                 ในการประชุมสัมมนาวิชาการ</span></a>
@@ -96,8 +145,8 @@
                                     <td>
                                         <div class="text-center">
                                             <div class="btn-edit-del">
-                                                <button class="btn-edit" id="btn-edit">แก้ไข</button>
-                                                <button class="btn-del" id="btn-del">ลบ</button>
+                                                <button class="btn-edit">แก้ไข</button>
+                                                <button class="btn-del">ลบ</button>
                                             </div>
                                         </div>
                                     </td>
@@ -105,8 +154,8 @@
 
                                 <!-- For even row will be grey row -->
                                 <tr class="even-row">
-                                    <td class="text-center">2</td>
-                                    <td class="text-center">1/2566</td>
+                                    <td class="text-center">99999999</td>
+                                    <td class="text-center">999/2566</td>
                                     <td class="text-start">
                                         <a><span>เปิดรับสมัครหลักสูตรอบรมระยะสั้น "การวิเคราะห์ข้อมูลอัจฉริยะด้วย
                                                 RapidMiner
@@ -127,8 +176,8 @@
                                     <td class="text-center">
                                         <div class="text-center">
                                             <div class="btn-edit-del ">
-                                                <button class="btn-edit" id="btn-edit">แก้ไข</button>
-                                                <button class="btn-del" id="btn-del">ลบ</button>
+                                                <button class="btn-edit">แก้ไข</button>
+                                                <button class="btn-del">ลบ</button>
                                             </div>
                                         </div>
                                     </td>
@@ -149,16 +198,32 @@
     <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
-
 <script src="/static/js/pagination.js"></script>
-<script src="/static/js/countDocIndex.js"></script>
+<script src="/static/js/countDocSearch.js"></script>
 
 <!-- Do not move script below -->
 <script>
+    //Call form.html when click create Doc
     $(function () {
         $("#includeHtml").load("/form");
     });
 
+    // Populate day and year options dynamically
+    function populateDaysAndYears() {
+        const yearSelect = document.getElementById("yearSelect");
+
+        // Populate year options (from the current year to 1900)
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear; year >= 1900; year--) {
+            const option = document.createElement("option");
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+        }
+    }
+    // Call the function to populate days and years when the page loads
+    populateDaysAndYears();
 </script>
+
 
 {% endblock %}
