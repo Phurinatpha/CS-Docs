@@ -99,7 +99,7 @@ def db_connection():
 @app.route("/document")
 def data():
     documents = []
-    db_documents = Document.query(Document.subject)
+    db_documents = Document.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " entries in phonebook")
  
