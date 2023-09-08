@@ -10,7 +10,7 @@ class Document(db.Model, SerializerMixin):
     doc_path = db.Column(db.LargeBinary)
     doc_date = db.Column(db.String(300))
     ref_num = db.Column(db.String(20))
-    ref_name = db.Column(db.String(200))
+    ref_name = db.Column(db.ARRAY(db.String))
     user_id = db.Column(db.Integer)
 
     def __init__(self, subject, doc_path, doc_date, ref_num,ref_name,user_id):

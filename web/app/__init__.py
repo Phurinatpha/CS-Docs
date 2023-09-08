@@ -14,7 +14,6 @@ app.config['JSON_AS_ASCII'] = False
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite://")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 if app.debug:
     app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 

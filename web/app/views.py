@@ -22,6 +22,7 @@ from app.models.Document import Document
 
 @app.route('/')
 def home(): 
+    #fix here
     documents = Document.query.order_by(desc(Document.id))
     return render_template("project/index.html", documents=documents)
 
@@ -69,7 +70,7 @@ def form():
             app.logger.debug(str(entry))
             db.session.add(entry)
             db.session.commit()
-            return  home()
+            return home()
 
         return home()   
     return render_template("project/form.html")
@@ -98,7 +99,7 @@ def db_connection():
 @app.route("/document")
 def data():
     documents = []
-    db_documents = Document.query.get(Document.ref_name)
+    db_documents = Document.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " entries in phonebook")
  
