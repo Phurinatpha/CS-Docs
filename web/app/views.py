@@ -39,7 +39,7 @@ def form():
         valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','ref_name','user_id']
 
         # Access the uploaded file using request.files
-        doc_path = request.files.get('doc_path')
+        doc_data = request.files.get('doc_data')
 
         # validate the input
         for key in request.form:
@@ -55,7 +55,7 @@ def form():
         if validated:
             # Read the contents of the uploaded file as bytes
 
-            doc_content = doc_path.read()
+            doc_content = doc_data.read()
             app.logger.debug(doc_content)
             # Create a new Document object with the uploaded file
             order_entry = order_info(
@@ -79,8 +79,8 @@ def form():
     return render_template("project/form.html")
 
 @app.route('/delete', methods=('GET', 'POST'))
-def lab10_remove_contacts():
-    app.logger.debug("LAB10 - REMOVE")
+def remove():
+    app.logger.debug("REMOVE")
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(result)
@@ -123,7 +123,7 @@ def data():
     documents = []
     db_documents = order_info.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    app.logger.debug(str(len(documents)) + " entries in phonebook")
+    app.logger.debug(str(len(documents)) + " already entry")
  
     return jsonify(documents)
 

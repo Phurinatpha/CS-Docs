@@ -91,7 +91,7 @@
           <div id="drag-and-drop" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
             <h1>ลากและวางไฟล์ที่นี่</h1>
             <p class="or">หรือ</p>
-            <input type="file" id="file-input" name="doc_path" style="display:none;" onchange="handleFileSelect(event)" accept=".pdf">
+            <input type="file" id="file-input" name="doc_data" style="display:none;" onchange="handleFileSelect(event)" accept=".pdf">
             <p class="click-to-add"><label for="file-input">กดเพื่อเลือกไฟล์แนบ</label></p>
           </div>
 
@@ -134,8 +134,8 @@ $("#myForm").submit(function (event) {
   console.log(formData);
 
   // Append the file to the FormData object
-  var file = $('input[name="doc_path"]')[0].files[0];
-  formData.append('doc_path', file);
+  var file = $('input[name="doc_data"]')[0].files[0];
+  formData.append('doc_data', file);
 
   // Add other form data to the FormData object
   formData.append('subject', $('#descrip').val());
@@ -157,6 +157,7 @@ $("#myForm").submit(function (event) {
     processData: false,
     success: function(response) {
       console.log('Success', response);
+      
     },
     error: function(error) {
       console.error('Error', error);
