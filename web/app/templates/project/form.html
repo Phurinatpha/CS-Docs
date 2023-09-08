@@ -31,7 +31,7 @@
 
         <div class="form-group">
           <label>เลขที่คำสั่ง</label>
-          <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="doc_num">
+          <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
         </div>
 
         <div class="form-group">
@@ -57,8 +57,8 @@
             <option id="M_10">พฤศจิกายน</option>
             <option id="M_11">ธันวาคม</option>
           </select>
-          <select name="year" id="yearSelect">
-            <option value="" id="auto_year" disabled selected>ปี</option>
+          <select name="ref_year" id="yearSelect">
+            <option value=""  disabled selected>ปี</option>
           </select>
         </div>
           <input type ="hidden" id="date_combind" name="doc_date"></input>
@@ -124,8 +124,6 @@
 $("#myForm").submit(function (event) {
   // prevent default html form submission action
   //event.preventDefault();
-  document.getElementById("date_combind").value =document.getElementById("daySelect").value+" "+document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
-   document.getElementById("refer_num").value = document.getElementById("refer_num").value+"/"+document.getElementById("yearSelect").value
   event.preventDefault();
   // Create a new FormData object
   console.log($('#descrip').val(), $('#date_combind').val(), $('#refer_num').val(), $('#name_list').val(), $('#user_id').val());
@@ -141,7 +139,8 @@ $("#myForm").submit(function (event) {
   // Add other form data to the FormData object
   formData.append('subject', $('#descrip').val());
   formData.append('doc_date', $('#date_combind').val());
-  formData.append('doc_num', $('#refer_num').val());
+  formData.append('ref_num', $('#refer_num').val());
+  formData.append('ref_year', $('#yearSelect').val());
   formData.append('ref_name', $('#name_list').val());
   formData.append('user_id', 2);
 

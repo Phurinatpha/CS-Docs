@@ -12,7 +12,7 @@ from app import db
 # from app import login_manager
 
 
-from app.models.Document import Document
+from app.models.Document import order_info
 
 # @login_manager.user_loader
 # def load_user(user_id):
@@ -23,7 +23,7 @@ from app.models.Document import Document
 @app.route('/')
 def home(): 
     #fix here
-    documents = Document.query.order_by(desc(Document.id))
+    documents = order_info.query.order_by(desc(order_info.id))
     return render_template("project/index.html", documents=documents)
 
 @app.route('/base')
@@ -36,7 +36,7 @@ def form():
         app.logger.debug("posted activate")
         validated = True
         validated_dict = dict()
-        valid_keys = ['subject', 'doc_path', 'doc_date','doc_num','ref_name','user_id']
+        valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','ref_name','user_id']
 
         # Access the uploaded file using request.files
         doc_path = request.files.get('doc_path')
@@ -58,17 +58,20 @@ def form():
             doc_content = doc_path.read()
             app.logger.debug(doc_content)
             # Create a new Document object with the uploaded file
-            entry = Document(
+            order_entry = order_info(
                 subject=validated_dict['subject'],
-                doc_path=doc_content,  # Assign the uploaded file here
                 doc_date=validated_dict['doc_date'],
-                doc_num=validated_dict['doc_num'],
+                ref_num=validated_dict['ref_num'],
+                ref_year=validated_dict['ref_year'],
                 ref_name=validated_dict['ref_name'],
                 user_id=validated_dict['user_id']
             )
-
-            app.logger.debug(str(entry))
-            db.session.add(entry)
+            '''doc_entry = doc_info(
+                filename=validated_dict['subject']+"/"+validated_dict['ref_year'],
+                doc_data=doc_content
+            )'''
+            db.session.add(order_entry)
+            #db.session.add(doc_entry)
             db.session.commit()
             return home()
 
@@ -84,8 +87,10 @@ def lab10_remove_contacts():
         id_ = result.get('id', '')
         try:
             #contact = Contact.query.get(id_)
-            document = Document.query.get(id_)
-            db.session.delete(document)
+            order = Order_info.query.get(id_)
+            #doc = doc_info.query.get(id_)
+            db.session.delete(order)
+            #db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
@@ -116,7 +121,7 @@ def db_connection():
 @app.route("/document")
 def data():
     documents = []
-    db_documents = Document.query.all()
+    db_documents = order_info.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " entries in phonebook")
  
@@ -124,13 +129,13 @@ def data():
 
 @app.route('/download/<int:doc_id>')
 def download(doc_id):
-    doc = Document.query.get(doc_id)
+    doc = order_info.query.get(doc_id)
     if doc:
         
         return send_file(
             BytesIO(doc.doc_path),
             mimetype='application/pdf',
-            download_name=doc.ref_num+'.pdf',
+            download_name=doc.filename+'.pdf',
             as_attachment=True
         )
     else:
