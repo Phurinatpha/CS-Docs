@@ -31,8 +31,8 @@ class order_info(db.Model, SerializerMixin):
         self.ref_name = ref_name
         self.user_id = user_id
 
-'''class doc_info(db.Model, SerializerMixin):
-    __tablename__ = "doc"
+class doc_info(db.Model, SerializerMixin):
+    __tablename__ = "doc_info"
 
 
     id = db.Column(db.Integer, primary_key=True)
@@ -44,4 +44,4 @@ class order_info(db.Model, SerializerMixin):
         self.doc_data = doc_data
     def update(self, filename, doc_data):
         self.filename = filename
-        self.doc_data = doc_data'''
+        self.doc_data = doc_data

@@ -125,6 +125,7 @@ $("#myForm").submit(function (event) {
   // prevent default html form submission action
   //event.preventDefault();
   event.preventDefault();
+  document.getElementById("date_combind").value = document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
   // Create a new FormData object
   console.log($('#descrip').val(), $('#date_combind').val(), $('#refer_num').val(), $('#name_list').val(), $('#user_id').val());
   var formData = new FormData();

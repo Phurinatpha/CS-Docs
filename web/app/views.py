@@ -12,7 +12,7 @@ from app import db
 # from app import login_manager
 
 
-from app.models.Document import order_info
+from app.models.Document import order_info, doc_info
 
 # @login_manager.user_loader
 # def load_user(user_id):
@@ -66,12 +66,12 @@ def form():
                 ref_name=validated_dict['ref_name'],
                 user_id=validated_dict['user_id']
             )
-            '''doc_entry = doc_info(
-                filename=validated_dict['subject']+"/"+validated_dict['ref_year'],
+            doc_entry = doc_info(
+                filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
                 doc_data=doc_content
-            )'''
+            )
             db.session.add(order_entry)
-            #db.session.add(doc_entry)
+            db.session.add(doc_entry)
             db.session.commit()
             return home()
 
@@ -87,10 +87,10 @@ def lab10_remove_contacts():
         id_ = result.get('id', '')
         try:
             #contact = Contact.query.get(id_)
-            order = Order_info.query.get(id_)
-            #doc = doc_info.query.get(id_)
+            order = order_info.query.get(id_)
+            doc = doc_info.query.get(id_)
             db.session.delete(order)
-            #db.session.delete(doc)
+            db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
@@ -129,11 +129,11 @@ def data():
 
 @app.route('/download/<int:doc_id>')
 def download(doc_id):
-    doc = order_info.query.get(doc_id)
+    doc = doc_info.query.get(doc_id)
     if doc:
         
         return send_file(
-            BytesIO(doc.doc_path),
+            BytesIO(doc.doc_data),
             mimetype='application/pdf',
             download_name=doc.filename+'.pdf',
             as_attachment=True
