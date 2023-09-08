@@ -1,7 +1,6 @@
 
 // Add a click event listener to all "delete" buttons with the class "btn-del"
 const deleteButtons = document.querySelectorAll(".btn-del");
-
 deleteButtons.forEach((button) => {
   button.addEventListener("click", function () {
     Swal.fire({
@@ -16,6 +15,7 @@ deleteButtons.forEach((button) => {
 
     }).then((result) => {
       if (result.isConfirmed) {
+        delete_doc()
         Swal.fire({
           title: 'ลบเอกสารคำสั่งสำเร็จ !',
           icon: 'success',

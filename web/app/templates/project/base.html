@@ -105,8 +105,41 @@
   </footer>
 
   <script src="/static/js/base.js"></script>
-  <script src="/static/js/sweetalert.js"></script>
+  <script>
+    tweet_id = 0;
+    function get_id(name){
 
+    tweet_id = name;
+    console.log("id ="+tweet_id)
+  }
+    function delete_doc(){
+      if (tweet_id != 0){
+        event.preventDefault();
+        del  = tweet_id
+        console.log("del id ="+del);
+        var url = "/delete"
+        var formData = new FormData();
+        formData.append('id', del)
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response) {
+            tweet_id = 0;
+            console.log("tweet_id has been reset : ",tweet_id);
+            console.log('Success', response);
+          },
+          error: function(error) {
+            console.error('Error', error);
+          }
+        });
+      }
+    }
+
+ </script>
+  <script src="/static/js/sweetalert.js"></script>
 </body>
 
 </html>

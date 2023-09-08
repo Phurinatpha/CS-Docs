@@ -31,7 +31,7 @@
 
         <div class="form-group">
           <label>เลขที่คำสั่ง</label>
-          <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
+          <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="doc_num">
         </div>
 
         <div class="form-group">
@@ -44,21 +44,21 @@
           </select>
           <select name="month" id="monthSelect" >
             <option value="" disabled selected>เดือน</option>
-            <option >มกราคม</option>
-            <option >กุมภาพันธ์</option>
-            <option >มีนาคม</option>
-            <option >เมษายน</option>
-            <option >พฤษภาคม</option>
-            <option >มิถุนายน</option>
-            <option >กรกฎาคม</option>
-            <option >สิงหาคม</option>
-            <option >กันยายน</option>
-            <option >ตุลาคม</option>
-            <option >พฤศจิกายน</option>
-            <option >ธันวาคม</option>
+            <option id="M_0">มกราคม</option>
+            <option id="M_1">กุมภาพันธ์</option>
+            <option id="M_2">มีนาคม</option>
+            <option id="M_3">เมษายน</option>
+            <option id="M_4">พฤษภาคม</option>
+            <option id="M_5">มิถุนายน</option>
+            <option id="M_6">กรกฎาคม</option>
+            <option id="M_7">สิงหาคม</option>
+            <option id="M_8">กันยายน</option>
+            <option id="M_9">ตุลาคม</option>
+            <option id="M_10">พฤศจิกายน</option>
+            <option id="M_11">ธันวาคม</option>
           </select>
-          <select name="year" id="yearSelect" >
-            <option value="" disabled selected>ปี</option>
+          <select name="year" id="yearSelect">
+            <option value="" id="auto_year" disabled selected>ปี</option>
           </select>
         </div>
           <input type ="hidden" id="date_combind" name="doc_date"></input>
@@ -117,6 +117,7 @@
   <script src="/static/js/form.js"></script>
 
 </body>
+
 <!-----------------------------------database----------------------------------->
 <script>
   $(document).ready(function() {  
@@ -124,12 +125,12 @@ $("#myForm").submit(function (event) {
   // prevent default html form submission action
   //event.preventDefault();
   document.getElementById("date_combind").value =document.getElementById("daySelect").value+" "+document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
-  
+   document.getElementById("refer_num").value = document.getElementById("refer_num").value+"/"+document.getElementById("yearSelect").value
   event.preventDefault();
   // Create a new FormData object
   console.log($('#descrip').val(), $('#date_combind').val(), $('#refer_num').val(), $('#name_list').val(), $('#user_id').val());
   var formData = new FormData();
-
+  
   // Log the formData to verify its content
   console.log(formData);
 
@@ -140,7 +141,7 @@ $("#myForm").submit(function (event) {
   // Add other form data to the FormData object
   formData.append('subject', $('#descrip').val());
   formData.append('doc_date', $('#date_combind').val());
-  formData.append('ref_num', $('#refer_num').val());
+  formData.append('doc_num', $('#refer_num').val());
   formData.append('ref_name', $('#name_list').val());
   formData.append('user_id', 2);
 
@@ -163,6 +164,7 @@ $("#myForm").submit(function (event) {
   });
   });
 });
+
   </script>
 
 </body>

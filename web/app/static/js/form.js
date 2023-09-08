@@ -25,6 +25,7 @@ document.addEventListener('click', function (event) {
 // <!------------------------------------------1st part------------------------------------------>
 // Populate day and year options dynamically
 function populateDaysAndYears() {
+  var now = new Date();
   const daySelect = document.getElementById("daySelect");
   const yearSelect = document.getElementById("yearSelect");
 
@@ -33,15 +34,22 @@ function populateDaysAndYears() {
     const option = document.createElement("option");
     option.value = day;
     option.textContent = day;
+    if (day == now.getDate()){
+      option.selected = true;
+        }
     daySelect.appendChild(option);
   }
-
+  console.log(now.getMonth())
+  document.getElementById("M_"+now.getMonth()).selected = true;
   // Populate year options (from the current year to 1900)
   const currentYear = new Date().getFullYear();
   for (let year = currentYear; year >= 1900; year--) {
     const option = document.createElement("option");
     option.value = year;
     option.textContent = year;
+    if (year == currentYear){
+      option.selected = true;
+        }
     yearSelect.appendChild(option);
   }
 }

@@ -36,7 +36,7 @@ def form():
         app.logger.debug("posted activate")
         validated = True
         validated_dict = dict()
-        valid_keys = ['subject', 'doc_path', 'doc_date','ref_num','ref_name','user_id']
+        valid_keys = ['subject', 'doc_path', 'doc_date','doc_num','ref_name','user_id']
 
         # Access the uploaded file using request.files
         doc_path = request.files.get('doc_path')
@@ -62,7 +62,7 @@ def form():
                 subject=validated_dict['subject'],
                 doc_path=doc_content,  # Assign the uploaded file here
                 doc_date=validated_dict['doc_date'],
-                ref_num=validated_dict['ref_num'],
+                doc_num=validated_dict['doc_num'],
                 ref_name=validated_dict['ref_name'],
                 user_id=validated_dict['user_id']
             )
@@ -72,8 +72,25 @@ def form():
             db.session.commit()
             return home()
 
-        return home()   
+        return home()  
     return render_template("project/form.html")
+
+@app.route('/delete', methods=('GET', 'POST'))
+def lab10_remove_contacts():
+    app.logger.debug("LAB10 - REMOVE")
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(result)
+        id_ = result.get('id', '')
+        try:
+            #contact = Contact.query.get(id_)
+            document = Document.query.get(id_)
+            db.session.delete(document)
+            db.session.commit()
+        except Exception as ex:
+            app.logger.debug(ex)
+            raise
+    return home()
 
 @app.route('/search')
 def search():

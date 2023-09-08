@@ -80,8 +80,8 @@
                                 <!-- because we use Desc order so swap Odd to Even-->
                                 {% if document.id%2 !=      0 %}
                                 <tr class="odd-row">
-                                    <td class="text-center">99999</td>
-                                    <td class="text-center">{{document.ref_num}}</td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center">{{document.doc_num}}</td>
                                     <td class="text-start">
                                         <a><span>{{document.subject}}</span></a>
                                     </td>
@@ -98,8 +98,8 @@
                                     <td>
                                         <div class="text-center">
                                             <div class="btn-edit-del">
-                                                <button class="btn-edit" id="btn-edit">แก้ไข</button>
-                                                <button class="btn-del" id="btn-del">ลบ</button>
+                                                <button class="btn-edit" id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">แก้ไข</button>
+                                                    <button class="btn-del" id="btn-del" onClick="get_id(this.name)" name={{document.id}}>ลบ</button>
                                             </div>
                                         </div>
                                     </td>
@@ -109,7 +109,7 @@
                                 {% else %}
                                 <tr class="even-row">
                                     <td class="text-center">{{document.id}}</td>
-                                    <td class="text-center">{{document.ref_num}}</td>
+                                    <td class="text-center">{{document.doc_num}}</td>
                                     <td class="text-start">
                                         <a><span>{{document.subject}}</span></a>
                                     </td>
@@ -127,8 +127,8 @@
                                     <td class="text-center">
                                         <div class="text-center">
                                             <div class="btn-edit-del ">
-                                                <button class="btn-edit" id="btn-edit">แก้ไข</button>
-                                                <button class="btn-del" id="btn-del">ลบ</button>
+                                                <button class="btn-edit" id="btn-edit" data-toggle="modal"  data-target=".bd-modal-xl" >แก้ไข</button>
+                                                <button class="btn-del" id="btn-del" onClick="get_id(this.name)" name={{document.id}}>ลบ</button>
                                             </div>
                                         </div>
                                     </td>
@@ -160,6 +160,7 @@
     $(function () {
         $("#includeHtml").load("/form");
     });
+
 
 </script>
 
