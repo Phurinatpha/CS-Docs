@@ -74,14 +74,16 @@
                                 </tr>
                             </thead>
                             <tbody id="document-list">
+                            
                                 {% for document in documents %}
+                                
+                                
                                 <!-- this part will use for return AJAX when submit form  -->
                                 <!-- For odd row will be white row -->
-                                <!-- because we use Desc order so swap Odd to Even-->
-                                {% if document.id%2 !=      0 %}
+                                {% if loop.index%2 != 0 %}
                                 <tr class="odd-row">
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{loop.index}}</td>
+                                    <td class="text-center">{{document.ref_num}}/{{document.ref_year}}</td>
                                     <td class="text-start">
                                         <a><span>{{document.subject}}</span></a>
                                     </td>
@@ -91,7 +93,7 @@
                                         <div class="text-center d-xxl-flex justify-content-xxl-center">
                                             <span
                                                 class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
-                                                <i class="bi bi-paperclip"></i>
+                                                <button class="bi bi-paperclip" onClick="open_pdf(this.name)" name={{document.id}}></button>
                                             </span>
                                         </div>
                                     </td>
@@ -104,12 +106,11 @@
                                         </div>
                                     </td>
                                 </tr>
-                            
                                 <!-- For even row will be grey row -->
                                 {% else %}
                                 <tr class="even-row">
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{loop.index}}</td>
+                                    <td class="text-center">{{document.ref_num}}/{{document.ref_year}}</td>
                                     <td class="text-start">
                                         <a><span>{{document.subject}}</span></a>
                                     </td>
@@ -120,7 +121,7 @@
                                         <div class="text-center d-xxl-flex justify-content-xxl-center">
                                             <span
                                                 class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
-                                                <i class="bi bi-paperclip"></i>
+                                                <button class="bi bi-paperclip" onClick=" open_pdf(this.name)" name={{document.id}}></button>
                                             </span>
                                         </div>
                                     </td>
@@ -134,7 +135,9 @@
                                     </td>
                                 </tr>
                                 {% endif %}
+            
                                 {% endfor %}
+                         
                                 <!-- End of AJAX -->
                             </tbody>
                         </table>
@@ -160,7 +163,6 @@
     $(function () {
         $("#includeHtml").load("/form");
     });
-
 
 </script>
 
