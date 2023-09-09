@@ -4,7 +4,7 @@ html * {
 
 /*-----------------------------------Three main buttons-----------------------------------*/
 .btn-act {
-  padding: 5px 10px ;
+  padding: 5px 10px;
   font-size: 20px;
   border-radius: 10px;
   text-decoration: none;
@@ -108,6 +108,13 @@ h2 {
   display: flex;
   flex-wrap: wrap;
 
+}
+
+/*remove the box around the paperclip icon */
+.bi.bi-paperclip {
+  border: none;
+  background-color: transparent;
+  
 }
 
 /*-----------------------------------Edit & Del button----------------------------------- */
