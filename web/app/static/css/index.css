@@ -112,9 +112,16 @@ h2 {
 
 /*remove the box around the paperclip icon */
 .bi.bi-paperclip {
+  font-size: 1.1em;
   border: none;
   background-color: transparent;
-  
+  transition: transform 0.2s; /* Add a transition for the transform property */
+}
+
+.bi.bi-paperclip:hover {
+  color: blue;
+  font-size: 1.2em;
+  transform: translateY(-5px); /* Move the icon 5 pixels up on hover */
 }
 
 /*-----------------------------------Edit & Del button----------------------------------- */
