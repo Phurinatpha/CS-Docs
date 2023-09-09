@@ -36,12 +36,22 @@ class doc_info(db.Model, SerializerMixin):
 
 
     id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer,  db.ForeignKey("order_info.id"), unique = True)
     filename = db.Column(db.String(20))
     doc_data = db.Column(db.LargeBinary)
 
-    def __init__(self, filename, doc_data):
+    def __init__(self, order_id, filename, doc_data):
+        self.order_id = order_id
         self.filename = filename
         self.doc_data = doc_data
-    def update(self, filename, doc_data):
+    def update(self, order_id, filename, doc_data):
+        self.order_id = order_id
         self.filename = filename
         self.doc_data = doc_data
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'order_id': self.order_id,
+            'filename': self.filename
+        }

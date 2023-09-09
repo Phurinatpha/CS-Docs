@@ -107,11 +107,13 @@
   <script src="/static/js/base.js"></script>
   <script>
     tweet_id = 0;
+
     function get_id(name){
 
     tweet_id = name;
     console.log("id ="+tweet_id)
   }
+
     function delete_doc(){
       if (tweet_id != 0){
         event.preventDefault();
@@ -137,6 +139,64 @@
         });
       }
     }
+
+  function open_pdf(x){
+    get_id(x);
+    if (tweet_id != 0){
+      console.log("will open pdf soon")
+      event.preventDefault();
+      id  = tweet_id
+      console.log("id ="+id);
+      var url = "/preview_pdf"
+      var formData = new FormData();
+      formData.append('id', id)
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+          tweet_id = 0;
+          console.log("tweet_id has been reset : ",tweet_id);
+          //console.log('Success', response);
+          var resData = response.doc_file ;
+          //const encoder = new TextEncoder();
+          //const utf8Encoded = encoder.encode(resData);
+          pdf_data = atob(resData);
+          var fileName = response.doc_name ;
+          var byteNumbers = new Array(pdf_data.length);
+          for (var i = 0; i < pdf_data.length; i++) {
+            byteNumbers[i] = pdf_data.charCodeAt(i);
+          }
+          console.log(fileName);
+          console.log( byteNumbers);
+          openPDF(  byteNumbers, fileName);
+        },
+        error: function(error) {
+          console.error('Error', error);
+        }
+      });
+    }
+  }
+
+  function openPDF(resData, fileName) {
+    var ieEDGE = navigator.userAgent.match(/Edge/g);
+    var ie = navigator.userAgent.match(/.NET/g); // IE 11+
+    var oldIE = navigator.userAgent.match(/MSIE/g); 
+    var bytes = new Uint8Array(resData); //use this if data is raw bytes else directly pass resData
+    var blob = new window.Blob([bytes], { type: 'application/pdf' });
+
+    if (ie || oldIE || ieEDGE) {
+       window.navigator.msSaveBlob(blob, fileName);
+    }
+    else {
+       var fileURL = URL.createObjectURL(blob);
+       var win = window.open();
+       win.document.write('<iframe src="' + fileURL + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
+
+    }
+  }
 
  </script>
   <script src="/static/js/sweetalert.js"></script>

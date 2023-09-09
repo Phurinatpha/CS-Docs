@@ -1,6 +1,7 @@
 from io import BytesIO
 from flask import (jsonify, render_template,request, url_for, flash, redirect, send_file)
 import json
+import base64
 from sqlalchemy import desc
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
@@ -66,17 +67,41 @@ def form():
                 ref_name=validated_dict['ref_name'],
                 user_id=validated_dict['user_id']
             )
+            db.session.add(order_entry)
+            db.session.commit()
             doc_entry = doc_info(
+                order_id = order_entry.id,
                 filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
                 doc_data=doc_content
             )
-            db.session.add(order_entry)
+        
             db.session.add(doc_entry)
             db.session.commit()
             return home()
 
         return home()  
     return render_template("project/form.html")
+
+@app.route('/preview_pdf', methods=('GET', 'POST'))
+def preview_pdf():
+    app.logger.debug("PDF PREVIEW")
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(result)
+        id_ = result.get('id', '')
+        try:
+            doc = doc_info.query.filter(doc_info.order_id == id_).first()
+            if doc is not None:  # Check if a document was found
+                doc_data = doc.doc_data
+                encoded_pdf_data = base64.b64encode(doc_data).decode('utf-8')
+                doc_name = doc.filename
+                return jsonify(doc_name = doc_name,doc_file = encoded_pdf_data)
+            else:
+                return "Document not found", 404  # Return a 404 error if document is not found
+        except Exception as ex:
+            app.logger.debug(ex)
+            raise
+    return ''
 
 @app.route('/delete', methods=('GET', 'POST'))
 def remove():
@@ -88,7 +113,7 @@ def remove():
         try:
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
-            doc = doc_info.query.get(id_)
+            doc = doc_info.query.filter(doc_info.order_id == id_).first()
             db.session.delete(order)
             db.session.delete(doc)
             db.session.commit()
@@ -118,6 +143,15 @@ def db_connection():
     except Exception as e:
         return '<h1>db is broken.</h1>' + str(e)
 
+@app.route("/data")
+def doc_data():
+    documents = []
+    db_documents = doc_info.query.all()
+    documents = [doc.to_dict() for doc in db_documents]
+    app.logger.debug(str(len(documents)) + " already entry")
+
+    return jsonify(documents)
+
 @app.route("/document")
 def data():
     documents = []
@@ -129,7 +163,8 @@ def data():
 
 @app.route('/download/<int:doc_id>')
 def download(doc_id):
-    doc = doc_info.query.get(doc_id)
+    doc =  doc_info.query.filter(doc_info.order_id == doc_id).first()
+    app.logger.debug (doc)
     if doc:
         
         return send_file(
@@ -143,3 +178,4 @@ def download(doc_id):
 # @app.route('/dashboard')
 # def dashboard():
 #     return 
+
