@@ -1,48 +1,121 @@
 {% extends "project/base.html" %}
 {% block content %}
-<link rel="stylesheet" href="/static/css/index.css">
-<link rel="stylesheet" href="/static/css/search.css">
+<link rel="stylesheet" href="/static/css/m-access.css">
 
 <div class="container">
     <div class="row" style="padding-top: 20px;">
         <div class="col-md-6">
-            <button class="btn-act btn-primary btn-create" data-toggle="modal" data-target=".bd-modal-xl">
-                <i class="bi bi-plus-circle-fill"></i>
-                สร้างคำสั่ง
+            <button class="btn-act btn-primary btn-create">
+                <i class="bi bi-book"></i>
+                ไปยังหน้าเอกสารคำสั่ง
             </button>
-            <!-- Modal zone -->
-            <div class="modal fade bd-modal-xl" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
-                            <!-- Add your content here -->
-                            <div id="includeHtml"></div>
-
-                        </div>
+        </div>
 
 
+    </div>
+</div>
+
+<div>
+    <p class="access-header">จัดการและดูสิทธิ์การเข้าถึง</p>
+</div>
+
+<div class="access-container">
+
+    <div class="container">
+        <div class="col-md-12" style="margin-top: 30px;">
+            <div
+                class="add-personel">
+                <button class="btn-act btn-primary btn-add-person ">
+                    <i class="bi bi-plus-circle-fill"></i>
+                    เพิ่มบุคลาการ
+                </button>
+            </div>
+            <h2 class="h2-eligible">ผู้มีสิทธิ์การเข้าถึง</h2>
+            <div>
+                <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด <span id="user-count"></span> คน แสดงหน้าละ <span
+                        id="show-per-page">10</span> รายการ</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">ลำดับ</th>
+                                    <th class="text-center" style="width: 400px;">ชื่อจริง - นามสกุล</th>
+                                    <th class="text-center" style="width: 200px;">E-mail</th>
+                                    <th class="text-center">ระดับสิทธิ์การเข้าถึง</th>
+                                    <th class="text-center">แก้ไขสิทธิ์การเข้าถึง</th>
+                                </tr>
+                            </thead>
+                            <tbody id="document-list">
+                                <!-- this part will use for return AJAX when submit form  -->
+                                <tr class="user-row">
+                                    <td class="text-center">1</td>
+                                    <td class="text-start">อริษา ทาทอง</td>
+                                    <td class="text-start">arisa.t@cmu.ac.th</td>
+                                    <td class="text-center">ธุรการ</td>
+                                    <td>
+                                        <div class="text-center">
+                                            <div class="btn-edit-del">
+                                                <button class="btn-edit">แก้ไข</button>
+                                                <button class="btn-del">ลบ</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="user-row">
+                                    <td class="text-center">2</td>
+                                    <td class="text-start">ผู้ช่วยศาสตราจารย์ ดร. วิจักษณ์ ศรีสัจจะเลิศวาจา</td>
+                                    <td class="text-start">wijak.s@cmu.ac.th</td>
+                                    <td class="text-center">บุคลากร</td>
+                                    <td>
+                                        <div class="text-center">
+                                            <div class="btn-edit-del">
+                                                <button class="btn-edit">แก้ไข</button>
+                                                <button class="btn-del">ลบ</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="user-row">
+                                    <td class="text-center">3</td>
+                                    <td class="text-start">รองศาสตราจารย์ ดร. เอกรัฐ บุญเชียง</td>
+                                    <td class="text-start">ekkarat.boonchieng@cmu.ac.th</td>
+                                    <td class="text-center">บุคลากร</td>
+                                    <td>
+                                        <div class="text-center">
+                                            <div class="btn-edit-del">
+                                                <button class="btn-edit">แก้ไข</button>
+                                                <button class="btn-del">ลบ</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <!-- End of AJAX -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <!-- End of Modal zone -->
-        </div>
-
-        <div
-            class="col-md-6 d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-            <button class="btn-act btn-primary d-sm-table " type="button">
-                <i class="bi bi-book"></i>
-                เอกสารคำสั่ง
-            </button>
-            <button class="btn-act btn-primary d-sm-table " type="button">
-                <i class="bi bi-search"></i>
-                ค้นหาเอกสาร
-            </button>
         </div>
     </div>
 </div>
 
+<div class="pagination">
+    <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
+    <div id="pageNumbers" class="pagination-links"></div>
+    <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
+</div>
+
+<script src="/static/js/pagination.js"></script>
+<script src="/static/js/countUser.js"></script>
 
 
 

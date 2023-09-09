@@ -1,0 +1,213 @@
+html * {
+  font-family: 'Sarabun', sans-serif;
+}
+
+/*-----------------------------------buttons-----------------------------------*/
+.btn-act {
+  padding: 5px 10px ;
+  font-size: 1em;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: #022851;
+  color: #fff;
+  border: none;
+
+}
+
+.btn-act.btn-primary.btn-create {
+  height: 80px;
+  width: 180px;
+}
+
+.btn-act.btn-primary.btn-add-person {
+  height: 80px;
+  width: 120px;
+}
+
+.btn-act.btn-primary.d-sm-table {
+  width: 130px;
+  margin-left: 25px;
+  margin-bottom: 5px;
+}
+
+
+
+.btn-create i ,.btn-add-person i{
+  display: flex;
+  font-size: 2em;
+  padding-bottom: 5px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+/*-----------------------------------text-----------------------------------*/
+
+.access-header {
+  font-size: 1.4em;
+  color: #ffffff;
+  background-color: #022851;
+  margin: 28px 0;
+  padding: 5px 15px 5px 15px;
+}
+
+
+.h2-eligible{
+  font-size: 1.3em;
+  font-weight: 600;
+  border-bottom: 1px solid #022851;
+  margin-top: -25px;
+}
+
+.sub-doc {
+  font-size: 1em;
+}
+
+#all-doc,
+#user-count,
+#show-per-page {
+  color: red;
+}
+
+
+
+/*-----------------------------------Table-----------------------------------*/
+
+.access-container {
+  box-shadow: 0 5px 3px rgba(0, 0, 0, 0.1);
+  /* Add drop shadow */
+  border-radius: 8px;
+  border-bottom: 1px solid #dadada;
+  border-right: 1px solid #dadada;
+  border-left: 1px solid #dadada;
+  /* For making space between table and footer */
+  /* Might remove when add nav page */
+  /* margin-bottom: 120px; */
+}
+
+.add-personel {
+  display: flex;
+  max-width: 100%;
+  justify-content: end;
+
+}
+
+.table th {
+  background-color: #022851;
+  color: #fff;
+}
+
+h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D9D9D9;
+}
+
+
+/* Apply styles to the row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.user-row{
+  margin-bottom: 100px;
+}
+
+/*-----------------------------------Edit & Del button----------------------------------- */
+.btn-edit-del {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Align buttons horizontally in the center */
+}
+
+/* Styling for the buttons inside the table cell */
+.table .btn-edit {
+  width: 130px;
+  /* Change this value to adjust the button width */
+  padding: 0px;
+  padding-top: 0px;
+  margin-bottom: 7px;
+  border-radius: 7px;
+  border: none;
+  color: #ffffff;
+  background-color: #FAA849;
+
+}
+
+.table .btn-del {
+  width: 130px;
+  padding: 0px;
+  padding-top: 0px;
+  margin-bottom: 5%;
+  border-radius: 7px;
+  border: none;
+  color: #ffffff;
+  background-color: #DE4545;
+  cursor: pointer;
+}
+
+
+
+/*-----------------------------------Pagination-----------------------------------*/
+.pagination {
+
+  display: flex;
+  position: relative;
+  border-radius: 50px;
+  justify-content: center;
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+.pagination a {
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  color: #333;
+  font-size: 16px;
+  font-weight: 700;
+  transition: .3s linear;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  background-color: #022851;
+  color: #fff;
+}
+
+.pagination-links {
+  text-align: center;
+}
+
+.pagination-links a {
+  font-size: 12px;
+  display: inline-block;
+  width: 45px;
+  height: 30px;
+  margin-right: 5px;
+  margin-left: 5px;
+  color: black;
+  border-radius: 5px;
+  padding: 0;
+  border: 1px solid #D9D9D9;
+}
+
+.pagination-links a:hover {
+  background-color: #555;
+  color: white;
+}
+
+/* Style for the current page link (overrides the existing styles) */
+.current-page {
+  background-color: #022851 !important;
+  color: #FFF !important;
+}
