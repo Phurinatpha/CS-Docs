@@ -24,7 +24,9 @@ from app.models.Document import order_info, doc_info
 @app.route('/')
 def home(): 
     #fix here
-    documents = order_info.query.order_by(desc(order_info.id))
+    documents = []
+    db_documents = order_info.query.all()
+    documents = list(map(lambda x: x.to_dict(), db_documents))
     return render_template("project/index.html", documents=documents)
 
 @app.route('/base')
