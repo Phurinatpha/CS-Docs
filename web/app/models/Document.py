@@ -30,7 +30,15 @@ class order_info(db.Model, SerializerMixin):
         self.ref_year = ref_year
         self.ref_name = ref_name
         self.user_id = user_id
-
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'ref_num': str(self.ref_num)+"/"+str(self.ref_year),
+            'subject': self.subject,
+            'doc_date': self.doc_date,
+            'ref_name': self.ref_name,
+            'user_name' : self.user_id
+        }
 class doc_info(db.Model, SerializerMixin):
     __tablename__ = "doc_info"
 

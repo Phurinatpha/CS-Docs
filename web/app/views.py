@@ -115,6 +115,7 @@ def remove():
             order = order_info.query.get(id_)
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
             db.session.delete(order)
+            db.session.commit()
             db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
