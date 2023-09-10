@@ -1,6 +1,7 @@
 {% extends "project/base.html" %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/m-access.css">
+<!-- <link rel="stylesheet" href="/static/css/grant.css"> -->
 
 <div class="container">
     <div class="row" style="padding-top: 20px;">
@@ -25,89 +26,139 @@
 
     <div class="container">
         <div class="col-md-12" style="margin-top: 30px;">
-            <div
-                class="add-personel">
-                <button class="btn-act btn-primary btn-add-person ">
+            <div class="add-personel">
+                <button class="btn-act btn-primary btn-add-person " data-toggle="modal" data-target=".bd-modal-xl">
                     <i class="bi bi-plus-circle-fill"></i>
                     เพิ่มบุคลาการ
                 </button>
-            </div>
-            <h2 class="h2-eligible">ผู้มีสิทธิ์การเข้าถึง</h2>
-            <div>
-                <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด <span id="user-count"></span> คน แสดงหน้าละ <span
-                        id="show-per-page">10</span> รายการ</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">ลำดับ</th>
-                                    <th class="text-center" style="width: 400px;">ชื่อจริง - นามสกุล</th>
-                                    <th class="text-center" style="width: 200px;">E-mail</th>
-                                    <th class="text-center">ระดับสิทธิ์การเข้าถึง</th>
-                                    <th class="text-center">แก้ไขสิทธิ์การเข้าถึง</th>
-                                </tr>
-                            </thead>
-                            <tbody id="document-list">
-                                <!-- this part will use for return AJAX when submit form  -->
-                                <tr class="user-row">
-                                    <td class="text-center">1</td>
-                                    <td class="text-start">อริษา ทาทอง</td>
-                                    <td class="text-start">arisa.t@cmu.ac.th</td>
-                                    <td class="text-center">ธุรการ</td>
-                                    <td>
-                                        <div class="text-center">
-                                            <div class="btn-edit-del">
-                                                <button class="btn-edit">แก้ไข</button>
-                                                <button class="btn-del">ลบ</button>
-                                            </div>
+
+                <!-- Modal zone -->
+                <div class="modal fade bd-modal-xl" data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <button type="button" id="closeModal" class="close"
+                                    data-dismiss="modal">&times;</button>
+                                <!-- Add your content here -->
+                                <div class="grant-container">
+                                    <p class="grant-header"><i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</p>
+
+                                    <div class="grant-group">
+                                        <label>E-mail</label>
+                                        <div class="input-container">
+                                            <input id="input-email" placeholder="E-mail address" required autofocus >
+                                            <span class="input-group-addon">@cmu.ac.th</span>
                                         </div>
-                                    </td>
-                                </tr>
+                                        
+                                    </div>
 
-                                <tr class="user-row">
-                                    <td class="text-center">2</td>
-                                    <td class="text-start">ผู้ช่วยศาสตราจารย์ ดร. วิจักษณ์ ศรีสัจจะเลิศวาจา</td>
-                                    <td class="text-start">wijak.s@cmu.ac.th</td>
-                                    <td class="text-center">บุคลากร</td>
-                                    <td>
-                                        <div class="text-center">
-                                            <div class="btn-edit-del">
-                                                <button class="btn-edit">แก้ไข</button>
-                                                <button class="btn-del">ลบ</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <div class="grant-group">
+                                        <label>ระดับสิทธิ์การเข้าถึง</label>
+                                        <label class="radio">
+                                            <input type="radio" name="answer" id="admin">
+                                            ธุรการ
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="answer" id="user">
+                                            บุคลากร
+                                        </label>
+                                    </div>
 
-                                <tr class="user-row">
-                                    <td class="text-center">3</td>
-                                    <td class="text-start">รองศาสตราจารย์ ดร. เอกรัฐ บุญเชียง</td>
-                                    <td class="text-start">ekkarat.boonchieng@cmu.ac.th</td>
-                                    <td class="text-center">บุคลากร</td>
-                                    <td>
-                                        <div class="text-center">
-                                            <div class="btn-edit-del">
-                                                <button class="btn-edit">แก้ไข</button>
-                                                <button class="btn-del">ลบ</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <div class="grant-btn-wrapper">
+                                        <button class="grant-btn" type="submit" name="submit">
+                                            <i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
 
 
-                                <!-- End of AJAX -->
-                            </tbody>
-                        </table>
                     </div>
+                </div>
+            </div>
+            <!-- End of Modal zone -->
+
+        </div>
+        <h2 class="h2-eligible">ผู้มีสิทธิ์การเข้าถึง</h2>
+        <div>
+            <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด <span id="user-count"></span> คน แสดงหน้าละ <span
+                    id="show-per-page">10</span> รายการ</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">ลำดับ</th>
+                                <th class="text-center" style="width: 400px;">ชื่อจริง - นามสกุล</th>
+                                <th class="text-center" style="width: 200px;">E-mail</th>
+                                <th class="text-center">ระดับสิทธิ์การเข้าถึง</th>
+                                <th class="text-center">แก้ไขสิทธิ์การเข้าถึง</th>
+                            </tr>
+                        </thead>
+                        <tbody id="document-list">
+                            <!-- this part will use for return AJAX when submit form  -->
+                            <tr class="user-row">
+                                <td class="text-center">1</td>
+                                <td class="text-start">อริษา ทาทอง</td>
+                                <td class="text-start">arisa.t@cmu.ac.th</td>
+                                <td class="text-center">ธุรการ</td>
+                                <td>
+                                    <div class="text-center">
+                                        <div class="btn-edit-del">
+                                            <button class="btn-edit">แก้ไข</button>
+                                            <button class="btn-del">ลบ</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="user-row">
+                                <td class="text-center">2</td>
+                                <td class="text-start">ผู้ช่วยศาสตราจารย์ ดร. วิจักษณ์ ศรีสัจจะเลิศวาจา</td>
+                                <td class="text-start">wijak.s@cmu.ac.th</td>
+                                <td class="text-center">บุคลากร</td>
+                                <td>
+                                    <div class="text-center">
+                                        <div class="btn-edit-del">
+                                            <button class="btn-edit">แก้ไข</button>
+                                            <button class="btn-del">ลบ</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr class="user-row">
+                                <td class="text-center">3</td>
+                                <td class="text-start">รองศาสตราจารย์ ดร. เอกรัฐ บุญเชียง</td>
+                                <td class="text-start">ekkarat.boonchieng@cmu.ac.th</td>
+                                <td class="text-center">บุคลากร</td>
+                                <td>
+                                    <div class="text-center">
+                                        <div class="btn-edit-del">
+                                            <button class="btn-edit">แก้ไข</button>
+                                            <button class="btn-del">ลบ</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- End of AJAX -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <div class="pagination">

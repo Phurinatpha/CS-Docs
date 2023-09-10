@@ -73,6 +73,118 @@ html * {
   color: red;
 }
 
+/*-----------------------------------Modal-----------------------------------*/
+.modal-dialog.modal-xl {
+  max-width: 67.6%;
+  /* max-width: 80%; */
+
+  margin: 4.7rem auto;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  /* Choose your preferred color for the close button */
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Adding a hover effect to the close button */
+.close:hover {
+  color: #ff0000;
+  /* Choose your preferred color for the close button on hover */
+}
+
+
+label {
+  /* Optional styling for the label text */
+  width: 180px;
+  font-weight: bold;
+
+}
+
+.radio{
+  width: 100px;
+  font-weight: normal;
+}
+
+
+.grant-group .input-container {
+  display: flex;
+  border: 1px solid #ccc; /* Add border to the input-container */
+  border-radius: 7px;
+}
+
+.grant-group input {
+  flex: 1;  
+  padding: 10px; /* Add padding for spacing */
+}
+
+.grant-group .input-group-addon {
+  background-color: #eee;
+  border-left: 1px solid #ccc; /* Add left border to the span element */
+  padding: 10px; /* Add padding for spacing */
+}
+
+
+
+.grant-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.grant-btn {
+  margin: 20px 15px 0 0;
+  background: #022851;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 10px;
+}
+
+
+
+.grant-btn:hover {
+  opacity: 0.8;
+}
+
+.grant-container {
+  margin: 10px auto;
+  padding: 0px 40px 40px 40px;
+  width: 90%;
+
+}
+
+.grant-header {
+  font-size: 24px;
+  color: #ffffff;
+  background-color: #022851;
+  margin: 28px 0;
+  padding: 5px 15px 5px 15px;
+}
+
+.grant-header i {
+  display: inline;
+  margin-right: 5px; /* Add some spacing between the icon and text if needed */
+}
+
+.grant-group {
+  display: flex;
+  align-items: center;
+  /* Aligns items vertically within the flex container */
+  margin-bottom: 10px;
+  /* Adds space between this and other form groups */
+}
+
+
 
 
 /*-----------------------------------Table-----------------------------------*/
