@@ -1,6 +1,6 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
-
+from app.models.user import User
 class order_info(db.Model, SerializerMixin):
     __tablename__ = "order_info"
 
@@ -11,7 +11,7 @@ class order_info(db.Model, SerializerMixin):
     ref_num = db.Column(db.Integer)
     ref_year = db.Column(db.Integer)
     ref_name = db.Column(db.ARRAY(db.String))
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
     def __init__(self, subject, doc_date, ref_num, ref_year, ref_name,user_id):
         self.subject = subject
@@ -37,7 +37,7 @@ class order_info(db.Model, SerializerMixin):
             'subject': self.subject,
             'doc_date': self.doc_date,
             'ref_name': self.ref_name,
-            'user_name' : self.user_id
+            'user_name' : User.get_name(User.query.get(self.user_id))
         }
 class doc_info(db.Model, SerializerMixin):
     __tablename__ = "doc_info"

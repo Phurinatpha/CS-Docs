@@ -23,3 +23,6 @@ class User (db.Model, SerializerMixin):
         self.lastname = lastname
         self.role = role
         self.email = email
+    
+    def get_name(self):
+        return self.firstname+" "+self.lastname

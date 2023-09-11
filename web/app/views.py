@@ -12,7 +12,7 @@ from app import app
 from app import db
 # from app import login_manager
 
-
+from app.models.user import User
 from app.models.Document import order_info, doc_info
 
 # @login_manager.user_loader
@@ -39,11 +39,14 @@ def form():
         app.logger.debug("posted activate")
         validated = True
         validated_dict = dict()
-        valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','ref_name','user_id']
+        valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','user_id']
 
         # Access the uploaded file using request.files
         doc_data = request.files.get('doc_data')
-
+        name_list =  request.form.get('name_list')
+        name_list = name_list.split(",")
+        name_list =  [i for i in name_list if i != ""]
+        app.logger.debug("name_list = ",name_list)
         # validate the input
         for key in request.form:
             if key not in valid_keys:
@@ -59,14 +62,13 @@ def form():
             # Read the contents of the uploaded file as bytes
 
             doc_content = doc_data.read()
-            app.logger.debug(doc_content)
             # Create a new Document object with the uploaded file
             order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
                 ref_num=validated_dict['ref_num'],
                 ref_year=validated_dict['ref_year'],
-                ref_name=validated_dict['ref_name'],
+                ref_name=name_list,
                 user_id=validated_dict['user_id']
             )
             db.session.add(order_entry)
@@ -146,6 +148,14 @@ def db_connection():
     except Exception as e:
         return '<h1>db is broken.</h1>' + str(e)
 
+@app.route("/user")
+def user_data():
+    documents = []
+    db_documents = User.query.all()
+    documents = list(map(lambda x: x.to_dict(), db_documents))
+    app.logger.debug(str(len(documents)) + " already entry")
+ 
+    return jsonify(documents)
 @app.route("/data")
 def doc_data():
     documents = []

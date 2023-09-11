@@ -36,9 +36,11 @@
 
         <div class="form-group">
           <label>เอกสารลงวันที่</label>
-          <!-- Separate select elements for day, month, and year -->
+          <!--this input is id of order_table-->
           <input type="hidden"  name="id" value="">
-          <input type="hidden"  name="user_id" value="2">
+          <!--this input is user id set default to 1-->
+          <input type="hidden"  name="user_id" value="1">
+          <!-- Separate select elements for day, month, and year -->
           <select name="day" id="daySelect" >
             <option value="" disabled selected>วันที่</option>
           </select>
@@ -125,11 +127,12 @@ $("#myForm").submit(function (event) {
   // prevent default html form submission action
   //event.preventDefault();
   event.preventDefault();
-  document.getElementById("date_combind").value = document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
+  document.getElementById("date_combind").value =document.getElementById("daySelect").value + " " + document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
   // Create a new FormData object
-  console.log($('#descrip').val(), $('#date_combind').val(), $('#refer_num').val(), $('#name_list').val(), $('#user_id').val());
   var formData = new FormData();
-  
+  name_list = document.getElementById("name_list").value
+  name_list = name_list.split("\n")
+  console.log(name_list)
   // Log the formData to verify its content
   console.log(formData);
 
@@ -142,8 +145,8 @@ $("#myForm").submit(function (event) {
   formData.append('doc_date', $('#date_combind').val());
   formData.append('ref_num', $('#refer_num').val());
   formData.append('ref_year', $('#yearSelect').val());
-  formData.append('ref_name', $('#name_list').val());
-  formData.append('user_id', 2);
+  formData.append('name_list', name_list);
+  formData.append('user_id', 1);
 
 
   console.log(formData);  
@@ -156,7 +159,7 @@ $("#myForm").submit(function (event) {
     contentType: false,
     processData: false,
     success: function(response) {
-      console.log('Success', response);
+      
       
     },
     error: function(error) {
