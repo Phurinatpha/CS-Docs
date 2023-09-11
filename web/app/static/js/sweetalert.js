@@ -1,7 +1,9 @@
 
 // Add a click event listener to all "delete" buttons with the class "btn-del"
-const deleteButtons = document.querySelectorAll(".btn-del");
-deleteButtons.forEach((button) => {
+function delete_button_sweet(id)  {
+//const deleteButtons = document.querySelectorAll(".btn-del");
+//deleteButtons.forEach((button) => {
+  console.log("delete")
   button.addEventListener("click", function () {
     Swal.fire({
       titleText: 'ยืนยันการลบข้อมูล ?',
@@ -15,7 +17,7 @@ deleteButtons.forEach((button) => {
 
     }).then((result) => {
       if (result.isConfirmed) {
-        delete_doc()
+        delete_doc(id)
         Swal.fire({
           title: 'ลบเอกสารคำสั่งสำเร็จ !',
           icon: 'success',
@@ -34,4 +36,5 @@ deleteButtons.forEach((button) => {
       }
     });
   });
-});
+//});
+}

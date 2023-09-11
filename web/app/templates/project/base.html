@@ -113,10 +113,9 @@
     console.log("id ="+tweet_id)
   }
     
-    function delete_doc(){
-      if (tweet_id != 0){
+    function delete_doc(id){
         event.preventDefault();
-        del  = tweet_id
+        del  = id
         console.log("del id ="+del);
         var url = "/delete"
         var formData = new FormData();
@@ -128,8 +127,6 @@
           contentType: false,
           processData: false,
           success: function(response) {
-            tweet_id = 0;
-            console.log("tweet_id has been reset : ",tweet_id);
             //console.log('Success', response);
           },
           error: function(error) {
@@ -137,14 +134,11 @@
           }
         });
       }
-    }
 
   function open_pdf(x){
-    get_id(x);
-    if (tweet_id != 0){
       console.log("will open pdf soon")
       event.preventDefault();
-      id  = tweet_id
+      id  = x
       console.log("id ="+id);
       var url = "/preview_pdf"
       var formData = new FormData();
@@ -156,8 +150,6 @@
         contentType: false,
         processData: false,
         success: function(response) {
-          tweet_id = 0;
-          console.log("tweet_id has been reset : ",tweet_id);
           //console.log('Success', response);
           var resData = response.doc_file ;
           //const encoder = new TextEncoder();
@@ -177,7 +169,6 @@
         }
       });
     }
-  }
 
   function openPDF(resData, fileName) {
     var ieEDGE = navigator.userAgent.match(/Edge/g);

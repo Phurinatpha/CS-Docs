@@ -21,13 +21,19 @@ from app.models.Document import order_info, doc_info
 #     # user table, use it in the query for the user
 #     return AuthUser.query.get(int(user_id))
 
-@app.route('/')
+@app.route('/old')
 def home(): 
     #fix here
     documents = []
     db_documents = order_info.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
     return render_template("project/index.html", documents=documents)
+
+@app.route('/')
+def home_new(): 
+    #fix here
+    return render_template("project/index_table.html")
+
 
 @app.route('/base')
 def base():
@@ -168,7 +174,7 @@ def doc_data():
 @app.route("/document")
 def data():
     documents = []
-    db_documents = order_info.query.all()
+    db_documents = order_info.query.order_by(desc(order_info.id))
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry")
  
