@@ -5,30 +5,26 @@
 <div class="container">
     <div class="row" style="padding-top: 20px;">
         <div class="col-md-6">
-            <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal" data-target=".bd-modal-xl">
+            <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal"
+                data-target=".bd-modal-xl">
                 <i class="bi bi-plus-circle-fill"></i>
                 สร้างคำสั่ง
             </button>
             <!-- Modal zone -->
-            <div class="modal fade bd-modal-xl" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-xl">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
-
-
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <!-- Add your content here -->
                             <div id="includeHtml"></div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
             <!-- End of Modal zone -->
-
         </div>
 
         <div
@@ -65,24 +61,24 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-formatter="runningFormatter">
-                                    <span class="text">
-                                        ลำดับ
-                                      </span>
-                                    </th>  
-                                    <th data-field="id"> 
+                                        <span class="text">
+                                            ลำดับ
+                                        </span>
+                                    </th>
+                                    <th data-field="id">
                                         <span class="text">
                                             id
-                                          </span>
+                                        </span>
                                     </th>
                                     <th class="text-center" style="width: 100px;" data-field="ref_num">
-                                    <span class="text">
-                                        เลขคําสั่ง
-                                    </span>
+                                        <span class="text">
+                                            เลขคําสั่ง
+                                        </span>
                                     </th>
                                     <th class="text-center" style="width: 480px;" data-field="subject">
-                                    <span class="text">
-                                        เรื่อง
-                                    </span>
+                                        <span class="text">
+                                            เรื่อง
+                                        </span>
                                     </th>
                                     <th class="text-center" data-field="user_name">
                                         <span class="text">
@@ -94,15 +90,17 @@
                                             วันที่ออกคำสั่ง
                                         </span>
                                     </th>
-                                    <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter" data-events="clip_icon_Events">
-                                        <span class="text" >
+                                    <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
+                                        data-events="clip_icon_Events">
+                                        <span class="text">
                                             ไฟล์แนบ
                                         </span>
                                     </th>
                                     <!--dataFormat-->
-                                    <th class="text-center" data-field="operation" data-formatter="edit_del_Formatter" data-events="edit_del_Events">
+                                    <th class="text-center" data-field="operation" data-formatter="edit_del_Formatter"
+                                        data-events="edit_del_Events">
                                         <span class="text">
-                                            
+                                            แก้ไข/ลบ
                                         </span>
                                     </th>
                                 </tr>
@@ -122,68 +120,72 @@
 </div>
 
 
-<script src="/static/js/pagination.js"></script>
-<script src="/static/js/countDocIndex.js"></script>
+<!-- <script src="/static/js/pagination.js"></script> -->
+<!-- <script src="/static/js/countDocIndex.js"></script> -->
 
 <!-- Do not move script below -->
 <script>
     function populate_table(document_data) {
         $('#document-table').bootstrapTable({
-          data: document_data
-          
+            data: document_data
+
         });
         console.log(document_data);
-        document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
+        document.getElementById("count_doc").innerHTML = $('#document-table tr').length - 1;
         $('#document-table').bootstrapTable('hideColumn', 'id');
-      }
+    }
 
-      $(document).ready(function () {
+    $(document).ready(function () {
         (function () {
-          $.getJSON("/document", populate_table);
-          
-        })();
-      });
+            $.getJSON("/document", populate_table);
 
-      function clip_icon_Formatter(value, row, index) {
+        })();
+    });
+
+    function clip_icon_Formatter(value, row, index) {
         return [
-        '<div class="text-center d-xxl-flex justify-content-xxl-center">',
-        '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
-        '<button class="pdf_viewer bi bi-paperclip" >','</button>',
-    '</span>',
-    '</div>'
+            '<div class="text-center d-xxl-flex justify-content-xxl-center">',
+            '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
+            '<button class="pdf_viewer bi bi-paperclip" >', '</button>',
+            '</span>',
+            '</div>'
         ].join('')
-      }
- 
+    }
+
     //edit and delete button
     function edit_del_Formatter(value, row, index) {
         return [
-        '<div class="text-center">','<div class="btn-edit-del" >',
-            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">','แก้ไข','</button>',
-                '<button class="doc_delete btn-del" id="btn-del" >','ลบ','</button>',
+            '<div class="text-center">', '<div class="btn-edit-del" >',
+            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+            '<button class="doc_delete btn-del" id="btn-del" >', 'ลบ', '</button>',
             '</div>',
-        '</div>'
+            '</div>'
         ].join('')
-      }
+    }
+
     //run number function
     function runningFormatter(value, row, index) {
-        return index+1;
+        return index + 1;
     }
-    window.clip_icon_Events = {
-        'click .pdf_viewer': function (e, value, row, index) {
-            open_pdf(row.id);
-        }
-      }
-    
+
     window.edit_del_Events = {
         'click .doc_delete': function (e, value, row, index) {
             open_pdf(row.id);
         }
-      }
-    
+    }
+
+    window.clip_icon_Events = {
+        'click .pdf_viewer': function (e, value, row, index) {
+            open_pdf(row.id);
+        }
+    }
+
     function open_form() {
         console.log("Form openned");
         $("#includeHtml").load("/form");
     }
+
+
 </script>
 
 
