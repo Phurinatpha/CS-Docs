@@ -6,12 +6,13 @@ from sqlalchemy import desc
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from sqlalchemy.sql import text
-# from flask_login import login_user, login_required, logout_user , current_user
+from flask_login import login_user, login_required, logout_user , current_user
 
 from app import app
 from app import db
-# from app import login_manager
+from app import login_manager
 
+from app.models.authuser import AuthUser
 from app.models.user import User
 from app.models.Document import order_info, doc_info
 
@@ -22,6 +23,7 @@ from app.models.Document import order_info, doc_info
 #     return AuthUser.query.get(int(user_id))
 
 @app.route('/')
+@login_required
 def home(): 
     #fix here
     documents = []
@@ -118,9 +120,10 @@ def remove():
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
-            db.session.delete(order)
-            db.session.commit()
-            db.session.delete(doc)
+            if current_user.role == "admin":
+                db.session.delete(order)
+                db.session.commit()
+                db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
@@ -192,3 +195,104 @@ def download(doc_id):
 # def dashboard():
 #     return 
 
+@app.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        # login code goes here
+        email = request.form.get('email')
+        password = request.form.get('password')
+        remember = bool(request.form.get('remember'))
+
+
+        user = AuthUser.query.filter_by(email=email).first()
+ 
+        # check if the user actually exists
+        # take the user-supplied password, hash it, and compare it to the
+        # hashed password in the database
+        if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            # if the user doesn't exist or password is wrong, reload the page
+            return redirect(url_for('login'))
+
+
+        # if the above check passes, then we know the user has the right
+        # credentials
+        login_user(user, remember=remember)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('home')
+        return redirect(next_page)
+    return render_template('project/login.html')
+
+@app.route('/signup', methods=('GET', 'POST'))
+def signup():
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(str(result))
+ 
+        validated = True
+        validated_dict = {}
+        valid_keys = ['email','firstname','lastname','role', 'password']
+
+
+        # validate the input
+        for key in result:
+            app.logger.debug(str(key)+": " + str(result[key]))
+            # screen of unrelated inputs
+            if key not in valid_keys:
+                continue
+
+
+            value = result[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            validated_dict[key] = value
+            # code to validate and add user to database goes here
+        app.logger.debug("validation done")
+        if validated:
+            app.logger.debug('validated dict: ' + str(validated_dict))
+            email = validated_dict['email']
+            password = validated_dict['password']
+            firstname = validated_dict['firstname']
+            lastname = validated_dict['lastname']
+            role = validated_dict['role']
+            # if this returns a user, then the email already exists in database
+            user = AuthUser.query.filter_by(email=email).first()
+
+
+            if user:
+                # if a user is found, we want to redirect back to signup
+                # page so user can try again
+                flash('Email address already exists')
+                return redirect(url_for('signup'))
+
+
+            # create a new user with the form data. Hash the password so
+            # the plaintext version isn't saved.
+            app.logger.debug("preparing to add")
+            new_user = AuthUser(email=email,
+                                password=generate_password_hash(
+                                    password, method='sha256'))
+            new_user_info = User(firstname=firstname,lastname=lastname,role=role,email=email)
+            # add the new user to the database
+            db.session.add(new_user)
+            db.session.commit()
+            db.session.add(new_user_info)
+            db.session.commit()
+
+
+        return redirect(url_for('login'))
+    return render_template('project/signup.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@login_manager.user_loader
+def load_user(user_id):
+    # since the user_id is just the primary key of our
+    # user table, use it in the query for the user
+    return AuthUser.query.get(int(user_id))
