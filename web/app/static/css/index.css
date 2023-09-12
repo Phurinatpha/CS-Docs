@@ -90,9 +90,11 @@ html * {
 
 .table th {
   background-color: #022851;
-  color: #fff;
+  color: white;
 }
-
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+  background-color: #e0e0e0;
+}
 h2 {
   padding-bottom: 10px;
   border-bottom: 1px solid #D9D9D9;

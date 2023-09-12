@@ -4,46 +4,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Non-minified jQuery (for improved readability and debugging) -->
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-
-  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-
-  <!-- Bootstrap Table -->
-  <!-- <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css"> -->
-  <!-- <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script> -->
-
-  <!-- Bootstrap-Icon -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-  <!-- our own css -->
-  <link rel="stylesheet" href="/static/css/base.css">
-
-  <script src="https://kit.fontawesome.com/87f04edde9.js" crossorigin="anonymous"></script>
-
-  <!-- font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
-
-  <!-- Include SweetAlert2 -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-
-  <!-- toggleNavbar -->
-  <!-- Do not change the version of this or the code will fuck up (5.3.1) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<!-- Bootstrap Table CSS -->
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
+  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script><!-- Bootstrap Icons CSS (for icons) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<!-- Your custom CSS -->
+<link rel="stylesheet" href="/static/css/base.css">
+<!-- Font Awesome (for icons) -->
+<link rel="stylesheet" href="https://kit.fontawesome.com/87f04edde9.js" crossorigin="anonymous">
+<!-- Google Fonts (for fonts) -->`
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+<!-- SweetAlert2 (for alerts) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- Moment.js (for date and time manipulation) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.js"></script>
+<!-- Bootstrap JavaScript and Popper.js (for Bootstrap functionality) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<!-- Bootstrap JavaScript (an older version, consider updating) -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.js"></script>
 
   <title>CS Doc</title>
 
@@ -105,6 +91,7 @@
   </footer>
 
   <script src="/static/js/base.js"></script>
+
   <script>
     tweet_id = 0;
 
@@ -113,10 +100,9 @@
     console.log("id ="+tweet_id)
   }
     
-    function delete_doc(){
-      if (tweet_id != 0){
+    function delete_doc(id){
         event.preventDefault();
-        del  = tweet_id
+        del  = id
         console.log("del id ="+del);
         var url = "/delete"
         var formData = new FormData();
@@ -128,8 +114,6 @@
           contentType: false,
           processData: false,
           success: function(response) {
-            tweet_id = 0;
-            console.log("tweet_id has been reset : ",tweet_id);
             //console.log('Success', response);
           },
           error: function(error) {
@@ -137,14 +121,11 @@
           }
         });
       }
-    }
 
   function open_pdf(x){
-    get_id(x);
-    if (tweet_id != 0){
       console.log("will open pdf soon")
       event.preventDefault();
-      id  = tweet_id
+      id  = x
       console.log("id ="+id);
       var url = "/preview_pdf"
       var formData = new FormData();
@@ -156,8 +137,6 @@
         contentType: false,
         processData: false,
         success: function(response) {
-          tweet_id = 0;
-          console.log("tweet_id has been reset : ",tweet_id);
           //console.log('Success', response);
           var resData = response.doc_file ;
           //const encoder = new TextEncoder();
@@ -177,7 +156,6 @@
         }
       });
     }
-  }
 
   function openPDF(resData, fileName) {
     var ieEDGE = navigator.userAgent.match(/Edge/g);

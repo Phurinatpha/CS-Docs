@@ -3,7 +3,6 @@
 function resetForm() {
   // Reset the form fields to their default values
   document.getElementById('myForm').reset();
-
   // Reset uploaded file related elements
   uploadedFileName = ''; // Clear the global variable
   const uploadedFileContainer = document.getElementById('uploaded-file-container');
