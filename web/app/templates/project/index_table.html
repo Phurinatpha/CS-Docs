@@ -158,7 +158,7 @@
             <div class="col-md-12">
                 <div>
                     <div class="table-responsive">
-                        <table class="table table-striped" id="document-table">
+                        <table class="table table-striped" id="document-table"  >
                             <thead>
                                 <tr>
                                     <th class="text-center" data-formatter="runningFormatter">
@@ -214,33 +214,96 @@
 
 <div class="pagination">
     <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
-    <div id="pageNumbers" class="pagination-links"></div>
+    <div id="pageNumbers" class="pagination-links" onClick="page()"></div>
     <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
-
-<script src="/static/js/pagination.js"></script>
-<script src="/static/js/countDocIndex.js"></script>
-
 <!-- Do not move script below -->
 <script>
+
     function populate_table(document_data) {
         $('#document-table').bootstrapTable({
           data: document_data
+  
           
         });
-        console.log(document_data);
-        document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
+        //console.log(document_data);
+        //load pagination.js script after populateTable
+        console.log(document.getElementsByTagName('tr').length)
+        var js = document.createElement("script");
+        js.src = "/static/js/pagination.js";
+        document.head.appendChild(js);
+        //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
         $('#document-table').bootstrapTable('hideColumn', 'id');
       }
 
+      //page function use to set offset of document query
+      function page(){
+        show_page = document.getElementsByClassName("current-page")[0].innerHTML;
+        console.log("show_page :", show_page-1);
+        var formData = new FormData();
+        formData.append('page', show_page-1);
+        console.log(formData);
+          $.ajax({
+            type: 'POST',
+            url: "/document",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              var a = data; // This line shows error.
+              $.ajax({
+                dataType: "json",
+                data: a,
+                success:  refresh_table(a)
+
+              });
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth',
+            });
+            }
+          });
+          
+      }
+
       $(document).ready(function () {
+        //this call function call to get all data and display it in count-doc id
+        $.ajax({
+          dataType:"json",
+          url: "/document",
+          success: function (data){
+          console.log("data :",data.length );
+          document.getElementById("count_doc").innerHTML = data.length;
+          showPage(1);
+                  }
+        });
+        //this call offset0 of document
         (function () {
-          $.getJSON("/document", populate_table);
+          var formData = new FormData();
+          formData.append('page', 0)
+          $.ajax({
+            type: 'POST',
+            url: "/document",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              var a = data; // This line shows error.
+              $.ajax({
+                dataType: "json",
+                data: a,
+                success: populate_table(a)
+         
+              });
+        
+          }
+          });
           
         })();
       });
-    
+      //maybe this function is not use
       function refresh() {
         $.getJSON("/document", refresh_table);
         
@@ -272,7 +335,7 @@
       }
     //run number function
     function runningFormatter(value, row, index) {
-        return index+1;
+      return (index+1);
     }
     window.clip_icon_Events = {
       'click .pdf_viewer': function (e, value, row, index) {
@@ -289,6 +352,8 @@
     function edit_doc() {
         document.getElementById()
     }
+
+
     function delete_doc(id){
       event.preventDefault();
       del  = id
@@ -305,7 +370,7 @@
         success: function(response) {
           //console.log('Success', response);
           console.log("deleted!!")
-          refresh();
+          page();
         },
         error: function(error) {
           console.error('Error', error);
@@ -314,7 +379,7 @@
     }
     function open_form() {
         console.log("Form openned");
-        $("#includeHtml").load("/form");
+        populateDaysAndYears();
     }
 
     $("#myForm").submit(function (event) {
@@ -355,7 +420,7 @@
           success: function(response) {
           console.log("send");
           $('#modal-form').modal('toggle');
-          refresh();
+          page();
           
             
           },
