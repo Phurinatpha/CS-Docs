@@ -125,9 +125,14 @@ def remove():
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
+<<<<<<< HEAD
             if current_user.role == "admin":
                 db.session.delete(order)
                 db.session.delete(doc)
+=======
+            db.session.delete(order)
+            db.session.delete(doc)
+>>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)

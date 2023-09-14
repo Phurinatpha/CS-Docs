@@ -93,34 +93,8 @@
   <script src="/static/js/base.js"></script>
 
   <script>
-    tweet_id = 0;
-
-    function get_id(name){
-    tweet_id = name;
-    console.log("id ="+tweet_id)
-  }
     
-    function delete_doc(id){
-        event.preventDefault();
-        del  = id
-        console.log("del id ="+del);
-        var url = "/delete"
-        var formData = new FormData();
-        formData.append('id', del)
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function(response) {
-            //console.log('Success', response);
-          },
-          error: function(error) {
-            console.error('Error', error);
-          }
-        });
-      }
+
 
   function open_pdf(x){
       console.log("will open pdf soon")
