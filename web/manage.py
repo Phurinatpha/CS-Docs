@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 from app import app, db
 from app.models.Document import order_info
 from app.models.user import User
+from app.models.authuser import AuthUser
 #from app.models.authuser import AuthUser, PrivateContact
 
 cli = FlaskGroup(app)
@@ -16,9 +17,11 @@ def create_db():
 
 
 @cli.command("seed_db")
-def seed_db():  
-    db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role='A',email="flask@1234"))
-    db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role='A',email="ksalf@4321"))
+def seed_db():
+    db.session.add(AuthUser(email='flask@1234', password=generate_password_hash('password', method='scrypt')))
+    db.session.add(AuthUser(email='ksalf@4321', password=generate_password_hash('password', method='scrypt'))) 
+    db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role='admin',email="flask@1234"))
+    db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role='admin',email="ksalf@4321"))
     db.session.commit()
     db.session.add(
         order_info(subject='ฮัลโหลนี่คือข้อมูลจาก database จะขึ้นไหมน้าา', doc_date='32 ก.ค. 2566',ref_num='99',ref_year='2566',ref_name=['Mr. Compsci ChiangMai University'],user_id='1'))

@@ -39,7 +39,7 @@
           <!--this input is id of order_table-->
           <input type="hidden"  name="id" value="">
           <!--this input is user id set default to 1-->
-          <input type="hidden"  name="user_id" value="{{ current_user.id }}">
+          <input type="hidden" id="usr_id"  name="user_id" value="{{ current_user.id }}">
           <!-- Separate select elements for day, month, and year -->
           <select name="day" id="daySelect" >
             <option value="" disabled selected>วันที่</option>
@@ -146,7 +146,7 @@ $("#myForm").submit(function (event) {
   formData.append('ref_num', $('#refer_num').val());
   formData.append('ref_year', $('#yearSelect').val());
   formData.append('name_list', name_list);
-  formData.append('user_id', 1);
+  formData.append('user_id', $('#usr_id').val());
 
 
   console.log(formData);  

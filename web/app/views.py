@@ -127,7 +127,6 @@ def remove():
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
             if current_user.role == "admin":
                 db.session.delete(order)
-                db.session.commit()
                 db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
@@ -264,7 +263,7 @@ def signup():
             role = validated_dict['role']
             # if this returns a user, then the email already exists in database
             user = AuthUser.query.filter_by(email=email).first()
-
+            
 
             if user:
                 # if a user is found, we want to redirect back to signup
