@@ -21,16 +21,10 @@ from app.models.Document import order_info, doc_info
 #     # user table, use it in the query for the user
 #     return AuthUser.query.get(int(user_id))
 
-@app.route('/old')
-def home(): 
-    #fix here
-    documents = []
-    db_documents = order_info.query.all()
-    documents = list(map(lambda x: x.to_dict(), db_documents))
-    return render_template("project/index.html", documents=documents)
+
 
 @app.route('/')
-def home_new(): 
+def home(): 
     #fix here
     return render_template("project/index_table.html")
 
