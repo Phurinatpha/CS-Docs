@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row" style="padding-top: 20px;">
         <div class="col-md-6">
-            <a href="{{ url_for('home') }}">
+            <a href="{{ url_for('home_new') }}">
                 <button class="btn-act btn-primary btn-create">
                     <i class="bi bi-book"></i>
                     ไปยังหน้าเอกสารคำสั่ง
@@ -33,7 +33,7 @@
                 </button>
 
                 <!-- Modal zone -->
-                <div class="modal fade bd-modal-xl" data-backdrop="static" data-keyboard="false">
+                <div class="modal fade bd-modal-xl" data-keyboard="false">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
 
@@ -47,9 +47,24 @@
                                     <p class="grant-header"><i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</p>
 
                                     <div class="grant-group">
+                                        <label>ชื่อจริง</label>
+                                        <div class="input-container">
+                                            <input id="input-fname" placeholder="ชื่อจริง">
+                                        </div>
+                                    </div>
+
+                                    <div class="grant-group">
+                                        <label>นามสกุล</label>
+                                        <div class="input-container">
+                                            <input id="input-lname" placeholder="นามสกุล">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="grant-group">
                                         <label>E-mail</label>
                                         <div class="input-container">
-                                            <input id="input-email" placeholder="E-mail address" required autofocus>
+                                            <input id="input-email" name="add-user-email" placeholder="E-mail address" >
                                             <span class="input-group-addon">@cmu.ac.th</span>
                                         </div>
 
@@ -57,14 +72,13 @@
 
                                     <div class="grant-group">
                                         <label>ระดับสิทธิ์การเข้าถึง</label>
-                                        <label class="radio">
-                                            <input type="radio" name="answer" id="admin">
-                                            ธุรการ
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="answer" id="user">
-                                            บุคลากร
-                                        </label>
+
+                                        <input type="radio" id="admin" name="answer-a" value="ธุรการ">
+                                        <label class="radio" for="admin">ธุรการ</label>
+
+                                        <input type="radio" id="user" name="answer-a" value="บุคลากร">
+                                        <label class="radio" for="user">บุคลากร</label>
+
                                     </div>
 
                                     <div class="grant-btn-wrapper">
