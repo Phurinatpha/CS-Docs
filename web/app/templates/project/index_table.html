@@ -11,20 +11,13 @@
                 สร้างคำสั่ง
             </button>
             <!-- Modal zone -->
-<<<<<<< HEAD
-            <div class="modal fade bd-modal-xl" data-keyboard="false">
-=======
             <div class="modal fade bd-modal-xl" id="modal-form" data-backdrop="static" data-keyboard="false">
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <!-- Modal body -->
                         <div class="modal-body">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <!-- Add your content here -->
-<<<<<<< HEAD
-                            <div id="includeHtml"></div>
-=======
                             <form id="myForm" action="/form" method="post" autocomplete="off" enctype="multipart/form-data"> 
 
 
@@ -124,7 +117,6 @@
                             
                               <script src="/static/js/form.js"></script>
 
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
                         </div>
                     </div>
                 </div>
@@ -162,7 +154,7 @@
             <div class="col-md-12">
                 <div>
                     <div class="table-responsive">
-                        <table class="table table-striped" id="document-table">
+                        <table class="table table-striped" id="document-table"  >
                             <thead>
                                 <tr>
                                     <th class="text-center" data-formatter="runningFormatter">
@@ -202,12 +194,7 @@
                                         </span>
                                     </th>
                                     <!--dataFormat-->
-<<<<<<< HEAD
-                                    <th class="text-center" data-field="operation" data-formatter="edit_del_Formatter"
-                                        data-events="edit_del_Events">
-=======
                                     <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter" data-events="operateEvents"   >
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
                                         <span class="text">
                                             แก้ไข/ลบ
                                         </span>
@@ -215,6 +202,7 @@
                                 </tr>
                             </thead>
                         </table>
+                        
                     </div>
                 </div>
             </div>
@@ -224,36 +212,96 @@
 
 <div class="pagination">
     <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
-    <div id="pageNumbers" class="pagination-links"></div>
+    <div id="pageNumbers" class="pagination-links" onClick="page()"></div>
     <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
-
-<!-- <script src="/static/js/pagination.js"></script> -->
-<!-- <script src="/static/js/countDocIndex.js"></script> -->
-
 <!-- Do not move script below -->
 <script>
+
     function populate_table(document_data) {
         $('#document-table').bootstrapTable({
-            data: document_data
-
+          data: document_data
+  
+          
         });
-        console.log(document_data);
-        document.getElementById("count_doc").innerHTML = $('#document-table tr').length - 1;
+        //console.log(document_data);
+        //load pagination.js script after populateTable
+        console.log(document.getElementsByTagName('tr').length)
+        var js = document.createElement("script");
+        js.src = "/static/js/pagination.js";
+        document.head.appendChild(js);
+        //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
         $('#document-table').bootstrapTable('hideColumn', 'id');
     }
 
-    $(document).ready(function () {
-        (function () {
-            $.getJSON("/document", populate_table);
+      //page function use to set offset of document query
+      function page(){
+        show_page = document.getElementsByClassName("current-page")[0].innerHTML;
+        console.log("show_page :", show_page-1);
+        var formData = new FormData();
+        formData.append('page', show_page-1);
+        console.log(formData);
+          $.ajax({
+            type: 'POST',
+            url: "/document",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              var a = data; // This line shows error.
+              $.ajax({
+                dataType: "json",
+                data: a,
+                success:  refresh_table(a)
 
+              });
+              window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth',
+            });
+            }
+          });
+          
+      }
+
+      $(document).ready(function () {
+        //this call function call to get all data and display it in count-doc id
+        $.ajax({
+          dataType:"json",
+          url: "/document",
+          success: function (data){
+          console.log("data :",data.length );
+          document.getElementById("count_doc").innerHTML = data.length;
+          showPage(1);
+                  }
+        });
+        //this call offset0 of document
+        (function () {
+          var formData = new FormData();
+          formData.append('page', 0)
+          $.ajax({
+            type: 'POST',
+            url: "/document",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              var a = data; // This line shows error.
+              $.ajax({
+                dataType: "json",
+                data: a,
+                success: populate_table(a)
+         
+              });
+        
+          }
+          });
+          
         })();
-<<<<<<< HEAD
-    });
-=======
       });
-    
+      //maybe this function is not use
       function refresh() {
         $.getJSON("/document", refresh_table);
         
@@ -262,7 +310,6 @@
       function refresh_table(document_data) {
         $('#document-table').bootstrapTable('load', document_data);
       }
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
 
     function clip_icon_Formatter(value, row, index) {
         return [
@@ -277,41 +324,18 @@
     //edit and delete button
     function edit_del_Formatter(value, row, index) {
         return [
-<<<<<<< HEAD
-            '<div class="text-center">', '<div class="btn-edit-del" >',
-            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
-            '<button class="doc_delete btn-del" id="btn-del" >', 'ลบ', '</button>',
-            '</div>',
-            '</div>'
-=======
         '<div class="btn-edit-del" >',
             '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">','แก้ไข','</button>',
                 '<button class="doc_delete btn-del"  >','ลบ','</button>',
         '</div>'
         
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
         ].join('')
     }
 
     //run number function
     function runningFormatter(value, row, index) {
-        return index + 1;
+      return (index+1);
     }
-<<<<<<< HEAD
-
-    window.edit_del_Events = {
-        'click .doc_delete': function (e, value, row, index) {
-            open_pdf(row.id);
-        }
-    }
-
-    window.clip_icon_Events = {
-        'click .pdf_viewer': function (e, value, row, index) {
-            open_pdf(row.id);
-        }
-    }
-
-=======
     window.clip_icon_Events = {
       'click .pdf_viewer': function (e, value, row, index) {
           open_pdf(row.id);
@@ -327,6 +351,8 @@
     function edit_doc() {
         document.getElementById()
     }
+
+
     function delete_doc(id){
       event.preventDefault();
       del  = id
@@ -343,22 +369,18 @@
         success: function(response) {
           //console.log('Success', response);
           console.log("deleted!!")
-          refresh();
+          page();
         },
         error: function(error) {
           console.error('Error', error);
         }
       });
     }
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
     function open_form() {
         console.log("Form openned");
-        $("#includeHtml").load("/form");
+        populateDaysAndYears();
     }
 
-<<<<<<< HEAD
-
-=======
     $("#myForm").submit(function (event) {
         // prevent default html form submission action
         //event.preventDefault();
@@ -397,7 +419,7 @@
           success: function(response) {
           console.log("send");
           $('#modal-form').modal('toggle');
-          refresh();
+          page();
           
             
           },
@@ -407,7 +429,6 @@
         });
         });
       
->>>>>>> 0a119aa9bf28452f6c3ab4c78af8c60112bb0e2e
 </script>
 
 

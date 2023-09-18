@@ -172,13 +172,30 @@ def doc_data():
 
     return jsonify(documents)
 
-@app.route("/document")
+@app.route("/document", methods=('GET', 'POST'))
 def data():
     documents = []
     db_documents = order_info.query.order_by(desc(order_info.id))
+    if request.method == 'POST':
+        documents = []
+        db_documents = order_info.query.order_by(desc(order_info.id))
+        app.logger.debug("post doc")
+        result = request.form.to_dict()
+        page = result.get('page', '')
+        app.logger.debug("page :",page)
+        if page != 0 :
+            offset= int(page)*10
+            app.logger.debug(offset)
+            db_documents = db_documents.offset(offset).limit(10)
+        else:
+            db_documents = db_documents.offset(page).limit(10)
+        documents = list(map(lambda x: x.to_dict(), db_documents))
+        app.logger.debug("documents =", documents)
+        return jsonify(documents)
+    #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry")
- 
+    
     return jsonify(documents)
 
 @app.route('/download/<int:doc_id>')

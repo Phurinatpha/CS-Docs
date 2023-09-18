@@ -111,9 +111,16 @@ label {
 .radio{
   width: 100px;
   font-weight: normal;
+  margin-left: 10px;
 }
 
+#input-fname, #input-lname{
+  width: 300px;
+}
 
+#input-email{
+  width: 197px;
+}
 .grant-group .input-container {
   display: flex;
   border: 1px solid #ccc; /* Add border to the input-container */
@@ -121,7 +128,7 @@ label {
 }
 
 .grant-group input {
-  flex: 1;  
+  /* flex: 1;   */
   padding: 10px; /* Add padding for spacing */
 }
 
