@@ -28,7 +28,7 @@
 
         <div
             class="col-md-6 d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-            <a href="{{ url_for('home') }}" style="text-decoration: none;">
+            <a href="{{ url_for('home_new') }}" style="text-decoration: none;">
                 <button class="btn-act btn-primary d-sm-table " type="button">
                     <i class="bi bi-book"></i>
                     เอกสารคำสั่ง
@@ -105,87 +105,63 @@
         <div class="col-md-12" style="margin-top: 30px;">
             <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
             <div>
-                <p class="sub-doc">มีเอกสารทั้งหมด <span id="all-founded">x</span> รายการ แสดงหน้าละ <span id="show-per-page">10</span> รายการ</p>
+                <p class="sub-doc">มีเอกสารทั้งหมด <span id="all-founded">x</span> รายการ แสดงหน้าละ <span
+                        id="show-per-page">10</span> รายการ</p>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div>
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-striped" id="search-table">
                             <thead>
                                 <tr>
-                                    <th class="text-center">ลำดับ</th>
-                                    <th class="text-center" style="width: 100px;">เลขที่คำสั่ง</th>
-                                    <th class="text-center" style="width: 480px;">เรื่อง</th>
-                                    <th class="text-center">ผู้สร้างเอกสาร</th>
-                                    <th class="text-center">วันที่ออกคำสั่ง</th>
-                                    <th class="text-center">ไฟล์แนบ</th>
-                                    <th class="text-center"></th>
+                                    <th class="text-center" data-formatter="runningFormatter">
+                                        <span class="text">
+                                            ลำดับ
+                                        </span>
+                                    </th>
+                                    <th data-field="id" hidden>
+                                        <span class="text">
+                                            id
+                                        </span>
+                                    </th>
+                                    <th class="text-center" style="width: 100px;" data-field="ref_num">
+                                        <span class="text">
+                                            เลขคําสั่ง
+                                        </span>
+                                    </th>
+                                    <th class="text-center" style="width: 480px;" data-field="subject">
+                                        <span class="text">
+                                            เรื่อง
+                                        </span>
+                                    </th>
+                                    <th class="text-center" data-field="user_name">
+                                        <span class="text">
+                                            ผู้สร้างเอกสาร
+                                        </span>
+                                    </th>
+                                    <th class="text-center" data-field="doc_date">
+                                        <span class="text">
+                                            วันที่ออกคำสั่ง
+                                        </span>
+                                    </th>
+                                    <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
+                                        data-events="clip_icon_Events">
+                                        <span class="text">
+                                            ไฟล์แนบ
+                                        </span>
+                                    </th>
+                                    <!--dataFormat-->
+                                    <th class="text-center" data-field="data-buttons"
+                                        data-formatter="edit_del_Formatter" data-events="operateEvents">
+                                        <span class="text">
+
+                                        </span>
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody id="document-list">
-                                <!-- this part will use for return AJAX when submit form  -->
-                                <!-- For odd row will be white row -->
-                                <tr class="odd-row">
-                                    <td class="text-center">99999</td>
-                                    <td class="text-center">99/2566</td>
-                                    <td class="text-start">
-                                        <a><span>ภาควิชาวิทยาการคอมพิวเตอร์ ได้เข้าร่วมจัดแสดงนิทรรศการ
-                                                ในการประชุมสัมมนาวิชาการ</span></a>
-                                    </td>
-                                    <td class="text-center">Mr. Compsci ChiangMai University</td>
-                                    <td class="text-center">29 ก.ค. 2566</td>
-                                    <td>
-                                        <div class="text-center d-xxl-flex justify-content-xxl-center">
-                                            <span
-                                                class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
-                                                <i class="bi bi-paperclip"></i>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <div class="btn-edit-del">
-                                                <button class="btn-edit">แก้ไข</button>
-                                                <button class="btn-del">ลบ</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
 
-                                <!-- For even row will be grey row -->
-                                <tr class="even-row">
-                                    <td class="text-center">99999999</td>
-                                    <td class="text-center">999/2566</td>
-                                    <td class="text-start">
-                                        <a><span>เปิดรับสมัครหลักสูตรอบรมระยะสั้น "การวิเคราะห์ข้อมูลอัจฉริยะด้วย
-                                                RapidMiner
-                                                (Intelligence Data analysis with RapidMiner)" รุ่นที่ 2</span></a>
-                                    </td>
-                                    <td class="text-center">Mr. Compsci ChiangMai
-                                        University
-                                    </td>
-                                    <td class="text-center">29 ก.ค. 2566</td>
-                                    <td class="text-center">
-                                        <div class="text-center d-xxl-flex justify-content-xxl-center">
-                                            <span
-                                                class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">
-                                                <i class="bi bi-paperclip"></i>
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="text-center">
-                                            <div class="btn-edit-del ">
-                                                <button class="btn-edit">แก้ไข</button>
-                                                <button class="btn-del">ลบ</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- End of AJAX -->
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -226,6 +202,8 @@
     // Call the function to populate days and years when the page loads
     populateDaysAndYears();
 </script>
+
+
 
 
 {% endblock %}
