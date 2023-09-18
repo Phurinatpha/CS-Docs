@@ -23,6 +23,13 @@ class User (db.Model, SerializerMixin):
         self.lastname = lastname
         self.role = role
         self.email = email
-    
     def get_name(self):
         return self.firstname+" "+self.lastname
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.firstname+" "+self.lastname,
+            'role': self.role,
+            'email': self.email
+        }
