@@ -36,14 +36,16 @@ def base():
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
     if request.method == 'POST':
+        doc_data = request.files.get('doc_data')
+        app.logger.debug("doc data :",doc_data)
         app.logger.debug("posted activate")
         validated = True
         validated_dict = dict()
         valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','user_id']
 
         # Access the uploaded file using request.files
-        doc_data = request.files.get('doc_data')
         name_list =  request.form.get('name_list')
+        id_ = request.form.get('id','')
         name_list = name_list.split(",")
         name_list =  [i for i in name_list if i != ""]
         app.logger.debug("name_list = ",name_list)
@@ -59,27 +61,43 @@ def form():
             validated_dict[key] = value
 
         if validated:
-            # Read the contents of the uploaded file as bytes
-
-            doc_content = doc_data.read()
-            # Create a new Document object with the uploaded file
-            order_entry = order_info(
+            if not id_:
+                # Read the contents of the uploaded file as bytes
+                doc_content = doc_data.read()
+                # Create a new Document object with the uploaded file
+                order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
                 ref_num=validated_dict['ref_num'],
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
-            )
-            db.session.add(order_entry)
-            db.session.commit()
-            doc_entry = doc_info(
+                )
+                db.session.add(order_entry)
+                db.session.commit()
+                doc_entry = doc_info(
                 order_id = order_entry.id,
                 filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
                 doc_data=doc_content
-            )
-        
-            db.session.add(doc_entry)
+                )
+                db.session.add(doc_entry)   
+            else:
+                order = order_info.query.get(id_)
+                order_entry = order.update(
+                subject=validated_dict['subject'],
+                doc_date=validated_dict['doc_date'],
+                ref_num=validated_dict['ref_num'],
+                ref_year=validated_dict['ref_year'],
+                ref_name=name_list,
+                user_id=validated_dict['user_id']
+                )
+                if doc_data != None :
+                    doc_content = doc_data.read()
+                    doc = doc_info.query.filter(doc_info.order_id == id_).first()   
+                    doc_entry = doc.update(
+                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+                    doc_data=doc_content
+                    )
             db.session.commit()
             return home()
 
@@ -164,31 +182,31 @@ def doc_data():
 
     return jsonify(documents)
 
-@app.route("/document", methods=('GET', 'POST'))
+@app.route("/document")
 def data():
     documents = []
     db_documents = order_info.query.order_by(desc(order_info.id))
-    if request.method == 'POST':
-        documents = []
-        db_documents = order_info.query.order_by(desc(order_info.id))
-        app.logger.debug("post doc")
-        result = request.form.to_dict()
-        page = result.get('page', '')
-        app.logger.debug("page :",page)
-        if page != 0 :
-            offset= int(page)*10
-            app.logger.debug(offset)
-            db_documents = db_documents.offset(offset).limit(10)
-        else:
-            db_documents = db_documents.offset(page).limit(10)
-        documents = list(map(lambda x: x.to_dict(), db_documents))
-        app.logger.debug("documents =", documents)
-        return jsonify(documents)
-    #db_documents = db_documents.limit(10)
+     #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry")
     
     return jsonify(documents)
+    #if request.method == 'POST':
+       # documents = []
+      #  db_documents = order_info.query.order_by(desc(order_info.id))
+       # app.logger.debug("post doc")
+       # result = request.form.to_dict()
+       # page = result.get('page', '')
+       # app.logger.debug("page :",page)
+       # if page != 0 :
+            # offset= int(page)*10
+            # app.logger.debug(offset)
+            # db_documents = db_documents.offset(offset).limit(10)
+        # else:
+            # db_documents = db_documents.offset(page).limit(10)
+        # documents = list(map(lambda x: x.to_dict(), db_documents))
+        # app.logger.debug("documents =", documents)
+        # return jsonify(documents)
 
 @app.route('/download/<int:doc_id>')
 def download(doc_id):

@@ -161,6 +161,30 @@
 
     }
   }
+  function preload_pdf(x){
+    event.preventDefault();
+    id  = x
+    fileName = "";
+    console.log("id ="+id);
+    var url = "/preview_pdf"
+    var formData = new FormData();
+    formData.append('id', id)
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      contentType: false,
+      processData: false,
+      async: false,
+      success: function(response) {
+        //console.log('Success', response);
+        fileName = response.doc_name ;
+        
+      }
+    });
+    return fileName;
+  }
+  
 
  </script>
   <script src="/static/js/sweetalert.js"></script>

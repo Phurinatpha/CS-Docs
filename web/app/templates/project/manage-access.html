@@ -160,6 +160,24 @@
 
 <!-- <script src="/static/js/pagination.js"></script>
 <script src="/static/js/countUser.js"></script> -->
+<script>
+    function populate_table(user_data) {
+        $('#access-table').bootstrapTable({
+ 
+          data: user_data
+  
+          
+        });
+        //$('#document-table').bootstrapTable('hideColumn', 'id');
+    }
+
+    $(document).ready(function () {
+        $.getJSON("/user", populate_table);
+    });   
+    function runningFormatter(value, row, index) {
+        return index+1;
+      } 
+</script>
 
 
 
