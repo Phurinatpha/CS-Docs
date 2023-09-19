@@ -108,23 +108,23 @@ function showPage(page) {
 }
 
 // Show the initial page
-showPage(currentPage);
+// showPage(currentPage);
 
-// Handle previous page click
-document.getElementById('prevPage').addEventListener('click', () => {
-   if (currentPage > 1) {
-       currentPage--;
-       showPage(currentPage);
-    }
-});
+// // Handle previous page click
+// document.getElementById('prevPage').addEventListener('click', () => {
+//    if (currentPage > 1) {
+//        currentPage--;
+//        showPage(currentPage);
+//     }
+// });
 
-// Handle next page click
-    document.getElementById('nextPage').addEventListener('click', () => {
-    const rows = table.getElementsByTagName('tr');
-    const totalPages = Math.ceil(rows.length / rowsPerPage);
+// // Handle next page click
+//     document.getElementById('nextPage').addEventListener('click', () => {
+//     const rows = table.getElementsByTagName('tr');
+//     const totalPages = Math.ceil(rows.length / rowsPerPage);
 
-    if (currentPage < totalPages) {
-       currentPage++;
-        showPage(currentPage);
-   }
-});
+//     if (currentPage < totalPages) {
+//        currentPage++;
+//         showPage(currentPage);
+//    }
+// });
