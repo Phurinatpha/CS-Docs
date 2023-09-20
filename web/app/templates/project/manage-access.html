@@ -60,11 +60,10 @@
                                         </div>
                                     </div>
 
-
                                     <div class="grant-group">
                                         <label>E-mail</label>
                                         <div class="input-container">
-                                            <input id="input-email" name="add-user-email" placeholder="E-mail address" >
+                                            <input id="input-email" name="add-user-email" placeholder="E-mail address">
                                             <span class="input-group-addon">@cmu.ac.th</span>
                                         </div>
 
@@ -85,18 +84,13 @@
                                         <button class="grant-btn" type="submit" name="add-user-submit">
                                             <i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</button>
                                     </div>
-
                                 </div>
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
             <!-- End of Modal zone -->
-
         </div>
         <h2 class="h2-eligible">ผู้มีสิทธิ์การเข้าถึง</h2>
         <div>
@@ -164,8 +158,64 @@
     <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
-<script src="/static/js/pagination.js"></script>
-<script src="/static/js/countUser.js"></script>
+<!-- <script src="/static/js/pagination.js"></script>
+<script src="/static/js/countUser.js"></script> -->
+<script>
+    function populate_table(user_data) {
+        $('#access-table').bootstrapTable({
+
+            data: user_data
+
+
+        });
+        $('#access-table').bootstrapTable('hideColumn', 'id');
+        console.log("tr :", document.getElementsByTagName('tr').length);
+        var js = document.createElement("script");
+        js.src = "/static/js/pagination.js";
+        document.head.appendChild(js);
+    }
+
+    $(document).ready(function () {
+        $.getJSON("/user", populate_table);
+        $.ajax({
+            dataType: "json",
+            url: "/user",
+            success: function (data) {
+                console.log("data :", data.length);
+                document.getElementById("user-count").innerHTML = data.length;
+                populate_table(data);
+            }
+        });
+    });
+    //run number function
+    function runningFormatter(value, row, index) {
+        return index + 1;
+    }
+
+    //edit and delete button
+    function edit_del_Formatter(value, row, index) {
+        return [
+            '<div class="btn-edit-del" >',
+            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+            '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
+            '</div>'
+
+        ].join('')
+    }
+
+    //This part must be edit with user db
+    window.operateEvents = {
+        'click .doc_delete': function (e, value, row, index) {
+            console.log("delete");
+            delete_button_sweet(row.id);
+        },
+        'click .doc_edit': function (e, value, row, index) {
+            console.log("edit");
+            prePopulateForm(row);
+
+        }
+    }
+</script>
 
 
 

@@ -3,432 +3,476 @@
 <link rel="stylesheet" href="/static/css/index.css">
 <link rel="stylesheet" href="/static/css/form.css">
 <div class="container">
-    <div class="row" style="padding-top: 20px;">
-        <div class="col-md-6">
-            <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal"
-                data-target=".bd-modal-xl">
-                <i class="bi bi-plus-circle-fill"></i>
-                สร้างคำสั่ง
-            </button>
-            <!-- Modal zone -->
-            <div class="modal fade bd-modal-xl" id="modal-form" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <!-- Add your content here -->
-                            <form id="myForm" action="/form" method="post" autocomplete="off" enctype="multipart/form-data"> 
+  <div class="row" style="padding-top: 20px;">
+    <div class="col-md-6">
+      <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal"
+        data-target=".bd-modal-xl">
+        <i class="bi bi-plus-circle-fill"></i>
+        สร้างคำสั่ง
+      </button>
+      <!-- Modal zone -->
+      <div class="modal fade bd-modal-xl" id="modal-form" data-keyboard="false">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
 
 
-                                <p class="pop-up-header">เอกสารคำสั่ง</p>
-                            
-                                <!-----------------------------------1st part----------------------------------->
-                                <div class="tab" id="tab-1">
-                                  <div class="tab-container">
-                                    <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
-                            
-                                    <div class="form-group">
-                                      <label>เลขที่คำสั่ง</label>
-                                      <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
-                                    </div>
-                            
-                                    <div class="form-group">
-                                      <label>เอกสารลงวันที่</label>
-                                      <!--this input is id of order_table-->
-                                      <input type="hidden"  name="id" value="">
-                                      <!--this input is user id set default to 1-->
-                                      <input type="hidden"  name="user_id" value="1">
-                                      <!-- Separate select elements for day, month, and year -->
-                                      <select name="day" id="daySelect" >
-                                        <option value="" disabled selected>วันที่</option>
-                                      </select>
-                                      <select name="month" id="monthSelect" >
-                                        <option value="" disabled selected>เดือน</option>
-                                        <option id="M_0">มกราคม</option>
-                                        <option id="M_1">กุมภาพันธ์</option>
-                                        <option id="M_2">มีนาคม</option>
-                                        <option id="M_3">เมษายน</option>
-                                        <option id="M_4">พฤษภาคม</option>
-                                        <option id="M_5">มิถุนายน</option>
-                                        <option id="M_6">กรกฎาคม</option>
-                                        <option id="M_7">สิงหาคม</option>
-                                        <option id="M_8">กันยายน</option>
-                                        <option id="M_9">ตุลาคม</option>
-                                        <option id="M_10">พฤศจิกายน</option>
-                                        <option id="M_11">ธันวาคม</option>
-                                      </select>
-                                      <select name="ref_year" id="yearSelect">
-                                        <option value=""  disabled selected>ปี</option>
-                                      </select>
-                                    </div>
-                                      <input type ="hidden" id="date_combind" name="doc_date"></input>
-                                    <div class="form-group-subject">
-                                      <label for="subject">เรื่อง</label>
-                                      <textarea id="descrip" name="subject"></textarea>
-                                    </div>
-                                  </div>
-                                  
-                                </div>
-                            
-                                <!---2nd part-->
-                                <div class="tab" id="tab-2">
-                                  <div class="tab-container">
-                                    <p class="attachment">2 ) รายชื่อคณะกรรมการ</p>
-                                    <div class="form-group-2">
-                                      <div class="form-head">
-                                        <h3>รายชื่อคณะกรรมการ</h3>
-                                        <textarea id="name_list" name="ref_name"></textarea>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            
-                                <!---3rd part---->
-                                <div class="tab" id="tab-3">
-                                  <div class="tab-container">
-                                    <p class="attachment">3 ) ไฟล์แนบ</p>
-                                    <div class="form-group-3">
-                                      <div id="drag-and-drop" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
-                                        <h1>ลากและวางไฟล์ที่นี่</h1>
-                                        <p class="or">หรือ</p>
-                                        <input type="file" id="file-input" name="doc_data" style="display:none;" onchange="handleFileSelect(event)" accept=".pdf">
-                                        <p class="click-to-add"><label for="file-input">กดเพื่อเลือกไฟล์แนบ</label></p>
-                                      </div>
-                            
-                                      <div id="uploaded-file-container">
-                                        <h3>ชื่อไฟล์</h3>
-                                        <div class="file-container">
-                                          <p id="uploaded-file-name" >Your file name here</p>
-                                          <i class="bi bi-check-circle-fill" style="color: #3EBC2A;"></i>
-                                          <span id="remove-btn" onclick="removeUploadedFile()"><i class="bi bi-trash-fill"></i> </span>
-                                        </div>
-                            
-                                      </div>
-                                    </div>
-                                  </div>
-                            
-                                  <div class="index-btn-wrapper">
-                                    <button class="index-btn" type="submit" name="submit"><i
-                                        class="fa-regular fa-floppy-disk"></i>บันทึกเอกสารคำสั่ง</button>
-                                  </div>
-                                </div>
-                              </form>
-                            
-                              <script src="/static/js/form.js"></script>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
+              <!-- Add your content here -->
+              <form id="myForm" action="/form" method="post" autocomplete="off" enctype="multipart/form-data">
 
-                        </div>
+
+                <p class="pop-up-header">เอกสารคำสั่ง</p>
+
+                <!-----------------------------------1st part----------------------------------->
+                <div class="tab" id="tab-1">
+                  <div class="tab-container">
+                    <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
+
+                    <div class="form-group">
+                      <label>เลขที่คำสั่ง</label>
+                      <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
                     </div>
+
+                    <div class="form-group">
+                      <label>เอกสารลงวันที่</label>
+                      <!--this input is id of order_table-->
+                      <input type="hidden" id="doc_id" name="id" value="">
+                      <!--this input is user id set default to 1-->
+                      <input type="hidden" name="user_id" value="1">
+                      <!-- Separate select elements for day, month, and year -->
+                      <select name="day" id="daySelect">
+                        <option value="" disabled selected>วันที่</option>
+                      </select>
+                      <select name="month" id="monthSelect">
+                        <option value="" disabled selected>เดือน</option>
+                        <option id="M_0">มกราคม</option>
+                        <option id="M_1">กุมภาพันธ์</option>
+                        <option id="M_2">มีนาคม</option>
+                        <option id="M_3">เมษายน</option>
+                        <option id="M_4">พฤษภาคม</option>
+                        <option id="M_5">มิถุนายน</option>
+                        <option id="M_6">กรกฎาคม</option>
+                        <option id="M_7">สิงหาคม</option>
+                        <option id="M_8">กันยายน</option>
+                        <option id="M_9">ตุลาคม</option>
+                        <option id="M_10">พฤศจิกายน</option>
+                        <option id="M_11">ธันวาคม</option>
+                      </select>
+                      <select name="ref_year" id="yearSelect">
+                        <option value="" disabled selected>ปี</option>
+                      </select>
+                    </div>
+                    <input type="hidden" id="date_combind" name="doc_date"></input>
+                    <div class="form-group-subject">
+                      <label for="subject">เรื่อง</label>
+                      <textarea id="descrip" name="subject"></textarea>
+                    </div>
+                  </div>
+
                 </div>
+
+                <!---2nd part-->
+                <div class="tab" id="tab-2">
+                  <div class="tab-container">
+                    <p class="attachment">2 ) รายชื่อคณะกรรมการ</p>
+                    <div class="form-group-2">
+                      <div class="form-head">
+                        <h3>รายชื่อคณะกรรมการ</h3>
+                        <textarea id="name_list" name="ref_name"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!---3rd part---->
+                <div class="tab" id="tab-3">
+                  <div class="tab-container">
+                    <p class="attachment">3 ) ไฟล์แนบ</p>
+                    <div class="form-group-3">
+                      <div id="drag-and-drop" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
+                        <h1>ลากและวางไฟล์ที่นี่</h1>
+                        <p class="or">หรือ</p>
+                        <input type="file" id="file-input" name="doc_data" style="display:none;"
+                          onchange="handleFileSelect(event)" accept=".pdf">
+                        <p class="click-to-add"><label for="file-input">กดเพื่อเลือกไฟล์แนบ</label></p>
+                      </div>
+
+                      <div id="uploaded-file-container">
+                        <h3>ชื่อไฟล์</h3>
+                        <div class="file-container">
+                          <p id="uploaded-file-name">Your file name here</p>
+                          <i class="bi bi-check-circle-fill" style="color: #3EBC2A;"></i>
+                          <span id="remove-btn" onclick="removeUploadedFile()"><i class="bi bi-trash-fill"></i> </span>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="index-btn-wrapper">
+                    <button class="index-btn" type="submit" name="submit"><i
+                        class="fa-regular fa-floppy-disk"></i>บันทึกเอกสารคำสั่ง</button>
+                  </div>
+                </div>
+              </form>
+
+              <script src="/static/js/form.js"></script>
+
             </div>
-            <!-- End of Modal zone -->
-        </div>
 
-        <div
-            class="col-md-6 d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-            <button class="btn-act btn-primary d-sm-table " type="button">
-                <i class="bi bi-book"></i>
-                เอกสารคำสั่ง
-            </button>
-
-            <a href="{{ url_for('search') }}" style="text-decoration: none;">
-                <button class="btn-act btn-primary d-sm-table " type="button">
-                    <i class="bi bi-search"></i>
-                    ค้นหาเอกสาร
-                </button>
-            </a>
+          </div>
         </div>
+      </div>
+      <!-- End of Modal zone -->
+
     </div>
+
+    <div
+      class="col-md-6 d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
+      <button class="btn-act btn-primary d-sm-table " type="button">
+        <i class="bi bi-book"></i>
+        เอกสารคำสั่ง
+      </button>
+
+      <a href="{{ url_for('search') }}" style="text-decoration: none;">
+        <button class="btn-act btn-primary d-sm-table " type="button">
+          <i class="bi bi-search"></i>
+          ค้นหาเอกสาร
+        </button>
+      </a>
+    </div>
+  </div>
 </div>
 
 <div class="table-container">
-    <div class="container">
-        <div class="col-md-12" style="margin-top: 30px;">
-            <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
-            <div>
-                <p class="sub-doc">มีเอกสารทั้งหมด <span id="count_doc"></span> รายการ แสดงหน้าละ <span
-                        id="show-per-page">10</span> รายการ</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div>
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="document-table"  >
-                            <thead>
-                                <tr>
-                                    <th class="text-center" data-formatter="runningFormatter">
-                                        <span class="text">
-                                            ลำดับ
-                                        </span>
-                                    </th>
-                                    <th data-field="id">
-                                        <span class="text">
-                                            id
-                                        </span>
-                                    </th>
-                                    <th class="text-center" style="width: 100px;" data-field="ref_num">
-                                        <span class="text">
-                                            เลขคําสั่ง
-                                        </span>
-                                    </th>
-                                    <th class="text-center" style="width: 480px;" data-field="subject">
-                                        <span class="text">
-                                            เรื่อง
-                                        </span>
-                                    </th>
-                                    <th class="text-center" data-field="user_name">
-                                        <span class="text">
-                                            ผู้สร้างเอกสาร
-                                        </span>
-                                    </th>
-                                    <th class="text-center" data-field="doc_date">
-                                        <span class="text">
-                                            วันที่ออกคำสั่ง
-                                        </span>
-                                    </th>
-                                    <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
-                                        data-events="clip_icon_Events">
-                                        <span class="text">
-                                            ไฟล์แนบ
-                                        </span>
-                                    </th>
-                                    <!--dataFormat-->
-                                    <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter" data-events="operateEvents"   >
-                                        <span class="text">
-                                            แก้ไข/ลบ
-                                        </span>
-                                    </th>
-                                </tr>
-                            </thead>
-                        </table>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <div class="col-md-12" style="margin-top: 30px;">
+      <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
+      <div>
+        <p class="sub-doc">มีเอกสารทั้งหมด <span id="count_doc"></span> รายการ แสดงหน้าละ <span
+            id="show-per-page">10</span> รายการ</p>
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <div class="table-responsive">
+            <table class="table table-striped" data-search="true" id="document-table">
+              <thead>
+                <tr>
+                  <th class="text-center" data-formatter="runningFormatter">
+                    <span class="text">
+                      ลำดับ
+                    </span>
+                  </th>
+                  <th data-field="id">
+                    <span class="text">
+                      id
+                    </span>
+                  </th>
+                  <th class="text-center" style="width: 100px;" data-field="ref_num">
+                    <span class="text">
+                      เลขคําสั่ง
+                    </span>
+                  </th>
+                  <th class="text-center" style="width: 480px;" data-field="subject">
+                    <span class="text">
+                      เรื่อง
+                    </span>
+                  </th>
+                  <th class="text-center" data-field="user_name">
+                    <span class="text">
+                      ผู้สร้างเอกสาร
+                    </span>
+                  </th>
+                  <th class="text-center" data-field="doc_date">
+                    <span class="text">
+                      วันที่ออกคำสั่ง
+                    </span>
+                  </th>
+                  <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
+                    data-events="clip_icon_Events">
+                    <span class="text">
+                      ไฟล์แนบ
+                    </span>
+                  </th>
+                  <!--dataFormat-->
+                  <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
+                    data-events="operateEvents">
+                    <span class="text">
+
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="text-center">
+            <div class="spinner-border text-primary"
+              style="width: 3rem; height: 3rem;  border:solid 5px #fff;  border-bottom-color: #022851;" id="spinner"
+              role="status">
+              <span class="sr-only c"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="pagination">
-    <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
-    <div id="pageNumbers" class="pagination-links" onClick="page()"></div>
-    <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
+  <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
+  <div id="pageNumbers" class="pagination-links"></div>
+  <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
 <!-- Do not move script below -->
 <script>
+  function populate_table(document_data) {
+    $('#document-table').bootstrapTable({
 
-    function populate_table(document_data) {
-        $('#document-table').bootstrapTable({
-          data: document_data
-  
-          
-        });
-        //console.log(document_data);
-        //load pagination.js script after populateTable
-        console.log(document.getElementsByTagName('tr').length)
-        var js = document.createElement("script");
-        js.src = "/static/js/pagination.js";
-        document.head.appendChild(js);
-        //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
-        $('#document-table').bootstrapTable('hideColumn', 'id');
-    }
-
-      //page function use to set offset of document query
-      function page(){
-        show_page = document.getElementsByClassName("current-page")[0].innerHTML;
-        console.log("show_page :", show_page-1);
-        var formData = new FormData();
-        formData.append('page', show_page-1);
-        console.log(formData);
-          $.ajax({
-            type: 'POST',
-            url: "/document",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-              var a = data; // This line shows error.
-              $.ajax({
-                dataType: "json",
-                data: a,
-                success:  refresh_table(a)
-
-              });
-              window.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'smooth',
-            });
-            }
-          });
-          
-      }
-
-      $(document).ready(function () {
-        //this call function call to get all data and display it in count-doc id
-        $.ajax({
-          dataType:"json",
-          url: "/document",
-          success: function (data){
-          console.log("data :",data.length );
-          document.getElementById("count_doc").innerHTML = data.length;
-          showPage(1);
-                  }
-        });
-        //this call offset0 of document
-        (function () {
-          var formData = new FormData();
-          formData.append('page', 0)
-          $.ajax({
-            type: 'POST',
-            url: "/document",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-              var a = data; // This line shows error.
-              $.ajax({
-                dataType: "json",
-                data: a,
-                success: populate_table(a)
-         
-              });
-        
-          }
-          });
-          
-        })();
-      });
-      //maybe this function is not use
-      function refresh() {
-        $.getJSON("/document", refresh_table);
-        
-      }
-
-      function refresh_table(document_data) {
-        $('#document-table').bootstrapTable('load', document_data);
-      }
-
-    function clip_icon_Formatter(value, row, index) {
-        return [
-            '<div class="text-center d-xxl-flex justify-content-xxl-center">',
-            '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
-            '<button class="pdf_viewer bi bi-paperclip" >', '</button>',
-            '</span>',
-            '</div>'
-        ].join('')
-    }
-
-    //edit and delete button
-    function edit_del_Formatter(value, row, index) {
-        return [
-        '<div class="btn-edit-del" >',
-            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">','แก้ไข','</button>',
-                '<button class="doc_delete btn-del"  >','ลบ','</button>',
-        '</div>'
-        
-        ].join('')
-    }
-
-    //run number function
-    function runningFormatter(value, row, index) {
-      return (index+1);
-    }
-    window.clip_icon_Events = {
-      'click .pdf_viewer': function (e, value, row, index) {
-          open_pdf(row.id);
-      }
-    }
-  window.operateEvents = {
-      'click .doc_delete': function (e, value, row, index) {
-          console.log("click");
-          delete_button_sweet(row.id);
-      }
-    }
-
-    function edit_doc() {
-        document.getElementById()
-    }
+      data: document_data
 
 
-    function delete_doc(id){
-      event.preventDefault();
-      del  = id
-      console.log("del id ="+del);
-      var url = "/delete"
-      var formData = new FormData();
-      formData.append('id', del)
+    });
+    //console.log(document_data);
+    //load pagination.js script after populateTable
+    console.log("tr :", document.getElementsByTagName('tr').length);
+    var js = document.createElement("script");
+    js.src = "/static/js/pagination.js";
+    document.head.appendChild(js);
+    //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
+    $('#document-table').bootstrapTable('hideColumn', 'id');
+  }
+
+  //page function use to set offset of document query
+  /*function page(){
+    show_page = document.getElementsByClassName("current-page")[0].innerHTML;
+    console.log(show_page);
+    console.log("show_page :", show_page-1);
+    var formData = new FormData();
+    formData.append('page', show_page-1);
+    console.log(formData);
       $.ajax({
         type: 'POST',
-        url: url,
+        url: "/document",
         data: formData,
         contentType: false,
         processData: false,
-        success: function(response) {
-          //console.log('Success', response);
-          console.log("deleted!!")
-          page();
-        },
-        error: function(error) {
-          console.error('Error', error);
+        success: function (data) {
+          var a = data; // This line shows error.
+          $.ajax({
+            dataType: "json",
+            data: a,
+            success:  refresh_table(a)
+
+          });
+          window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+        });
         }
       });
-    }
-    function open_form() {
-        console.log("Form openned");
-        populateDaysAndYears();
-    }
+      
+  }*/
 
-    $("#myForm").submit(function (event) {
-        // prevent default html form submission action
-        //event.preventDefault();
-        event.preventDefault();
-        document.getElementById("date_combind").value =document.getElementById("daySelect").value + " " + document.getElementById("monthSelect").value+" "+document.getElementById("yearSelect").value
-        // Create a new FormData object
-        var formData = new FormData();
-        name_list = document.getElementById("name_list").value
-        name_list = name_list.split("\n")
-        console.log(name_list)
-        // Log the formData to verify its content
-        console.log(formData);
-      
-        // Append the file to the FormData object
-        var file = $('input[name="doc_data"]')[0].files[0];
-        formData.append('doc_data', file);
-      
-        // Add other form data to the FormData object
-        formData.append('subject', $('#descrip').val());
-        formData.append('doc_date', $('#date_combind').val());
-        formData.append('ref_num', $('#refer_num').val());
-        formData.append('ref_year', $('#yearSelect').val());
-        formData.append('name_list', name_list);
-        formData.append('user_id', 1);
-      
-      
-        console.log(formData);  
-        var $form = $(this);
-        var url = $form.attr("action");  
+  $(document).ready(function () {
+    //this call function call to get all data and display it in count-doc id
+    $.ajax({
+      dataType: "json",
+      url: "/document",
+      success: function (data) {
+        console.log("data :", data.length);
+        document.getElementById("count_doc").innerHTML = data.length;
+        populate_table(data);
+        document.getElementById('spinner')
+          .style.display = 'none';
+      }
+    });
+  });
+
+
+  //this call offset0 of document
+  /*(function () {
+    var formData = new FormData();
+    formData.append('page', 0)
+    $.ajax({
+      type: 'POST',
+      url: "/document",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data) {
+        var a = data; // This line shows error.
         $.ajax({
-          type: 'POST',
-          url: url,
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function(response) {
-          console.log("send");
-          $('#modal-form').modal('toggle');
-          page();
-          
-            
-          },
-          error: function(error) {
-            console.error('Error', error);
-          }
+          dataType: "json",
+          data: a,
+          success: populate_table(a)
+   
         });
-        });
-      
+  
+    }
+    });
+    
+  })();
+});*/
+  //maybe this function is not use
+  function refresh() {
+    $.getJSON("/document", refresh_table);
+
+  }
+
+  function refresh_table(document_data) {
+    $('#document-table').bootstrapTable('load', document_data);
+  }
+
+  function clip_icon_Formatter(value, row, index) {
+    return [
+      '<div class="text-center d-xxl-flex justify-content-xxl-center">',
+      '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
+      '<button class="pdf_viewer bi bi-paperclip" >', '</button>',
+      '</span>',
+      '</div>'
+    ].join('')
+  }
+
+  //edit and delete button
+  function edit_del_Formatter(value, row, index) {
+    return [
+      '<div class="btn-edit-del" >',
+      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+      '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
+      '</div>'
+
+    ].join('')
+  }
+  //run number function
+  function runningFormatter(value, row, index) {
+    return index + 1;
+  }
+  window.clip_icon_Events = {
+    'click .pdf_viewer': function (e, value, row, index) {
+      open_pdf(row.id);
+    }
+  }
+  window.operateEvents = {
+    'click .doc_delete': function (e, value, row, index) {
+      console.log("delete");
+      delete_button_sweet(row.id);
+    },
+    'click .doc_edit': function (e, value, row, index) {
+      console.log("edit");
+      prePopulateForm(row);
+
+    }
+  }
+  function prePopulateForm(row) {
+    document.getElementById('myForm').reset();
+    $('#doc_id').val(row.id);
+    $('#refer_num').val(parseInt(row.ref_num));
+    date = row.doc_date
+    datelist = date.split(" ");
+    day = document.getElementById("daySelect");
+    day.value = parseInt(datelist[0]);
+    year = document.getElementById("yearSelect");
+    year.value = parseInt(datelist[2]);
+    $('#monthSelect').val(datelist[1]);
+    $('#descrip').val(row.subject);
+    str_ref_name = row.ref_name.join('\n');
+    $('#name_list').val(str_ref_name);
+    uploadedFileName = preload_pdf(row.id);
+    console.log(uploadedFileName);
+    var uploadedFileContainer = document.getElementById('uploaded-file-container');
+    var dragAndDropZone = document.getElementById('drag-and-drop');
+    uploadedFileName = preload_pdf(row.id);// Store the uploaded file name in the global variable
+    document.getElementById('uploaded-file-name').textContent = uploadedFileName;
+    uploadedFileContainer.style.display = 'block';
+    dragAndDropZone.style.display = 'none';
+
+  }
+
+
+  function delete_doc(id) {
+    event.preventDefault();
+    del = id
+    console.log("del id =" + del);
+    var url = "/delete"
+    var formData = new FormData();
+    formData.append('id', del)
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        //console.log('Success', response);
+        console.log("deleted!!");
+        refresh();
+      },
+      error: function (error) {
+        console.error('Error', error);
+      }
+    });
+  }
+  function open_form() {
+    console.log("Form openned");
+    populateDaysAndYears();
+  }
+
+  $("#myForm").submit(function (event) {
+    // prevent default html form submission action
+    //event.preventDefault();
+    event.preventDefault();
+    document.getElementById("date_combind").value = document.getElementById("daySelect").value + " " + document.getElementById("monthSelect").value + " " + document.getElementById("yearSelect").value
+    // Create a new FormData object
+    var formData = new FormData();
+    name_list = document.getElementById("name_list").value
+    name_list = name_list.split("\n")
+    console.log(name_list)
+    // Log the formData to verify its content
+    console.log(formData);
+
+    // Append the file to the FormData object
+    var file = $('input[name="doc_data"]')[0].files[0];
+    console.log("file :", file);
+    formData.append('doc_data', file);
+    formData.append('id', $('#doc_id').val());
+    // Add other form data to the FormData object
+    formData.append('subject', $('#descrip').val());
+    formData.append('doc_date', $('#date_combind').val());
+    formData.append('ref_num', $('#refer_num').val());
+    formData.append('ref_year', $('#yearSelect').val());
+    formData.append('name_list', name_list);
+    formData.append('user_id', 1);
+
+
+    console.log(formData);
+    var $form = $(this);
+    var url = $form.attr("action");
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log("send");
+        $('#modal-form').modal('toggle');
+        refresh();
+        resetForm();
+
+
+      },
+      error: function (error) {
+        console.error('Error', error);
+      }
+    });
+  });
+
 </script>
 
 

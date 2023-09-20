@@ -1,10 +1,9 @@
 // Generate pagination
-
-//const table = document.getElementById('document-list');
-var rowsPerPage = 10; // Number of rows per page
-var currentPage = 1;   // Current page
-var maxVisiblePages = 9; // Maximum number of visible pagination links
-var pageNumbers = document.getElementById('pageNumbers');
+// const table = document.getElementById('document-list');
+rowsPerPage = 10; // Number of rows per page
+currentPage = 1;   // Current page
+maxVisiblePages = 9; // Maximum number of visible pagination links
+pageNumbers = document.getElementById('pageNumbers');
 // Function to highlight the current page link
 function highlightCurrentPageLink() {
     const pageLinks = pageNumbers.getElementsByTagName('a');
@@ -21,19 +20,20 @@ function highlightCurrentPageLink() {
 
 // Function to show the specified page
 function showPage(page) {
-    const rows = document.getElementById("count_doc").innerHTML;
-    console.log("rows :",rows)
-    const totalPages = Math.floor(rows / rowsPerPage);
+    const body = document.getElementsByTagName('tbody')[0];
+    const rows = body.getElementsByTagName('tr');
+    console.log("rows :", rows.length)
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
 
-    // Hide all rows
-    //for (let i = 0; i < rows.length; i++) {
-       // rows[i].style.display = 'none';
-   // }
+    //Hide all rows
+    for (let i = 0; i < rows.length; i++) {
+        rows[i].style.display = 'none';
+    }
 
-    // Show rows for the current page
-   // for (let i = (page - 1) * rowsPerPage; i < page * rowsPerPage && i < rows.length; i++) {
-     //   rows[i].style.display = '';
-    //}
+    //Show rows for the current page
+    for (let i = (page - 1) * rowsPerPage; i < page * rowsPerPage && i < rows.length; i++) {
+        rows[i].style.display = '';
+    }
 
     // Generate pagination links
     pageNumbers.innerHTML = '';
@@ -108,23 +108,24 @@ function showPage(page) {
 }
 
 // Show the initial page
-// showPage(currentPage);
+showPage(currentPage);
 
-// // Handle previous page click
-// document.getElementById('prevPage').addEventListener('click', () => {
-//    if (currentPage > 1) {
-//        currentPage--;
-//        showPage(currentPage);
-//     }
-// });
+//Handle previous page click
+document.getElementById('prevPage').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+    }
+});
 
-// // Handle next page click
-//     document.getElementById('nextPage').addEventListener('click', () => {
-//     const rows = table.getElementsByTagName('tr');
-//     const totalPages = Math.ceil(rows.length / rowsPerPage);
+// Handle next page click
+document.getElementById('nextPage').addEventListener('click', () => {
+    const rows = document.getElementsByTagName('tr');
 
-//     if (currentPage < totalPages) {
-//        currentPage++;
-//         showPage(currentPage);
-//    }
-// });
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+    }
+});
