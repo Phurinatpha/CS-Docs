@@ -1,9 +1,9 @@
 // Generate pagination
-const table = document.getElementById('document-list');
-const rowsPerPage = 10; // Number of rows per page
-let currentPage = 1;   // Current page
-const maxVisiblePages = 9; // Maximum number of visible pagination links
-const pageNumbers = document.getElementById('pageNumbers');
+// const table = document.getElementById('document-list');
+rowsPerPage = 10; // Number of rows per page
+currentPage = 1;   // Current page
+maxVisiblePages = 9; // Maximum number of visible pagination links
+pageNumbers = document.getElementById('pageNumbers');
 // Function to highlight the current page link
 function highlightCurrentPageLink() {
     const pageLinks = pageNumbers.getElementsByTagName('a');
@@ -22,15 +22,15 @@ function highlightCurrentPageLink() {
 function showPage(page) {
     const body = document.getElementsByTagName('tbody')[0];
     const rows = body.getElementsByTagName('tr');
-    console.log("rows :",rows.length)
+    console.log("rows :", rows.length)
     const totalPages = Math.ceil(rows.length / rowsPerPage);
 
-     //Hide all rows
+    //Hide all rows
     for (let i = 0; i < rows.length; i++) {
         rows[i].style.display = 'none';
     }
 
-     //Show rows for the current page
+    //Show rows for the current page
     for (let i = (page - 1) * rowsPerPage; i < page * rowsPerPage && i < rows.length; i++) {
         rows[i].style.display = '';
     }
@@ -110,7 +110,7 @@ function showPage(page) {
 // Show the initial page
 showPage(currentPage);
 
- //Handle previous page click
+//Handle previous page click
 document.getElementById('prevPage').addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
@@ -119,10 +119,10 @@ document.getElementById('prevPage').addEventListener('click', () => {
 });
 
 // Handle next page click
-    document.getElementById('nextPage').addEventListener('click', () => {
-        const rows = document.getElementsByTagName('tr');
-        
-        const totalPages = Math.ceil(rows.length / rowsPerPage);
+document.getElementById('nextPage').addEventListener('click', () => {
+    const rows = document.getElementsByTagName('tr');
+
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
 
     if (currentPage < totalPages) {
         currentPage++;
