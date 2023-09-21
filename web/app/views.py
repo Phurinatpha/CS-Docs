@@ -44,6 +44,7 @@ def home():
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
+            app.logger.debug(user_data['firstname_TH'] + ' ' + user_data['lastname_TH'])
             return render_template("project/index_table.html")
         else:
             auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
