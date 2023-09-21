@@ -23,7 +23,7 @@ from app.models.Document import order_info, doc_info
 #     # user table, use it in the query for the user
 #     return AuthUser.query.get(int(user_id))
 
-client_id = 'RHUnMd53w7TbONbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
+client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
 client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
 
 # here is the proble check in oauth config
@@ -49,7 +49,7 @@ def home():
         auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
         return redirect(auth_url)
 
-@app.route('/oauthlogin')
+@app.route('/oauth/callback')
 def oauth_login():
     code = request.args.get('code')
     if code:
@@ -216,7 +216,7 @@ def remove():
         except Exception as ex:
             app.logger.debug(ex)
             raise
-    return home()
+    return index()
 
 @app.route('/search')
 def search():
