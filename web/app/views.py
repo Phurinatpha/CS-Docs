@@ -27,7 +27,7 @@ client_id = 'RHUnMd53w7TbONbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned
 client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
 
 # here is the proble check in oauth config
-redirect_uri = 'http://localhost/oauth/callback'  # redirect_uri (This should match your OAuth configuration) 
+redirect_uri = 'http://localhost:56789/oauth/callback'  # redirect_uri (This should match your OAuth configuration) 
 
 oauth_scope = "cmuitaccount.basicinfo"
 oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx"
