@@ -12,7 +12,6 @@ from flask_login import login_user, login_required, logout_user , current_user
 from app import app
 from app import db
 from app import login_manager
-from app import oauth
 
 from app.models.authuser import AuthUser
 from app.models.user import User
@@ -101,19 +100,7 @@ def get_user_data(access_token):
 @app.route('/index')
 def index(): 
     #fix here
-    if 'access_token' in session:
-        # User is already authenticated, retrieve user data
-        access_token = session['access_token']
-        user_data = get_user_data(access_token)
-        if user_data:
-            return jsonify(user_data)
-        else:
-            return 'Error fetching user data'
-    else:
-        # Redirect to the OAuth provider for authentication
-        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-        return redirect(auth_url)
-    # return render_template("project/index_table.html")
+    return render_template("project/index_table.html")
 
 @app.route('/base')
 def base():
@@ -225,7 +212,7 @@ def remove():
             if current_user.role == "admin":
                 db.session.delete(order)
                 db.session.delete(doc)
-                db.session.commit()
+            db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
             raise
@@ -403,53 +390,9 @@ def signup():
         return redirect(url_for('login'))
     return render_template('project/signup.html')
 
-@app.route('/oauthlogin')
-def oauth_login():
-    code = request.args.get('code')
-    if code:
-        # Exchange the authorization code for an access token
-        access_token = get_oauth_token(code)
-        if access_token:
-            # Store the access token in the session
-            session['access_token'] = access_token
-            return redirect(url_for('home'))
-        else:
-            return 'Error getting access token'
-    else:
-        error = request.args.get('error')
-        error_description = request.args.get('error_description')
-        return f'Error: {error}, Description: {error_description}'
-    
-def get_oauth_token(code):
-    payload = {
-        'code': code,
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'redirect_uri': redirect_uri,
-        'grant_type': 'authorization_code'
-    }
-    response = requests.post(oauth_token_url, data=payload)
-    if response.status_code == 200:
-        data = response.json()
-        return data.get('access_token')
-    else:
-        return None
-
-def get_user_data(access_token):
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Cache-Control': 'no-cache'
-    }
-    response = requests.get(wsapi_get_basicinfo_url, headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        return None
-
 @app.route('/logout')
 @login_required
 def logout():
-    session.clear()
     logout_user()
     session.clear()
 
@@ -460,4 +403,3 @@ def load_user(user_id):
     # since the user_id is just the primary key of our
     # user table, use it in the query for the user
     return AuthUser.query.get(int(user_id))
-
