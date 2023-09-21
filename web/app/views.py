@@ -17,13 +17,16 @@ from app.models.authuser import AuthUser
 from app.models.user import User
 from app.models.Document import order_info, doc_info
 
+import secrets
+import string
+
 # @login_manager.user_loader
 # def load_user(user_id):
 #     # since the user_id is just the primary key of our
 #     # user table, use it in the query for the user
 #     return AuthUser.query.get(int(user_id))
 
-client_id = 'RHUnMd53w7TbONbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
+client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
 client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
 
 # here is the proble check in oauth config
@@ -41,15 +44,16 @@ def home():
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
-            return jsonify(user_data)
+            return render_template("project/index_table.html")
         else:
-            return 'Error fetching user data'
+            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+            return redirect(auth_url)
     else:
         # Redirect to the OAuth provider for authentication
         auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
         return redirect(auth_url)
 
-@app.route('/oauthlogin')
+@app.route('/oauth/callback')
 def oauth_login():
     code = request.args.get('code')
     if code:
@@ -58,6 +62,27 @@ def oauth_login():
         if access_token:
             # Store the access token in the session
             session['access_token'] = access_token
+            user_data = get_user_data(access_token)
+            email = user_data.get('cmuitaccount')
+            firstname = user_data.get('firstname_TH')
+            lastname = user_data.get('lastname_TH')
+            role = user_data.get('itaccounttype_id')
+            user = AuthUser.query.filter_by(email=email).first()
+            
+            if not user:
+                random_pass_len = 8
+                password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
+                                for i in range(random_pass_len))
+                new_user = AuthUser(email=email,
+                                        password=generate_password_hash(
+                                            password, method='sha256'))
+                new_user_info = User(firstname=firstname,lastname=lastname,
+                                     role=role,email=email)
+                db.session.add(new_user)
+                db.session.add(new_user_info)
+                db.session.commit()
+                user = AuthUser.query.filter_by(email=email).first()
+            login_user(user)
             return redirect(url_for('home'))
         else:
             return 'Error getting access token'
@@ -66,10 +91,12 @@ def oauth_login():
         error_description = request.args.get('error_description')
         return f'Error: {error}, Description: {error_description}'
 
-# @app.route('/logout')
-# def logout():
-#     session.clear()
-#     return 'Logged out'
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    logout_user()
+    return redirect(url_for('home'))
 
 def get_oauth_token(code):
     payload = {
@@ -100,11 +127,35 @@ def get_user_data(access_token):
 @app.route('/index')
 def index(): 
     #fix here
-    return render_template("project/index_table.html")
+    if 'access_token' in session:
+        # User is already authenticated, retrieve user data
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        if user_data:
+            return render_template("project/index_table.html")
+        else:
+            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+            return redirect(auth_url)
+    else:
+        # Redirect to the OAuth provider for authentication
+        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+        return redirect(auth_url)
 
 @app.route('/base')
 def base():
-    return render_template("project/base.html")
+    if 'access_token' in session:
+        # User is already authenticated, retrieve user data
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        if user_data:
+            return render_template("project/base.html")
+        else:
+            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+            return redirect(auth_url)
+    else:
+        # Redirect to the OAuth provider for authentication
+        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+        return redirect(auth_url)
 
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
@@ -216,7 +267,7 @@ def remove():
         except Exception as ex:
             app.logger.debug(ex)
             raise
-    return home()
+    return index()
 
 @app.route('/search')
 def search():
@@ -390,13 +441,6 @@ def signup():
         return redirect(url_for('login'))
     return render_template('project/signup.html')
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    session.clear()
-
-    return redirect(url_for('home'))
 
 @login_manager.user_loader
 def load_user(user_id):
