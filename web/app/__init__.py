@@ -3,6 +3,7 @@ from flask import Flask
 from werkzeug.debug import DebuggedApplication
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from authlib.integrations.flask_client import OAuth
 app = Flask(__name__, static_folder='static')
 
 
@@ -19,6 +20,7 @@ if app.debug:
 
 # Creating an SQLAlchemy instance
 db = SQLAlchemy(app)
+oauth = OAuth(app)
 
 login_manager = LoginManager()
 login_manager.login_view = 'login'
