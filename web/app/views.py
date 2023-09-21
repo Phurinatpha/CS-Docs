@@ -1,5 +1,6 @@
 from io import BytesIO
-from flask import (jsonify, render_template,request, url_for, flash, redirect, send_file)
+from flask import jsonify, render_template,request, url_for, flash, redirect, send_file, session
+import requests
 import json
 import base64
 from sqlalchemy import desc
@@ -22,13 +23,84 @@ from app.models.Document import order_info, doc_info
 #     # user table, use it in the query for the user
 #     return AuthUser.query.get(int(user_id))
 
+client_id = 'RHUnMd53w7TbONbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
+client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
 
+# here is the proble check in oauth config
+redirect_uri = 'http://localhost/oauth/callback'  # redirect_uri (This should match your OAuth configuration) 
+
+oauth_scope = "cmuitaccount.basicinfo"
+oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx"
+oauth_token_url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
+wsapi_get_basicinfo_url = "https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo"
 
 @app.route('/')
-def home(): 
+def home():
+    if 'access_token' in session:
+        # User is already authenticated, retrieve user data
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        if user_data:
+            return jsonify(user_data)
+        else:
+            return 'Error fetching user data'
+    else:
+        # Redirect to the OAuth provider for authentication
+        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+        return redirect(auth_url)
+
+@app.route('/oauthlogin')
+def oauth_login():
+    code = request.args.get('code')
+    if code:
+        # Exchange the authorization code for an access token
+        access_token = get_oauth_token(code)
+        if access_token:
+            # Store the access token in the session
+            session['access_token'] = access_token
+            return redirect(url_for('home'))
+        else:
+            return 'Error getting access token'
+    else:
+        error = request.args.get('error')
+        error_description = request.args.get('error_description')
+        return f'Error: {error}, Description: {error_description}'
+
+# @app.route('/logout')
+# def logout():
+#     session.clear()
+#     return 'Logged out'
+
+def get_oauth_token(code):
+    payload = {
+        'code': code,
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_uri,
+        'grant_type': 'authorization_code'
+    }
+    response = requests.post(oauth_token_url, data=payload)
+    if response.status_code == 200:
+        data = response.json()
+        return data.get('access_token')
+    else:
+        return None
+
+def get_user_data(access_token):
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Cache-Control': 'no-cache'
+    }
+    response = requests.get(wsapi_get_basicinfo_url, headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+@app.route('/index')
+def index(): 
     #fix here
     return render_template("project/index_table.html")
-
 
 @app.route('/base')
 def base():
@@ -100,9 +172,9 @@ def form():
                     doc_data=doc_content
                     )
             db.session.commit()
-            return home()
+            return index()
 
-        return home()  
+        return index()  
     return render_template("project/form.html")
 
 @app.route('/preview_pdf', methods=('GET', 'POST'))
@@ -322,7 +394,9 @@ def signup():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    session.clear()
+
+    return redirect(url_for('home'))
 
 @login_manager.user_loader
 def load_user(user_id):
