@@ -1,9 +1,9 @@
 // Generate pagination
 // const table = document.getElementById('document-list');
-rowsPerPage = 10; // Number of rows per page
-currentPage = 1;   // Current page
-maxVisiblePages = 9; // Maximum number of visible pagination links
-pageNumbers = document.getElementById('pageNumbers');
+var rowsPerPage = 10; // Number of rows per page
+var currentPage = 1;   // Current page
+var maxVisiblePages = 9; // Maximum number of visible pagination links
+var pageNumbers = document.getElementById('pageNumbers');
 // Function to highlight the current page link
 function highlightCurrentPageLink() {
     const pageLinks = pageNumbers.getElementsByTagName('a');

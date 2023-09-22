@@ -18,9 +18,7 @@ class User (db.Model, SerializerMixin):
         self.email = email
         
     
-    def update(self, firstname, lastname,role,email):
-        self.firstname = firstname
-        self.lastname = lastname
+    def update(self,role,email):
         self.role = role
         self.email = email
     def get_name(self):

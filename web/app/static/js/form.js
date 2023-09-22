@@ -78,24 +78,24 @@ $(document).ready(function () {
     // prevent default html form submission action
     //event.preventDefault();
     event.preventDefault();
-    document.getElementById("date_combind").value = document.getElementById("daySelect").value + " " + document.getElementById("monthSelect").value + " " + document.getElementById("yearSelect").value
+    ori_date = document.getElementById("thaiDatePicker").value
+    str_date = ori_date.split("/");
+    date = str_date[2]+"-"+str_date[1]+"-"+str_date[0]
+    console.log("date :",date);
     // Create a new FormData object
     var formData = new FormData();
     name_list = document.getElementById("name_list").value
     name_list = name_list.split("\n")
     console.log(name_list)
-    // Log the formData to verify its content
-    console.log(formData);
-
     // Append the file to the FormData object
     var file = $('input[name="doc_data"]')[0].files[0];
     formData.append('doc_data', file);
 
     // Add other form data to the FormData object
     formData.append('subject', $('#descrip').val());
-    formData.append('doc_date', $('#date_combind').val());
+    formData.append('doc_date', date);
     formData.append('ref_num', $('#refer_num').val());
-    formData.append('ref_year', $('#yearSelect').val());
+    formData.append('ref_year', str_date[2]);
     formData.append('name_list', name_list);
     formData.append('user_id', 1);
 
@@ -110,7 +110,9 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       success: function (response) {
+        $('#modal-form').modal('toggle');
         resetForm();
+        refresh();
 
       },
       error: function (error) {

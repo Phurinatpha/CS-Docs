@@ -7,7 +7,7 @@ class order_info(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(500))
-    doc_date = db.Column(db.String(200))
+    doc_date = db.Column(db.Date)
     ref_num = db.Column(db.Integer)
     ref_year = db.Column(db.Integer)
     ref_name = db.Column(db.ARRAY(db.String))

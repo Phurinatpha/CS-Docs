@@ -108,8 +108,8 @@
   <script>
     
 
-
-  function open_pdf(x){
+//this function use to open pdf file on clip icons
+  function open_pdf(x,row){
       console.log("will open pdf soon")
       event.preventDefault();
       id  = x
@@ -124,25 +124,35 @@
         contentType: false,
         processData: false,
         success: function(response) {
-          //console.log('Success', response);
-          var resData = response.doc_file ;
-          //const encoder = new TextEncoder();
-          //const utf8Encoded = encoder.encode(resData);
-          pdf_data = atob(resData);
-          var fileName = response.doc_name ;
-          var byteNumbers = new Array(pdf_data.length);
-          for (var i = 0; i < pdf_data.length; i++) {
-            byteNumbers[i] = pdf_data.charCodeAt(i);
-          }
-          console.log(fileName);
-          console.log(byteNumbers);
-          openPDF(byteNumbers, fileName);
+            var resData = response.doc_file ;
+            pdf_data = atob(resData);
+            var fileName = response.doc_name ;
+            var byteNumbers = new Array(pdf_data.length);
+            for (var i = 0; i < pdf_data.length; i++) {
+              byteNumbers[i] = pdf_data.charCodeAt(i);
+            }
+            openPDF(byteNumbers, fileName);
         },
         error: function(error) {
-          console.error('Error', error);
-        }
-      });
-    }
+          Swal.fire({
+            titleText: 'ไม่พบไฟล์ต้องการเพิ่มหรือไม่ ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#BABABA',
+            confirmButtonText: 'ต้องการ',
+            cancelButtonText: 'ปิด',
+          }).then((result) => {
+            if (result.isConfirmed) {
+              prePopulateForm(row);
+              $("#modal-form").modal();
+                }
+              });
+          }
+          
+        });
+      }
+
 
   function openPDF(resData, fileName) {
     var ieEDGE = navigator.userAgent.match(/Edge/g);
@@ -161,11 +171,12 @@
 
     }
   }
+//preload pdf name on prepopulate document form
   function preload_pdf(x){
     event.preventDefault();
     id  = x
     fileName = "";
-    console.log("id ="+id);
+    
     var url = "/preview_pdf"
     var formData = new FormData();
     formData.append('id', id)
@@ -177,7 +188,6 @@
       processData: false,
       async: false,
       success: function(response) {
-        //console.log('Success', response);
         fileName = response.doc_name ;
         
       }

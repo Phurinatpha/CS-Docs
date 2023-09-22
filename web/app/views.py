@@ -220,16 +220,12 @@ def user_form():
                 email=validated_dict['email']
                 )
                 db.session.add(user_entry)
-            # else:
-            #     order = order_info.query.get(id_)
-            #     order_entry = order.update(
-            #     subject=validated_dict['subject'],
-            #     doc_date=validated_dict['doc_date'],
-            #     ref_num=validated_dict['ref_num'],
-            #     ref_year=validated_dict['ref_year'],
-            #     ref_name=name_list,
-            #     user_id=validated_dict['user_id']
-            #     )
+            else:
+                user = User.query.get(id_)
+                user_entry = user.update(
+                email=validated_dict['email'],
+                role=validated_dict['role']
+                )
             #     if doc_data != None :
             #         doc_content = doc_data.read()
             #         doc = doc_info.query.filter(doc_info.order_id == id_).first()   
@@ -256,12 +252,11 @@ def doc_data():
 def data():
     documents = []
     db_documents = order_info.query.order_by(desc(order_info.id))
-    
     #db_documents = order_info.query.latest()
-     #db_documents = db_documents.limit(10)
+    #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry")
-    
+
     return jsonify(documents)
     #if request.method == 'POST':
        # documents = []
@@ -279,6 +274,22 @@ def data():
         # documents = list(map(lambda x: x.to_dict(), db_documents))
         # app.logger.debug("documents =", documents)
         # return jsonify(documents)
+
+@app.route('/user_delete', methods=('GET', 'POST'))
+def user_remove():
+    if request.method == 'POST':
+        result = request.form.to_dict()
+        app.logger.debug(result)
+        id_ = result.get('id', '')
+        try:
+            #contact = Contact.query.get(id_)
+            order = User.query.get(id_)
+            db.session.delete(order)
+            db.session.commit()
+        except Exception as ex:
+            app.logger.debug(ex)
+            raise
+    return home()
 
 @app.route('/download/<int:doc_id>')
 def download(doc_id):

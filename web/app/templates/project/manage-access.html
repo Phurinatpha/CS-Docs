@@ -103,7 +103,7 @@
         <div class="col-md-12" style="margin-bottom: 30px;">
             <div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="access-table">
+                    <table class="table table-striped" id="access-table" data-searchable="true">
                         <thead>
                             <tr>
                                 <th class="text-center" data-formatter="runningFormatter">
@@ -137,7 +137,7 @@
                                 </th>
 
                                 <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                                    >
+                                data-events="operateEvents">
                                     <span class="text">
                                         แก้ไขสิทธิ์การเข้าถึง
                                     </span>
@@ -170,13 +170,18 @@
 
         });
         $('#access-table').bootstrapTable('refreshOptions',{
-        filterOptions: {
-            'filterAlgorithm': (row, filters) => {
-              return row.name != " "
+            filterOptions: {
+                filterAlgorithm: function(row, filters){
+                    return row.name != " "
+                }
             }
-        }
-        })
+            });
+
         $('#access-table').bootstrapTable('hideColumn', 'id');
+        console.log("tr :", document.getElementsByTagName('tr').length);
+        var js = document.createElement("script");
+        js.src = "/static/js/pagination.js";
+        document.head.appendChild(js);
     }
 
     $(document).ready(function () {
@@ -195,7 +200,65 @@
     function runningFormatter(value, row, index) {
         return index+1;
       } 
+      //edit and delete button
+    function edit_del_Formatter(value, row, index) {
+        return [
+            '<div class="btn-edit-del" >',
+            '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+            '<button class="user_delete btn-del"  >', 'ลบ', '</button>',
+            '</div>'
 
+        ].join('')
+    }
+
+    
+    //This part must be edit with user db
+    window.operateEvents = {
+        'click .user_delete': function (e, value, row, index) {
+            console.log("delete");
+            //delete_button_sweet(row.id);
+            user_delete_sweet(row.id);
+        },
+        'click .user_edit': function (e, value, row, index) {
+            prePopulateForm(row);
+        }
+    }
+
+    function prePopulateForm(row) {
+        document.getElementById('user_form').reset();
+        $('#user_id').val(row.id);
+        email = row.email.split("@");
+        $('#input-email').val(email[0]);
+        if (row.role == "ธุรการ"){
+            document.getElementById("admin").checked = true ;
+        }
+        else{
+            document.getElementById("user").checked = true ;
+        }
+
+    }
+
+    function delete_user(id) {
+        event.preventDefault();
+        del = id
+        var url = "/user_delete"
+        var formData = new FormData();
+        formData.append('id', del)
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (response) {
+            //console.log('Success', response);
+            console.log("deleted!!");
+          },
+          error: function (error) {
+            console.error('Error', error);
+          }
+        });
+      }
 
       $("#user_form").submit(function (event) {
         // prevent default html form submission action
@@ -209,9 +272,6 @@
         }
         console.log(role);
         formData.append('id', $('#user_id').val());
-        // Add other form data to the FormData object
-        //formData.append('firstname', $('#input-fname').val());
-        //formData.append('lastname', $('#input-lname').val());
         formData.append('role', role);
         formData.append('email', $('#input-email').val()+"@cmu.ac.th");
         console.log(formData);  
@@ -227,6 +287,7 @@
           console.log("send");
           $('#modal-user-form').modal('toggle');
           
+          document.getElementById('user_form').reset();
             
           },
           error: function(error) {

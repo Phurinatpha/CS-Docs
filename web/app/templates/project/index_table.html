@@ -39,12 +39,12 @@
                 <div class="tab" id="tab-1">
                   <div class="tab-container">
                     <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
-            
-                    <div class="form-group">
+
+                      <div class="form-group">
                       <label>เลขที่คำสั่ง</label>
-                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" required>
-                    </div>
-            
+                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
+                      </div>
+
                     <div class="form-group">
                       <label>เอกสารลงวันที่</label>
                       <!--this input is id of order_table-->
@@ -152,7 +152,7 @@
           <div class="col-md-12" style="margin-bottom: 30px;">
                 <div>
                     <div class="table-responsive">
-                        <table class="table table-striped" data-search="true" id="document-table"  >
+                        <table class="table table-striped" data-search="true" data-searchable="true" id="document-table"  >
                             <thead>
                                 <tr>
                                     <th class="text-center" data-formatter="runningFormatter">
@@ -319,7 +319,7 @@
   //maybe this function is not use
   function refresh() {
     $.getJSON("/document", refresh_table);
-
+    
   }
 
   function refresh_table(document_data) {
@@ -350,11 +350,13 @@
   function runningFormatter(value, row, index) {
     return index + 1;
   }
+
   window.clip_icon_Events = {
     'click .pdf_viewer': function (e, value, row, index) {
-      open_pdf(row.id);
+      open_pdf(row.id,row);
     }
   }
+
   window.operateEvents = {
     'click .doc_delete': function (e, value, row, index) {
       delete_button_sweet(row.id);
@@ -364,6 +366,7 @@
 
     }
   }
+
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
     $('#doc_id').val(row.id);
@@ -380,13 +383,14 @@
     $('#name_list').val(str_ref_name);
     uploadedFileName = preload_pdf(row.id);
     console.log(uploadedFileName);
-    var uploadedFileContainer = document.getElementById('uploaded-file-container');
-    var dragAndDropZone = document.getElementById('drag-and-drop');
-    uploadedFileName = preload_pdf(row.id);// Store the uploaded file name in the global variable
-    document.getElementById('uploaded-file-name').textContent = uploadedFileName;
-    uploadedFileContainer.style.display = 'block';
-    dragAndDropZone.style.display = 'none';
-
+    if (uploadedFileName != ""){
+      var uploadedFileContainer = document.getElementById('uploaded-file-container');
+      var dragAndDropZone = document.getElementById('drag-and-drop');
+      uploadedFileName = preload_pdf(row.id);// Store the uploaded file name in the global variable
+      document.getElementById('uploaded-file-name').textContent = uploadedFileName;
+      uploadedFileContainer.style.display = 'block';
+      dragAndDropZone.style.display = 'none';
+    }
   }
 
 
@@ -430,54 +434,8 @@
     });
   }
 
-  $("#myForm").submit(function (event) {
-    // prevent default html form submission action
-    //event.preventDefault();
-    event.preventDefault();
-    document.getElementById("date_combind").value = document.getElementById("daySelect").value + " " + document.getElementById("monthSelect").value + " " + document.getElementById("yearSelect").value
-    // Create a new FormData object
-    var formData = new FormData();
-    name_list = document.getElementById("name_list").value
-    name_list = name_list.split("\n")
-    console.log(name_list)
-    // Log the formData to verify its content
-    console.log(formData);
+  
 
-    // Append the file to the FormData object
-    var file = $('input[name="doc_data"]')[0].files[0];
-    console.log("file :", file);
-    formData.append('doc_data', file);
-    formData.append('id', $('#doc_id').val());
-    // Add other form data to the FormData object
-    formData.append('subject', $('#descrip').val());
-    formData.append('doc_date', $('#date_combind').val());
-    formData.append('ref_year', $('#yearSelect').val());
-    formData.append('name_list', name_list);
-    formData.append('user_id', 1);
-
-
-    console.log(formData);
-    var $form = $(this);
-    var url = $form.attr("action");
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log("send");
-        $('#modal-form').modal('toggle');
-        refresh();
-        resetForm();
-
-
-      },
-      error: function (error) {
-        console.error('Error', error);
-      }
-    });
-  });
   $('#document-table').on('search.bs.table', function () {
     showPage(1);
   });
