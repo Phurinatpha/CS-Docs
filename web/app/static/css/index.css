@@ -63,8 +63,48 @@
   display: table-cell;
 }
 
+.sub-doc-header {
+  /* for mobile responsive remove display: flex */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
 .sub-doc {
   font-size: 18px;
+}
+
+.doc-search {
+  position: relative;
+   /* for mobile responsive set width to 100% */
+  width: 25%;
+ 
+}
+
+#customSearch {
+  font-size: 16px;
+  width: 100%;
+  height: 35px;
+  padding: 0px 20px 0px 40px; /* Adjust the padding as needed */
+  text-align: center;
+}
+
+.doc-search .bi-search {
+  position: absolute;
+  top: 5%;
+  left: 20px; /* Adjust the left position as needed */
+  font-size: 18px;
+  color: #022851; /* Adjust the icon color as needed */
+  cursor: pointer;
+}
+.doc-search .bi-plus{
+  position: absolute;
+  top: 5%;
+  right: 10px; 
+  font-size: 18px; 
+  color: #000; 
+
 }
 
 #all-doc,
@@ -89,16 +129,6 @@
   /* margin-bottom: 120px; */
 }
 
-.fixed-table-toolbar{
-   display:inline;
-  /* display: flex;
-  justify-content: flex-end; */
-}
-
-.bootstrap-table.bootstrap5 .float-right {
-  float: right;
-  width: 50%;
-}
 
 .table th {
   background-color: #022851;
