@@ -1,3 +1,7 @@
+html * {
+  font-family: 'Sarabun', sans-serif;
+}
+
 body {
   background: #ffffff;
   min-height: 100vh;
@@ -7,7 +11,7 @@ body {
 
 
 .container {
-  padding: 0px 10px 0px 10px;
+  padding: 0px 30px 0px 30px;
 }
 
 /*-----------------------------------Navbar-----------------------------------*/
@@ -16,7 +20,7 @@ body {
 }
 
 .navbar .container {
-  padding: 0px 20px 0px 20px;
+  padding: 0px 30px 0px 30px;
 }
 
 .navbar-collapse {

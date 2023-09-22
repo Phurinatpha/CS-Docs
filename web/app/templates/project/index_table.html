@@ -6,13 +6,13 @@
   <div class="row" style="padding-top: 20px;">
     <div class="col-md-6">
       <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal"
-        data-target=".bd-modal-xl">
+        data-target=".modal">
         <i class="bi bi-plus-circle-fill"></i>
         สร้างคำสั่ง
       </button>
       <!-- Modal zone -->
-      <div class="modal fade bd-modal-xl" id="modal-form" data-keyboard="false">
-        <div class="modal-dialog modal-xl">
+      <div class="modal fade" id="modal-form" data-keyboard="false">
+        <div class="modal-dialog modal-full">
           <div class="modal-content">
 
 
@@ -30,10 +30,10 @@
                   <div class="tab-container">
                     <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
 
-                    <!--<div class="form-group">
-                      <label>เลขที่คำสั่ง</label>-->
-                      <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
-                    <!--</div>-->
+                    <div class="form-group">
+                      <label>เลขที่คำสั่ง</label>
+                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" readonly>
+                    </div>
 
                     <div class="form-group">
                       <label>เอกสารลงวันที่</label>
@@ -157,7 +157,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+          <div class="col-md-12" style="margin-bottom: 30px;">
                 <div>
                     <div class="table-responsive">
                         <table class="table table-striped" data-search="true" id="document-table"  >
@@ -206,7 +206,7 @@
                                     <!--dataFormat-->
                                     <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter" data-events="operateEvents"   >
                                         <span class="text">
-                                            
+                                          แก้ไข / ลบ
                                         </span>
                                     </th>
                                 </tr>

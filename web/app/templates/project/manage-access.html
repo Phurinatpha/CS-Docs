@@ -98,9 +98,9 @@
             <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด <span id="user-count"></span> คน แสดงหน้าละ <span
                     id="show-per-page">10</span> รายการ</p>
         </div>
-    </div>
+    
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom: 30px;">
             <div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="access-table">
@@ -234,6 +234,30 @@
           }
         });
         });
+
+        //edit and delete button
+    function edit_del_Formatter(value, row, index) {
+        return [
+            '<div class="btn-edit-del" >',
+            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+            '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
+            '</div>'
+
+        ].join('')
+    }
+
+    //This part must be edit with user db
+    window.operateEvents = {
+        'click .doc_delete': function (e, value, row, index) {
+            console.log("delete");
+            delete_button_sweet(row.id);
+        },
+        'click .doc_edit': function (e, value, row, index) {
+            console.log("edit");
+            prePopulateForm(row);
+
+        }
+    }
 </script>
 
 
