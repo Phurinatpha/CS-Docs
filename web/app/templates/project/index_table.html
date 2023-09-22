@@ -363,11 +363,9 @@
   }
   window.operateEvents = {
     'click .doc_delete': function (e, value, row, index) {
-      console.log("delete");
       delete_button_sweet(row.id);
     },
     'click .doc_edit': function (e, value, row, index) {
-      console.log("edit");
       prePopulateForm(row);
 
     }

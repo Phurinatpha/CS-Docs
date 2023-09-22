@@ -51,8 +51,7 @@ class doc_info(db.Model, SerializerMixin):
         self.order_id = order_id
         self.filename = filename
         self.doc_data = doc_data
-    def update(self,  filename, doc_data):
-        self.filename = filename
+    def update(self,  doc_data):
         self.doc_data = doc_data
     
     def to_dict(self):

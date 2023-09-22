@@ -38,9 +38,12 @@ def form():
     if request.method == 'POST':
         doc_data = request.files.get('doc_data')
         app.logger.debug("doc data :",doc_data)
-        app.logger.debug("posted activate")
         validated = True
         validated_dict = dict()
+        now = datetime.datetime.now()
+                # Read the contents of the uploaded file as bytes
+        ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
+
         valid_keys = ['subject', 'doc_date' ,'ref_year','user_id']
 
         # Access the uploaded file using request.files
@@ -62,15 +65,10 @@ def form():
 
         if validated:
             if not id_:
-                now = datetime.datetime.now()
-                # Read the contents of the uploaded file as bytes
-                doc_content = doc_data.read()
-                ref_num = db_documents = order_info.query.order_by(desc(order_info.id)).first().ref_num
                 if int(validated_dict['ref_year']) == now.year: 
                     ref_num += 1
                 else:
                     ref_num = 1
-                # Create a new Document object with the uploaded file
                 order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
@@ -81,12 +79,14 @@ def form():
                 )
                 db.session.add(order_entry)
                 db.session.commit()
-                doc_entry = doc_info(
-                order_id = order_entry.id,
-                filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
-                doc_data=doc_content
+                if doc_data != None :
+                    doc_content = doc_data.read()
+                    doc_entry = doc_info(
+                    order_id = order_entry.id,
+                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    doc_data=doc_content
                 )
-                db.session.add(doc_entry)   
+                    db.session.add(doc_entry)   
             else:
                 order = order_info.query.get(id_)
                 order_entry = order.update(
@@ -98,11 +98,18 @@ def form():
                 )
                 if doc_data != None :
                     doc_content = doc_data.read()
-                    doc = doc_info.query.filter(doc_info.order_id == id_).first()   
-                    doc_entry = doc.update(
-                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-                    doc_data=doc_content
-                    )
+                    doc = doc_info.query.filter(doc_info.order_id == id_).first()
+                    if doc != None: 
+                        doc_entry = doc.update(
+                        doc_data=doc_content
+                        )
+                    else:
+                        doc_entry = doc_info(
+                        order_id = order.id,
+                        filename= str(order.ref_num)+"/"+str(order.ref_year),
+                        doc_data=doc_content)
+                        db.session.add(doc_entry)
+
             db.session.commit()
             return home()
 
@@ -141,8 +148,10 @@ def remove():
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
+            app.logger.debug("doc :",doc)
+            if doc != None:
+                db.session.delete(doc)
             db.session.delete(order)
-            db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
