@@ -23,10 +23,9 @@ class order_info(db.Model, SerializerMixin):
 
 
 
-    def update(self, subject, doc_date, ref_num, ref_year, ref_name,user_id):
+    def update(self, subject, doc_date,  ref_year, ref_name,user_id):
         self.subject = subject
         self.doc_date = doc_date
-        self.ref_num = ref_num
         self.ref_year = ref_year
         self.ref_name = ref_name
         self.user_id = user_id
@@ -36,7 +35,7 @@ class order_info(db.Model, SerializerMixin):
             'ref_num': str(self.ref_num)+"/"+str(self.ref_year),
             'subject': self.subject,
             'doc_date': self.doc_date,
-            'ref_name': self.ref_name,
+            'ref_name': ','.join([str(elem) for elem in self.ref_name]),
             'user_name' : User.get_name(User.query.get(self.user_id))
         }
 class doc_info(db.Model, SerializerMixin):
@@ -52,8 +51,7 @@ class doc_info(db.Model, SerializerMixin):
         self.order_id = order_id
         self.filename = filename
         self.doc_data = doc_data
-    def update(self,  filename, doc_data):
-        self.filename = filename
+    def update(self,  doc_data):
         self.doc_data = doc_data
     
     def to_dict(self):

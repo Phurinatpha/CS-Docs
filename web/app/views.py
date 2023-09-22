@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from sqlalchemy.sql import text
 # from flask_login import login_user, login_required, logout_user , current_user
-
+import datetime
 from app import app
 from app import db
 # from app import login_manager
@@ -38,10 +38,13 @@ def form():
     if request.method == 'POST':
         doc_data = request.files.get('doc_data')
         app.logger.debug("doc data :",doc_data)
-        app.logger.debug("posted activate")
         validated = True
         validated_dict = dict()
-        valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','user_id']
+        now = datetime.datetime.now()
+                # Read the contents of the uploaded file as bytes
+        ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
+
+        valid_keys = ['subject', 'doc_date' ,'ref_year','user_id']
 
         # Access the uploaded file using request.files
         name_list =  request.form.get('name_list')
@@ -62,42 +65,51 @@ def form():
 
         if validated:
             if not id_:
-                # Read the contents of the uploaded file as bytes
-                doc_content = doc_data.read()
-                # Create a new Document object with the uploaded file
+                if int(validated_dict['ref_year']) == now.year: 
+                    ref_num += 1
+                else:
+                    ref_num = 1
                 order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
-                ref_num=validated_dict['ref_num'],
+                ref_num=    ref_num,
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
                 )
                 db.session.add(order_entry)
                 db.session.commit()
-                doc_entry = doc_info(
-                order_id = order_entry.id,
-                filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-                doc_data=doc_content
+                if doc_data != None :
+                    doc_content = doc_data.read()
+                    doc_entry = doc_info(
+                    order_id = order_entry.id,
+                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    doc_data=doc_content
                 )
-                db.session.add(doc_entry)   
+                    db.session.add(doc_entry)   
             else:
                 order = order_info.query.get(id_)
                 order_entry = order.update(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
-                ref_num=validated_dict['ref_num'],
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
                 )
                 if doc_data != None :
                     doc_content = doc_data.read()
-                    doc = doc_info.query.filter(doc_info.order_id == id_).first()   
-                    doc_entry = doc.update(
-                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-                    doc_data=doc_content
-                    )
+                    doc = doc_info.query.filter(doc_info.order_id == id_).first()
+                    if doc != None: 
+                        doc_entry = doc.update(
+                        doc_data=doc_content
+                        )
+                    else:
+                        doc_entry = doc_info(
+                        order_id = order.id,
+                        filename= str(order.ref_num)+"/"+str(order.ref_year),
+                        doc_data=doc_content)
+                        db.session.add(doc_entry)
+
             db.session.commit()
             return home()
 
@@ -136,8 +148,10 @@ def remove():
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
+            app.logger.debug("doc :",doc)
+            if doc != None:
+                db.session.delete(doc)
             db.session.delete(order)
-            db.session.delete(doc)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
@@ -170,9 +184,65 @@ def user_data():
     documents = []
     db_documents = User.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    app.logger.debug(str(len(documents)) + " already entry")
- 
+    app.logger.debug(str(len(documents)) + " already entry") 
     return jsonify(documents)
+
+@app.route('/user_form' , methods=('GET', 'POST'))
+def user_form():
+    if request.method == 'POST':
+        app.logger.debug("posted activate")
+        validated = True
+        validated_dict = dict()
+        valid_keys = ['role','email']
+
+        # Access the uploaded file using request.files
+        id_ = request.form.get('id','')
+        # validate the input
+        for key in request.form:
+            app.logger.debug(key)
+            if key not in valid_keys:
+                continue
+            value = request.form[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            app.logger.debug(value)
+            validated_dict[key] = value
+
+        if validated:
+            if not id_:
+                app.logger.debug("add new user")
+                # Create a new Document object with the uploaded file
+                user_entry = User(
+                firstname="",
+                lastname="",
+                role=validated_dict['role'],
+                email=validated_dict['email']
+                )
+                db.session.add(user_entry)
+            # else:
+            #     order = order_info.query.get(id_)
+            #     order_entry = order.update(
+            #     subject=validated_dict['subject'],
+            #     doc_date=validated_dict['doc_date'],
+            #     ref_num=validated_dict['ref_num'],
+            #     ref_year=validated_dict['ref_year'],
+            #     ref_name=name_list,
+            #     user_id=validated_dict['user_id']
+            #     )
+            #     if doc_data != None :
+            #         doc_content = doc_data.read()
+            #         doc = doc_info.query.filter(doc_info.order_id == id_).first()   
+            #         doc_entry = doc.update(
+            #         filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+            #         doc_data=doc_content
+            #         )
+            db.session.commit()
+            return home()
+
+        return home()  
+    return ''
+
 @app.route("/data")
 def doc_data():
     documents = []
@@ -186,6 +256,8 @@ def doc_data():
 def data():
     documents = []
     db_documents = order_info.query.order_by(desc(order_info.id))
+    
+    #db_documents = order_info.query.latest()
      #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry")
@@ -225,4 +297,5 @@ def download(doc_id):
 # @app.route('/dashboard')
 # def dashboard():
 #     return 
+
 

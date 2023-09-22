@@ -1,6 +1,4 @@
-html * {
-  font-family: 'Sarabun', sans-serif;
-}
+
 
 /*-----------------------------------Three main buttons-----------------------------------*/
 .btn-act {
@@ -71,9 +69,12 @@ html * {
 
 #all-doc,
 #all-founded,
+#count_doc,
 #show-per-page {
   color: red;
 }
+
+
 
 /*-----------------------------------Table-----------------------------------*/
 .table-container {
@@ -86,6 +87,17 @@ html * {
   /* For making space between table and footer */
   /* Might remove when add nav page */
   /* margin-bottom: 120px; */
+}
+
+.fixed-table-toolbar{
+   display:inline;
+  /* display: flex;
+  justify-content: flex-end; */
+}
+
+.bootstrap-table.bootstrap5 .float-right {
+  float: right;
+  width: 50%;
 }
 
 .table th {
@@ -142,6 +154,7 @@ h2 {
   padding-top: 0px;
   margin-bottom: 7px;
   border-radius: 7px;
+  margin-top: 5%;
   border: none;
   color: #ffffff;
   background-color: #FAA849;
@@ -152,7 +165,7 @@ h2 {
   width: 130px;
   padding: 0px;
   padding-top: 0px;
-  margin-bottom: 20%;
+  margin-bottom: 5%;
   border-radius: 7px;
   border: none;
   color: #ffffff;

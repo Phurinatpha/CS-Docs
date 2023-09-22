@@ -16,13 +16,13 @@
   <div class="row" style="padding-top: 20px;">
     <div class="col-md-6">
       <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal"
-        data-target=".bd-modal-xl">
+        data-target=".modal">
         <i class="bi bi-plus-circle-fill"></i>
         สร้างคำสั่ง
       </button>
       <!-- Modal zone -->
-      <div class="modal fade bd-modal-xl" id="modal-form" data-keyboard="false">
-        <div class="modal-dialog modal-xl">
+      <div class="modal fade" id="modal-form" data-keyboard="false">
+        <div class="modal-dialog modal-full">
           <div class="modal-content">
 
 
@@ -42,7 +42,7 @@
             
                     <div class="form-group">
                       <label>เลขที่คำสั่ง</label>
-                      <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" required>
+                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" required>
                     </div>
             
                     <div class="form-group">
@@ -140,79 +140,81 @@
 </div>
 
 <div class="table-container">
-  <div class="container">
-    <div class="col-md-12" style="margin-top: 30px;">
-      <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
-      <div>
-        <p class="sub-doc">มีเอกสารทั้งหมด <span id="count_doc"></span> รายการ แสดงหน้าละ <span
-            id="show-per-page">10</span> รายการ</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div>
-          <div class="table-responsive">
-            <table class="table table-striped" data-search="true" id="document-table">
-              <thead>
-                <tr>
-                  <th class="text-center" data-formatter="runningFormatter">
-                    <span class="text">
-                      ลำดับ
-                    </span>
-                  </th>
-                  <th data-field="id">
-                    <span class="text">
-                      id
-                    </span>
-                  </th>
-                  <th class="text-center" style="width: 100px;" data-field="ref_num">
-                    <span class="text">
-                      เลขคําสั่ง
-                    </span>
-                  </th>
-                  <th class="text-center" style="width: 480px;" data-field="subject">
-                    <span class="text">
-                      เรื่อง
-                    </span>
-                  </th>
-                  <th class="text-center" data-field="user_name">
-                    <span class="text">
-                      ผู้สร้างเอกสาร
-                    </span>
-                  </th>
-                  <th class="text-center" data-field="doc_date">
-                    <span class="text">
-                      วันที่ออกคำสั่ง
-                    </span>
-                  </th>
-                  <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
-                    data-events="clip_icon_Events">
-                    <span class="text">
-                      ไฟล์แนบ
-                    </span>
-                  </th>
-                  <!--dataFormat-->
-                  <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                    data-events="operateEvents">
-                    <span class="text">
-
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-            </table>
-          </div>
-          <div class="text-center">
-            <div class="spinner-border text-primary"
-              style="width: 3rem; height: 3rem;  border:solid 5px #fff;  border-bottom-color: #022851;" id="spinner"
-              role="status">
-              <span class="sr-only c"></span>
+    <div class="container">
+        <div class="col-md-12" style="margin-top: 30px;">
+            <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
+            <div>
+                <p class="sub-doc">มีเอกสารทั้งหมด <span id="count_doc"></span> รายการ แสดงหน้าละ <span
+                        id="show-per-page">10</span> รายการ</p>
             </div>
-          </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col-md-12" style="margin-bottom: 30px;">
+                <div>
+                    <div class="table-responsive">
+                        <table class="table table-striped" data-search="true" id="document-table"  >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-formatter="runningFormatter">
+                                    <span class="text">
+                                        ลำดับ
+                                      </span>
+                                    </th>  
+                                    <th data-field="id" hidden> 
+                                        <span class="text">
+                                            id
+                                          </span>
+                                    </th>
+                                    <th class="text-center" style="width: 100px;" data-field="ref_num">
+                                    <span class="text">
+                                        เลขคําสั่ง
+                                    </span>
+                                    </th>
+                                    <th class="text-center" style="width: 480px;" data-field="subject">
+                                    <span class="text">
+                                        เรื่อง
+                                    </span>
+                                    </th>
+                                    <th class="text-center" data-field="user_name">
+                                        <span class="text">
+                                            ผู้สร้างเอกสาร
+                                        </span>
+                                    </th>
+                                    <th class="text-center" data-field="doc_date">
+                                        <span class="text">
+                                            วันที่ออกคำสั่ง
+                                        </span>
+                                    </th>
+                                    <th class="text-center" data-field="ref_name" hidden>
+                                      <span class="text">
+                                          รายชื่อกรรมการ
+                                      </span>
+                                  </th>
+                                    <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter" data-events="clip_icon_Events">
+                                        <span class="text" >
+                                            ไฟล์แนบ
+                                        </span>
+                                    </th>
+                                    <!--dataFormat-->
+                                    <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter" data-events="operateEvents"   >
+                                        <span class="text">
+                                          แก้ไข / ลบ
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                      <div class="spinner-border text-primary" 
+                      style="width: 3rem; height: 3rem;  border:solid 5px #fff;  border-bottom-color: #022851;" id="spinner" role="status">
+                      <span class="sr-only c"></span>
+                      </div>
+                      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="pagination">
@@ -240,8 +242,9 @@
     document.head.appendChild(js);
     //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
     $('#document-table').bootstrapTable('hideColumn', 'id');
+    $('#document-table').bootstrapTable('hideColumn', 'ref_name');
   }
-
+  
   //page function use to set offset of document query
   /*function page(){
     show_page = document.getElementsByClassName("current-page")[0].innerHTML;
@@ -280,7 +283,7 @@
       dataType: "json",
       url: "/document",
       success: function (data) {
-        console.log("data :", data.length);
+        console.log("data length:", data.length);
         document.getElementById("count_doc").innerHTML = data.length;
         populate_table(data);
         document.getElementById('spinner')
@@ -288,7 +291,6 @@
       }
     });
   });
-
 
   //this call offset0 of document
   /*(function () {
@@ -355,11 +357,9 @@
   }
   window.operateEvents = {
     'click .doc_delete': function (e, value, row, index) {
-      console.log("delete");
       delete_button_sweet(row.id);
     },
     'click .doc_edit': function (e, value, row, index) {
-      console.log("edit");
       prePopulateForm(row);
 
     }
@@ -376,7 +376,7 @@
     year.value = parseInt(datelist[2]);
     $('#monthSelect').val(datelist[1]);
     $('#descrip').val(row.subject);
-    str_ref_name = row.ref_name.join('\n');
+    str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
     uploadedFileName = preload_pdf(row.id);
     console.log(uploadedFileName);
@@ -415,6 +415,19 @@
   }
   function open_form() {
     console.log("Form openned");
+    // populateDaysAndYears();
+    $.ajax({
+      dataType: "json",
+      url: "/document",
+      success: function (data) {
+        ref_data= data[0].ref_num;
+        arr_ref=  ref_data.split("/");
+        console.log("data :", parseInt(arr_ref[0]));
+        ref_num = parseInt(arr_ref[0]);
+        populate_table(data);
+        document.getElementById("refer_num").value = ref_num+1;
+      }
+    });
   }
 
   $("#myForm").submit(function (event) {
@@ -438,7 +451,6 @@
     // Add other form data to the FormData object
     formData.append('subject', $('#descrip').val());
     formData.append('doc_date', $('#date_combind').val());
-    formData.append('ref_num', $('#refer_num').val());
     formData.append('ref_year', $('#yearSelect').val());
     formData.append('name_list', name_list);
     formData.append('user_id', 1);
@@ -466,7 +478,9 @@
       }
     });
   });
-
+  $('#document-table').on('search.bs.table', function () {
+    showPage(1);
+  });
 </script>
 
 
