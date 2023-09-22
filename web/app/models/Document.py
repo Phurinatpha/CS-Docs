@@ -1,6 +1,13 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
 from app.models.user import User
+
+def to_date(date):
+    month_name = 'x มกราคม กุมภาพันธ์ มีนาคม เมษายน พฤษภาคม มิถุนายน กรกฎาคม สิงหาคม กันยายน ตุลาคม พฤศจิกายน ธันวาคม'.split()[date.month]
+    thai_year = date.year 
+    return "%d %s %d "%(date.day, month_name, thai_year) # 30 ตุลาคม 2560 20:45:30
+
+
 class order_info(db.Model, SerializerMixin):
     __tablename__ = "order_info"
 
@@ -34,7 +41,7 @@ class order_info(db.Model, SerializerMixin):
             'id': self.id,
             'ref_num': str(self.ref_num)+"/"+str(self.ref_year),
             'subject': self.subject,
-            'doc_date': self.doc_date,
+            'doc_date': to_date(self.doc_date),
             'ref_name': ','.join([str(elem) for elem in self.ref_name]),
             'user_name' : User.get_name(User.query.get(self.user_id))
         }

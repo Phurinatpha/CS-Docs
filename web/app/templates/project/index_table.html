@@ -352,7 +352,7 @@
   //edit and delete button
   function edit_del_Formatter(value, row, index) {
     return [
-      '<div class="btn-edit-del" >',
+      '<div class="btn-edit-del" data-toggle="modal" data-target=".modal">',
       '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
       '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
       '</div>'
@@ -375,7 +375,7 @@
       delete_button_sweet(row.id);
     },
     'click .doc_edit': function (e, value, row, index) {
-      prePopulateForm(row);
+      
 
     }
   }
@@ -384,13 +384,9 @@
     document.getElementById('myForm').reset();
     $('#doc_id').val(row.id);
     $('#refer_num').val(parseInt(row.ref_num));
-    date = row.doc_date
-    datelist = date.split(" ");
-    day = document.getElementById("daySelect");
-    day.value = parseInt(datelist[0]);
-    year = document.getElementById("yearSelect");
-    year.value = parseInt(datelist[2]);
-    $('#monthSelect').val(datelist[1]);
+    date = row.doc_date;
+    console.log(date);
+    //$('#thaiDatePicker').val(date);
     $('#descrip').val(row.subject);
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
