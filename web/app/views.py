@@ -44,8 +44,7 @@ def home():
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
-            app.logger.debug(user_data['firstname_TH'] + ' ' + user_data['lastname_TH'])
-            return render_template("project/index_table.html")
+            return redirect(url_for("index"))
         else:
             auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
             return redirect(auth_url)
@@ -65,26 +64,32 @@ def oauth_login():
             session['access_token'] = access_token
             user_data = get_user_data(access_token)
             email = user_data.get('cmuitaccount')
-            firstname = user_data.get('firstname_TH')
-            lastname = user_data.get('lastname_TH')
-            role = user_data.get('itaccounttype_id')
-            user = AuthUser.query.filter_by(email=email).first()
+            user = User.query.filter_by(email=email).first()
+            app.logger.debug(user_data.get('firstname_TH') + ' and ' + user_data['lastname_TH'])
+            app.logger.debug(user_data['cmuitaccount'])
             
-            if not user:
-                random_pass_len = 8
-                password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
-                                for i in range(random_pass_len))
-                new_user = AuthUser(email=email,
-                                        password=generate_password_hash(
-                                            password, method='sha256'))
-                new_user_info = User(firstname=firstname,lastname=lastname,
-                                     role=role,email=email)
-                db.session.add(new_user)
-                db.session.add(new_user_info)
-                db.session.commit()
-                user = AuthUser.query.filter_by(email=email).first()
-            login_user(user)
-            return redirect(url_for('home'))
+            if user:
+                if user.firstname == '':
+                    firstname = user_data.get('firstname_TH')
+                    lastname = user_data.get('lastname_TH')
+                    app.logger.debug(user.email)
+                    app.logger.debug(user.firstname)
+                    # random_pass_len = 8
+                    # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
+                    #                 for i in range(random_pass_len))
+                    # new_user = AuthUser(email=email,
+                    #                         password=generate_password_hash(
+                    #                             password, method='sha256'))
+                    new_user_info = User(firstname=firstname,lastname=lastname,role='',email=email)
+                    # db.session.add(new_user)
+                    db.session.add(new_user_info)
+                    db.session.commit()
+                    user = AuthUser.query.filter_by(email=email).first()
+                    login_user(user)
+                else:
+                    user = AuthUser.query.filter_by(email=email).first()
+                    login_user(user)
+            return redirect(url_for('index'))
         else:
             return 'Error getting access token'
     else:
@@ -95,9 +100,9 @@ def oauth_login():
 @app.route('/logout')
 @login_required
 def logout():
-    session.clear()
     logout_user()
-    return redirect(url_for('home'))
+    session.clear()
+    return redirect(url_for('index'))
 
 def get_oauth_token(code):
     payload = {
@@ -133,6 +138,11 @@ def index():
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
+            
+            email = user_data.get('cmuitaccount')
+            user = User.query.filter_by(email=email).first()
+            
+            app.logger.debug(user.email)
             return render_template("project/index_table.html")
         else:
             auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"

@@ -19,7 +19,7 @@ def create_db():
 @cli.command("seed_db")
 def seed_db():
     db.session.add(AuthUser(email='flask@1234', password=generate_password_hash('password', method='scrypt')))
-    db.session.add(AuthUser(email='ksalf@4321', password=generate_password_hash('password', method='scrypt'))) 
+    db.session.add(AuthUser(email='ksalf@4321', password=generate_password_hash('password', method='scrypt')))
     db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role='admin',email="flask@1234"))
     db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role='admin',email="ksalf@4321"))
     db.session.commit()
