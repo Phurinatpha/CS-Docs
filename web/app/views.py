@@ -37,21 +37,20 @@ def base():
 def form():
     if request.method == 'POST':
         doc_data = request.files.get('doc_data')
-        app.logger.debug("doc data :",doc_data)
+        #app.logger.debug("doc data :",doc_data)
         validated = True
         validated_dict = dict()
-        now = datetime.datetime.now()
                 # Read the contents of the uploaded file as bytes
         ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
 
-        valid_keys = ['subject', 'doc_date' ,'ref_year','user_id']
+        valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
 
         # Access the uploaded file using request.files
         name_list =  request.form.get('name_list')
         id_ = request.form.get('id','')
         name_list = name_list.split(",")
         name_list =  [i for i in name_list if i != ""]
-        app.logger.debug("name_list = ",name_list)
+        #app.logger.debug("name_list = ",name_list)
         # validate the input
         for key in request.form:
             if key not in valid_keys:
@@ -65,10 +64,6 @@ def form():
 
         if validated:
             if not id_:
-                if int(validated_dict['ref_year']) == now.year: 
-                    ref_num += 1
-                else:
-                    ref_num = 1
                 order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
@@ -88,9 +83,11 @@ def form():
                 )
                     db.session.add(doc_entry)   
             else:
+                app.logger.debug("update")
                 order = order_info.query.get(id_)
                 order_entry = order.update(
                 subject=validated_dict['subject'],
+                ref_num=validated_dict['ref_num'],
                 doc_date=validated_dict['doc_date'],
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,

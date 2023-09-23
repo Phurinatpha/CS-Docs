@@ -36,7 +36,7 @@ function delete_button_sweet(id)  {
   }
 
 
-  function user_delete_sweet(id)  {
+function user_delete_sweet(id)  {
     console.log("delete")
       Swal.fire({
         titleText: 'ยืนยันการลบข้อมูล ?',
@@ -69,5 +69,5 @@ function delete_button_sweet(id)  {
           });
         }
       });
-    }
+  }
 

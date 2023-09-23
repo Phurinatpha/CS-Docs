@@ -103,7 +103,7 @@
         <div class="col-md-12" style="margin-bottom: 30px;">
             <div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="access-table" data-searchable="true">
+                    <table class="table table-striped" id="access-table" data-filter-control="true">
                         <thead>
                             <tr>
                                 <th class="text-center" data-formatter="runningFormatter">
@@ -171,8 +171,9 @@
         });
         $('#access-table').bootstrapTable('refreshOptions',{
             filterOptions: {
-                filterAlgorithm: function(row, filters){
-                    return row.name != " "
+                'filterAlgorithm': function(row, filters){
+                    console.log(row.name);
+                    return row.name!=" ";
                 }
             }
             });

@@ -120,6 +120,7 @@ $(document).ready(function () {
     formData.append('doc_data', file);
 
     // Add other form data to the FormData object
+    formData.append('id', $('#doc_id').val());
     formData.append('subject', $('#descrip').val());
     formData.append('doc_date', date);
     formData.append('ref_num', $('#refer_num').val());
@@ -141,7 +142,7 @@ $(document).ready(function () {
         $('#modal-form').modal('toggle');
         resetForm();
         refresh();
-
+        
       },
       error: function (error) {
         console.error('Error', error);

@@ -35,8 +35,9 @@ class order_info(db.Model, SerializerMixin):
 
 
 
-    def update(self, subject, doc_date,  ref_year, ref_name,user_id):
+    def update(self, subject,ref_num, doc_date,  ref_year, ref_name,user_id):
         self.subject = subject
+        self.ref_num = ref_num
         self.doc_date = doc_date
         self.ref_year = ref_year
         self.ref_name = ref_name

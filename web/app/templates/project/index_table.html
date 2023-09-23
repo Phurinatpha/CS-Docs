@@ -40,14 +40,14 @@
                     <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
 
                     <div class="form-group">
-                      <label>เลขที่คำสั่ง</label>
+                      <label for="refer_num">เลขที่คำสั่ง</label>
                       <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
                     </div>
 
                     <div class="form-group">
-                      <label>เอกสารลงวันที่</label>
+                      <label  for="thaiDatePicker">เอกสารลงวันที่</label>
                       <!--this input is id of order_table-->
-                      <input type="hidden" name="id" value="">
+                      <input type="hidden" id="doc_id" name="id" value="">
                       <!--this input is user id set default to 1-->
                       <input type="hidden" name="user_id" value="1">
                       <!-- Separate select elements for day, month, and year -->
@@ -59,7 +59,7 @@
 
                     <input type="hidden" id="date_combind" name="doc_date" required></input>
                     <div class="form-group-subject">
-                      <label for="subject">เรื่อง</label>
+                      <label for="descrip">เรื่อง</label>
                       <textarea id="descrip" name="subject" required></textarea>
                     </div>
                   </div>
@@ -218,7 +218,7 @@
                   </th>
                   <!--dataFormat-->
                   <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                    data-events="operateEvents">
+                    data-events="edit_del_Events">
                     <span class="text">
                       แก้ไข / ลบ
                     </span>
@@ -348,7 +348,10 @@
   }
 
   function refresh_table(document_data) {
+    page = document.getElementById("pageNumbers");
+    pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
     $('#document-table').bootstrapTable('load', document_data);
+    showPage(pageNum);
   }
 
   function clip_icon_Formatter(value, row, index) {
@@ -364,8 +367,8 @@
   //edit and delete button
   function edit_del_Formatter(value, row, index) {
     return [
-      '<div class="btn-edit-del" data-toggle="modal" data-target=".modal">',
-      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+      '<div class="btn-edit-del">',
+      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
       '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
       '</div>'
 
@@ -382,7 +385,7 @@
     }
   }
 
-  window.operateEvents = {
+  window.edit_del_Events = {
     'click .doc_delete': function (e, value, row, index) {
       delete_button_sweet(row.id);
     },
@@ -395,6 +398,7 @@
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
     $('#doc_id').val(row.id);
+    console.log(row.id);
     $('#refer_num').val(parseInt(row.ref_num));
     $('#thaiDatePicker').val(row.ori_date);
     $('#descrip').val(row.subject);
@@ -430,12 +434,14 @@
         //console.log('Success', response);
         console.log("deleted!!");
         refresh();
+        
       },
       error: function (error) {
         console.error('Error', error);
       }
     });
   }
+
   function open_form() {
     console.log("Form openned");
     var defaultDate = new Date();
