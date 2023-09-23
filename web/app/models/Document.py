@@ -5,7 +5,12 @@ from app.models.user import User
 def to_date(date):
     month_name = 'x มกราคม กุมภาพันธ์ มีนาคม เมษายน พฤษภาคม มิถุนายน กรกฎาคม สิงหาคม กันยายน ตุลาคม พฤศจิกายน ธันวาคม'.split()[date.month]
     thai_year = date.year 
-    return "%d %s %d "%(date.day, month_name, thai_year) # 30 ตุลาคม 2560 20:45:30
+    return "%d %s %d"%(date.day, month_name, thai_year) # 30 ตุลาคม 2560 20:45:30
+
+def to_ori_date(date):
+    month_name = 'x 1 2 3 4 5 6 7 8 9 10 11 12'.split()[date.month]
+    thai_year = date.year 
+    return "%d/%s/%d"%(date.day, month_name, thai_year)
 
 
 class order_info(db.Model, SerializerMixin):
@@ -42,6 +47,7 @@ class order_info(db.Model, SerializerMixin):
             'ref_num': str(self.ref_num)+"/"+str(self.ref_year),
             'subject': self.subject,
             'doc_date': to_date(self.doc_date),
+            'ori_date':to_ori_date(self.doc_date),
             'ref_name': ','.join([str(elem) for elem in self.ref_name]),
             'user_name' : User.get_name(User.query.get(self.user_id))
         }

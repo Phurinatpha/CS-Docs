@@ -196,6 +196,8 @@
                       วันที่ออกคำสั่ง
                     </span>
                   </th>
+                  <th data-field="ori_date" hidden>
+                  </th>
                   <th class="text-center" data-field="ref_name" hidden>
                     <span class="text">
                       รายชื่อกรรมการ
@@ -257,6 +259,7 @@
     //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
     $('#document-table').bootstrapTable('hideColumn', 'id');
     $('#document-table').bootstrapTable('hideColumn', 'ref_name');
+    $('#document-table').bootstrapTable('hideColumn', 'ori_date');
   }
 
   //page function use to set offset of document query
@@ -385,9 +388,7 @@
     document.getElementById('myForm').reset();
     $('#doc_id').val(row.id);
     $('#refer_num').val(parseInt(row.ref_num));
-    date = row.doc_date;
-    console.log(date);
-    //$('#thaiDatePicker').val(date);
+    $('#thaiDatePicker').val(row.ori_date);
     $('#descrip').val(row.subject);
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
@@ -429,6 +430,8 @@
   }
   function open_form() {
     console.log("Form openned");
+    var defaultDate = new Date();
+    thaiDatePicker.setDate(defaultDate); 
     // populateDaysAndYears();
     $.ajax({
       dataType: "json",

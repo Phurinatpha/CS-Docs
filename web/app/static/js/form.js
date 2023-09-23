@@ -73,6 +73,35 @@ function removeUploadedFile() {
 }
 
 
+  const thaiDatePicker = new Pikaday({
+    field: document.getElementById('thaiDatePicker'),
+    format: 'DD/MM/YYYY',
+    i18n: {
+      previousMonth: 'เดือนก่อนหน้า',
+      nextMonth: 'เดือนถัดไป',
+      months: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+      weekdays: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+      weekdaysShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+    },
+    onSelect: function () {
+      const selectedDate = thaiDatePicker.getDate();
+      const selectedYear = selectedDate.getFullYear();
+      const thaiBuddhistYear = convertToThaiBuddhistYear(selectedYear);
+      const inputField = document.getElementById('thaiDatePicker');
+      inputField.value = inputField.value.replace(/\d{4}\s*/, thaiBuddhistYear); // Replace the year part of the input value
+    }
+  });
+  // Function to check if a year is in the Thai Buddhist calendar and convert it if necessary
+  function convertToThaiBuddhistYear(year) {
+    const currentYear = new Date().getFullYear(); // Get the current Gregorian year
+    return year >= 1900 && year <= currentYear ? year + 543 : year; // Convert to Thai Buddhist year if in range
+  }
+
+  // Set a default date
+
+
+
+
 $(document).ready(function () {
   $("#myForm").submit(function (event) {
     // prevent default html form submission action
@@ -81,7 +110,6 @@ $(document).ready(function () {
     ori_date = document.getElementById("thaiDatePicker").value
     str_date = ori_date.split("/");
     date = str_date[2]+"-"+str_date[1]+"-"+str_date[0]
-    console.log("date :",date);
     // Create a new FormData object
     var formData = new FormData();
     name_list = document.getElementById("name_list").value
@@ -109,7 +137,7 @@ $(document).ready(function () {
       data: formData,
       contentType: false,
       processData: false,
-      success: function (response) {
+      success: function () {
         $('#modal-form').modal('toggle');
         resetForm();
         refresh();
@@ -122,38 +150,5 @@ $(document).ready(function () {
   });
 
   // Initialize the Thai date picker
-  function setupThaiDatePicker() {
-    const thaiDatePicker = new Pikaday({
-      field: document.getElementById('thaiDatePicker'),
-      format: 'DD/MM/YYYY',
-      i18n: {
-        previousMonth: 'เดือนก่อนหน้า',
-        nextMonth: 'เดือนถัดไป',
-        months: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
-        weekdays: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
-        weekdaysShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
-      },
-      onSelect: function () {
-        const selectedDate = thaiDatePicker.getDate();
-        const selectedYear = selectedDate.getFullYear();
-        const thaiBuddhistYear = convertToThaiBuddhistYear(selectedYear);
-        const inputField = document.getElementById('thaiDatePicker');
-        inputField.value = inputField.value.replace(/\d{4}\s*/, thaiBuddhistYear); // Replace the year part of the input value
-      }
-    });
-
-    // Function to check if a year is in the Thai Buddhist calendar and convert it if necessary
-    function convertToThaiBuddhistYear(year) {
-      const currentYear = new Date().getFullYear(); // Get the current Gregorian year
-      return year >= 1900 && year <= currentYear ? year + 543 : year; // Convert to Thai Buddhist year if in range
-    }
-
-    // Set a default date
-    const defaultDate = new Date();
-thaiDatePicker.setDate(defaultDate); 
-  }
-
   // Call the setup function to initialize the Thai date picker
-  setupThaiDatePicker();
-
 });
