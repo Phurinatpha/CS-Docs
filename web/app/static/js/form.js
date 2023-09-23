@@ -142,6 +142,8 @@ $(document).ready(function () {
         $('#modal-form').modal('toggle');
         resetForm();
         refresh();
+        var count_doc = document.getElementById("count_doc").innerHTML;
+        document.getElementById("count_doc").innerHTML = parseInt(count_doc) +1;
         
       },
       error: function (error) {

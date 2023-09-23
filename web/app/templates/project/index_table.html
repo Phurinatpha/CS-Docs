@@ -434,6 +434,9 @@
         //console.log('Success', response);
         console.log("deleted!!");
         refresh();
+        var count_doc = document.getElementById("count_doc").innerHTML;
+        document.getElementById("count_doc").innerHTML = parseInt(count_doc) - 1;
+        //document.getElementById("count_doc-s").innerHTML ;
         
       },
       error: function (error) {
