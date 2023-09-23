@@ -99,29 +99,39 @@ label {
 
 .form-group label,
 .form-group-subject label {
-    width: 25%;
+    width: 20%;
+    
 }
 
 input {
-    width: 263px;
+    width: 200px;
+    margin-bottom: 10px;
 }
 
+#thaiDatePicker{
+    cursor: pointer;
+}
+.bi-calendar{ 
+    margin-left: -35px;
+    font-size: 18px;
+    transform: translateY(-22%);    
+    pointer-events: none; /* Prevent the icon from blocking input events */
+}
 /* Styles for the date select */
-.form-group select {
+/* .form-group select {
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
+} */
 
 /* Optional style to add space between the selects */
-.form-group select:not(:last-child) {
+/* .form-group select:not(:last-child) {
     margin-right: 5px;
-}
+} */
 
 #descrip {
     /* Add your desired styles for the textarea here */
-    margin-top: 10px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -363,7 +373,7 @@ input {
     }
     .form-group label,
     .form-group-subject label, .form-group select {
-        font-size: 14px;
+        width: 30%;
         
     }
 }
@@ -386,7 +396,7 @@ input {
     }
 
     .form-group,.form-group-subject {
-        display: inline-block;
+        display: inline-table;
         
     }
     .form-group{
@@ -398,11 +408,15 @@ input {
         width: 100%;
         
     }
-    .form-group select{
+
+
+    .form-group input{
         margin-top: 10px; 
+        margin-left: 12%;
         font-size: 14px;
     }
-    
+
+   
 
     #daySelect{
         margin-left: 10%;

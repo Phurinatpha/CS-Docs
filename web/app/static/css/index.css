@@ -75,6 +75,14 @@
   font-size: 18px;
 }
 
+#all-doc,
+#all-founded,
+#count_doc,
+#show-per-page {
+  color: red;
+}
+
+/*-----------------------------------Search-----------------------------------*/
 .doc-search {
   position: relative;
    /* for mobile responsive set width to 100% */
@@ -90,6 +98,7 @@
   text-align: center;
 }
 
+
 .doc-search .bi-search {
   position: absolute;
   top: 5%;
@@ -98,21 +107,14 @@
   color: #022851; /* Adjust the icon color as needed */
   cursor: pointer;
 }
-.doc-search .bi-plus{
+/* .doc-search .bi-plus{
   position: absolute;
   top: 5%;
   right: 10px; 
   font-size: 18px; 
   color: #000; 
 
-}
-
-#all-doc,
-#all-founded,
-#count_doc,
-#show-per-page {
-  color: red;
-}
+} */
 
 
 
