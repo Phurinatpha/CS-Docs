@@ -213,7 +213,7 @@ def user_form():
                 user_entry = User(
                 firstname="",
                 lastname="",
-                role=validated_dict['role'],
+                role=bool(validated_dict['role']),
                 email=validated_dict['email']
                 )
                 db.session.add(user_entry)
@@ -221,7 +221,7 @@ def user_form():
                 user = User.query.get(id_)
                 user_entry = user.update(
                 email=validated_dict['email'],
-                role=validated_dict['role']
+                role=bool(validated_dict['role'])
                 )
             #     if doc_data != None :
             #         doc_content = doc_data.read()

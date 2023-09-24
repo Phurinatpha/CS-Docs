@@ -73,10 +73,10 @@
                                     <div class="grant-group">
                                         <label>ระดับสิทธิ์การเข้าถึง</label>
 
-                                        <input type="radio" id="admin" name="answer-a" value="ธุรการ">
+                                        <input type="radio" id="admin" name="answer-a" value="True">
                                         <label class="radio" for="admin">ธุรการ</label>
 
-                                        <input type="radio" id="user" name="answer-a" value="บุคลากร">
+                                        <input type="radio" id="user" name="answer-a" value="False">
                                         <label class="radio" for="user">บุคลากร</label>
 
                                     </div>
@@ -230,7 +230,7 @@
         $('#user_id').val(row.id);
         email = row.email.split("@");
         $('#input-email').val(email[0]);
-        if (row.role == "ธุรการ"){
+        if (row.role == "true"){
             document.getElementById("admin").checked = true ;
         }
         else{

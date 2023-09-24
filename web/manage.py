@@ -17,8 +17,8 @@ def create_db():
 
 @cli.command("seed_db")
 def seed_db():  
-    db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role='ธุรการ',email="flask@1234"))
-    db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role='บุคลากร',email="ksalf@4321"))
+    db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role=True,email="flask@1234"))
+    db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role=False,email="ksalf@4321"))
     db.session.commit()
     count = 1
     i = 1
