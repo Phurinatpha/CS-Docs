@@ -2,7 +2,7 @@
 // const table = document.getElementById('document-list');
 var rowsPerPage = 10; // Number of rows per page
 var currentPage = 1;   // Current page
-var maxVisiblePages = 9; // Maximum number of visible pagination links
+var maxVisiblePages = 4; // Maximum number of visible pagination links
 var pageNumbers = document.getElementById('pageNumbers');
 // Function to highlight the current page link
 function highlightCurrentPageLink() {

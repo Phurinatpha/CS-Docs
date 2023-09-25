@@ -9,10 +9,10 @@ body {
   flex-direction: column;
 }
 
-
 .container {
   padding: 0px 30px 0px 30px;
 }
+
 
 /*-----------------------------------Navbar-----------------------------------*/
 .navbar {
@@ -33,11 +33,11 @@ body {
 }
 
 .navbar-img {
-  width: 50px;
+  width: 40px;
 }
 
 .navbar-text {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 500;
   color: #000000;
   margin-left: 8px;
@@ -46,6 +46,7 @@ body {
 
 /*-----------------------------------Dropdown button-----------------------------------*/
 .dropdown-toggle {
+  font-size: 16px;
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
@@ -64,17 +65,20 @@ body {
   color: #fff;
   background-color: #353434;
 }
+
 .dropdown-toggle::after {
   margin-left: 15px;
 }
+
 .dropdown .dropdown-toggle i {
   display: flex;
   padding-right: 15px;
-  font-size: 30px;
+  font-size: 25px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 
 /*-----------------------------------Dropdown items-----------------------------------*/
 .dropdown-menu {
@@ -91,6 +95,7 @@ body {
   padding-left: 10%;
 }
 
+
 /*-----------------------------------footer-----------------------------------*/
 footer {
   margin-top: auto;
@@ -105,7 +110,6 @@ footer {
 
 footer a {
   font-size: 10px;
- 
   color: #fff;
   /* Remove underline from links */
   text-decoration: none;
@@ -124,6 +128,7 @@ footer li {
   margin-bottom: -9px;
 }
 
+
 /*-----------------------------------SweetAlert Button-----------------------------------*/
 .swal2-styled.swal2-confirm {
   width: 100px;
@@ -135,24 +140,26 @@ footer li {
 
 
 /*-----------------------------------------Responsive-----------------------------------------*/
-@media only screen and (max-width: 1200px){
-.container, .container-md, .container-sm {
+@media only screen and (max-width: 1200px) {
+  .container,
+  .container-md,
+  .container-sm {
     max-width: 100%;
-}
+  }
 }
 
 @media only screen and (max-width: 540px) {
-  
   .dropdown-item i {
-   
     padding-left: 25%;
   }
+
   .navbar-img {
     width: 45px;
-}
+  }
+
   .navbar-text {
     font-size: 18px;
-}
+  }
 }
 
 /* Extra small devices (phones) */
@@ -162,14 +169,13 @@ footer li {
   }
 
   .dropdown-item i {
-   
+
     padding-left: 25%;
   }
 }
 
 @media only screen and (max-width: 376px) {
   .dropdown-item i {
-   
     padding-left: 22%;
   }
 }

@@ -5,7 +5,6 @@ form {
   width: 90%;
 }
 
-
 input {
   padding: 10px;
   box-sizing: border-box;
@@ -14,7 +13,6 @@ input {
   border: 1px solid #aaaaaa;
   border-radius: 7px;
 }
-
 
 .search-btn-wrapper {
   display: flex;
@@ -32,8 +30,6 @@ input {
   transition: 0.3s;
   border-radius: 10px;
 }
-
-
 
 .search-btn:hover {
   opacity: 0.8;
@@ -60,7 +56,6 @@ input {
   margin-right: 5px; /* Add some spacing between the icon and text if needed */
 }
 
-
 .found-container {
   margin-top: 30px;
 }
@@ -83,7 +78,6 @@ label {
   /* Optional styling for the label text */
   width: 180px;
   font-weight: bold;
-
 }
 
 .pop-up-header {
@@ -100,6 +94,7 @@ label {
   margin-bottom: 20px;
   font-weight: 500;
 }
+
 
 /*-----------------------------------------tab-1-----------------------------------------*/
 .search-group {
@@ -123,7 +118,6 @@ label {
   flex-direction: column;
   flex: 1;
   /* Allow the textarea to expand and fill the available space */
- 
 }
 
 .textarea-container p.warn-add-name {
@@ -142,7 +136,6 @@ input {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 
 /* Optional style to add space between the selects */
 .search-group select:not(:last-child) {
