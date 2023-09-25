@@ -348,23 +348,20 @@ h2 {
   .sub-doc{
     font-size: 16px;
   }
+
   .sub-doc-header {
     display: inline;
   }
+
   .doc-search {
     width: 100%;
-   
   }
-
 }
-
-
 
 
 /* Extra small devices (phones) */
 @media only screen and (max-width: 480px) {
   .dropdown-item i {
-   
     padding-left: 25%;
   }
 
@@ -375,34 +372,20 @@ h2 {
   .sub-doc{
     display: none;
     color: #09ff00;
-   
   }
+
   .sub-doc-mobile{
     display: block;
     text-align: center;
- 
   }
-
 
   .doc-search {
     width: 100%;
-   
   }
-  .create-form{
-    
-    padding: 0;
-  }
-
-  .search-form{
-    display: inline;
-    padding: 0;
-  }
-
 }
 
 @media only screen and (max-width: 376px) {
   .btn-act.btn-primary.d-sm-table{
     margin-left: 10px;
-
   }
 }

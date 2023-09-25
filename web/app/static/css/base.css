@@ -100,10 +100,12 @@ footer {
   background-color: #000000;
   /* Text color */
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 footer a {
+  font-size: 10px;
+ 
   color: #fff;
   /* Remove underline from links */
   text-decoration: none;
@@ -114,6 +116,7 @@ footer ul {
   list-style: none;
   /* Margin for top and bottom */
   margin: 10px 0 15px 0;
+  padding: 0px
 }
 
 footer li {
@@ -132,7 +135,14 @@ footer li {
 
 
 /*-----------------------------------------Responsive-----------------------------------------*/
+@media only screen and (max-width: 1200px){
+.container, .container-md, .container-sm {
+    max-width: 100%;
+}
+}
+
 @media only screen and (max-width: 540px) {
+  
   .dropdown-item i {
    
     padding-left: 25%;
@@ -147,15 +157,17 @@ footer li {
 
 /* Extra small devices (phones) */
 @media only screen and (max-width: 480px) {
+  .container {
+    padding: 0px 10px 0px 10px;
+  }
+
   .dropdown-item i {
    
     padding-left: 25%;
   }
 }
 
-
 @media only screen and (max-width: 376px) {
-
   .dropdown-item i {
    
     padding-left: 22%;
