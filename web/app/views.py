@@ -33,6 +33,8 @@ def home():
 def base():
     return render_template("project/base.html")
 
+
+
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
     if request.method == 'POST':
@@ -64,10 +66,16 @@ def form():
 
         if validated:
             if not id_:
+                empty_order = order_info.query.filter(order_info.subject == None).first()
+                #app.logger.debug("empty_order", empty_order)
+                if empty_order != None:
+                    app.logger.debug(empty_order)
+                    db.session.delete(empty_order)
+                    db.session.commit()
                 order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
-                ref_num=    ref_num,
+                ref_num= validated_dict['ref_num'],
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
@@ -134,6 +142,8 @@ def preview_pdf():
             raise
     return ''
 
+
+
 @app.route('/delete', methods=('GET', 'POST'))
 def remove():
     app.logger.debug("REMOVE")
@@ -144,11 +154,18 @@ def remove():
         try:
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
+            app.logger.debug("order :",order)
+            latest_order = order_info.query.order_by(desc(order_info.id)).first()
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
-            app.logger.debug("doc :",doc)
+            app.logger.debug("latest :",latest_order)
             if doc != None:
                 db.session.delete(doc)
-            db.session.delete(order)
+            if order != latest_order:
+                db.session.delete(order)
+            else :
+                order_entry = order.mini_update(
+                subject=None
+                )
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)

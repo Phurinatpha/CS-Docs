@@ -42,6 +42,10 @@ class order_info(db.Model, SerializerMixin):
         self.ref_year = ref_year
         self.ref_name = ref_name
         self.user_id = user_id
+
+    def mini_update(self, subject):
+        self.subject = subject
+    
     def to_dict(self):
         return {
             'id': self.id,

@@ -171,22 +171,22 @@
         });
         $('#access-table').bootstrapTable('refreshOptions',{
             filterOptions: {
-                'filterAlgorithm': function(row, filters){
-                    console.log(row.name);
-                    return row.name!=" ";
+                'filterAlgorithm': (row, filters)=> {
+                    return row.name !=" ";
                 }
             }
-            });
+        });
+    
 
         $('#access-table').bootstrapTable('hideColumn', 'id');
-        console.log("tr :", document.getElementsByTagName('tr').length);
+        //console.log("tr :", document.getElementsByTagName('tr').length);
         var js = document.createElement("script");
         js.src = "/static/js/pagination.js";
         document.head.appendChild(js);
     }
 
     $(document).ready(function () {
-        $.getJSON("/user", populate_table);
+       
         $.ajax({
             dataType: "json",
             url: "/user",

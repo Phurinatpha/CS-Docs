@@ -4,11 +4,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.min.css">
 
 <!-- Moment.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|th/)</script>
 
 <!-- Pikaday JS -->
-<script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pikaday/plugins/pikaday.jquery.min.js"></script>
+<script  src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.min.js"></script>
+<script  src="https://cdn.jsdelivr.net/npm/pikaday/plugins/pikaday.jquery.min.js"></script>
 
 <link rel="stylesheet" href="/static/css/index.css">
 <link rel="stylesheet" href="/static/css/form.css">
@@ -170,7 +170,8 @@
         <div>
           <div class="table-responsive">
             <table class="table table-striped" data-search="true" data-searchable="true"
-              data-search-selector="#customSearch" id="document-table">
+              data-search-selector="#customSearch"
+                id="document-table">
               <thead>
                 <tr>
                   <th class="text-center" data-formatter="runningFormatter">
@@ -240,7 +241,7 @@
   </div>
 </div>
 
-<div class="pagination">
+<div class="pagination" id ="doc_pagination">
   <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
   <div id="pageNumbers" class="pagination-links"></div>
   <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
@@ -253,10 +254,19 @@
   function populate_table(document_data) {
     $('#document-table').bootstrapTable({
 
-      data: document_data
-
+      data: document_data,
+      serverSide: true,
+      deferRender: true
 
     });
+    $('#document-table').bootstrapTable('refreshOptions',{
+      filterOptions: {
+          'filterAlgorithm': (row,index, filters)=> {
+            //console.log(row.subject);
+            return row.subject != null;
+      }
+    }
+  });
     //console.log(document_data);
     //load pagination.js script after populateTable
     console.log("tr :", document.getElementsByTagName('tr').length);
@@ -458,7 +468,7 @@
         arr_ref = ref_data.split("/");
         console.log("data :", parseInt(arr_ref[0]));
         ref_num = parseInt(arr_ref[0]);
-        populate_table(data);
+        
         document.getElementById("refer_num").value = ref_num + 1;
       }
     });
