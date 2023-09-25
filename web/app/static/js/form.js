@@ -21,40 +21,6 @@ document.addEventListener('click', function (event) {
 });
 
 
-// <!------------------------------------------1st part------------------------------------------>
-// Populate day and year options dynamically
-function populateDaysAndYears() {
-  var now = new Date();
-  const daySelect = document.getElementById("daySelect");
-  const yearSelect = document.getElementById("yearSelect");
-
-  // Populate day options (1 to 31)
-  for (let day = 1; day <= 31; day++) {
-    const option = document.createElement("option");
-    option.value = day;
-    option.textContent = day;
-    if (day == now.getDate()){
-      option.selected = true;
-        }
-    daySelect.appendChild(option);
-  }
-  console.log(now.getMonth())
-  document.getElementById("M_"+now.getMonth()).selected = true;
-  // Populate year options (from the current year to 1900)
-  const currentYear = new Date().getFullYear();
-  for (let year = currentYear; year >= 1900; year--) {
-    const option = document.createElement("option");
-    option.value = year;
-    option.textContent = year;
-    if (year == currentYear){
-      option.selected = true;
-        }
-    yearSelect.appendChild(option);
-  }
-}
-
-// Call the function to populate days and years when the page loads
-populateDaysAndYears();
 
 
 // <!--------------------------------------------3rd part-------------------------------------------->
@@ -106,3 +72,86 @@ function removeUploadedFile() {
   dragAndDropZone.style.display = 'flex';
 }
 
+
+  const thaiDatePicker = new Pikaday({
+    field: document.getElementById('thaiDatePicker'),
+    format: 'DD/MM/YYYY',
+    i18n: {
+      previousMonth: 'เดือนก่อนหน้า',
+      nextMonth: 'เดือนถัดไป',
+      months: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'],
+      weekdays: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'],
+      weekdaysShort: ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'],
+    },
+    onSelect: function () {
+      const selectedDate = thaiDatePicker.getDate();
+      const selectedYear = selectedDate.getFullYear();
+      const thaiBuddhistYear = convertToThaiBuddhistYear(selectedYear);
+      const inputField = document.getElementById('thaiDatePicker');
+      inputField.value = inputField.value.replace(/\d{4}\s*/, thaiBuddhistYear); // Replace the year part of the input value
+    }
+  });
+  // Function to check if a year is in the Thai Buddhist calendar and convert it if necessary
+  function convertToThaiBuddhistYear(year) {
+    const currentYear = new Date().getFullYear(); // Get the current Gregorian year
+    return year >= 1900 && year <= currentYear ? year + 543 : year; // Convert to Thai Buddhist year if in range
+  }
+
+  // Set a default date
+
+
+
+
+$(document).ready(function () {
+  $("#myForm").submit(function (event) {
+    // prevent default html form submission action
+    //event.preventDefault();
+    event.preventDefault();
+    ori_date = document.getElementById("thaiDatePicker").value
+    str_date = ori_date.split("/");
+    date = str_date[2]+"-"+str_date[1]+"-"+str_date[0]
+    // Create a new FormData object
+    var formData = new FormData();
+    name_list = document.getElementById("name_list").value
+    name_list = name_list.split("\n")
+    console.log(name_list)
+    // Append the file to the FormData object
+    var file = $('input[name="doc_data"]')[0].files[0];
+    formData.append('doc_data', file);
+
+    // Add other form data to the FormData object
+    formData.append('id', $('#doc_id').val());
+    formData.append('subject', $('#descrip').val());
+    formData.append('doc_date', date);
+    formData.append('ref_num', $('#refer_num').val());
+    formData.append('ref_year', str_date[2]);
+    formData.append('name_list', name_list);
+    formData.append('user_id', 1);
+
+
+    console.log(formData);
+    var $form = $(this);
+    var url = $form.attr("action");
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function () {
+        $('#modal-form').modal('toggle');
+        resetForm();
+        refresh();
+        var count_doc = document.getElementById("count_doc").innerHTML;
+        document.getElementById("count_doc").innerHTML = parseInt(count_doc) +1;
+        
+      },
+      error: function (error) {
+        console.error('Error', error);
+      }
+    });
+  });
+
+  // Initialize the Thai date picker
+  // Call the setup function to initialize the Thai date picker
+});

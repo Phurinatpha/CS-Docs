@@ -21,7 +21,7 @@ if app.debug:
 db = SQLAlchemy(app)
 
 login_manager = LoginManager()
-login_manager.login_view = 'login'
+login_manager.login_view = 'oauth_login'
 login_manager.init_app(app)
 
 from app import views  # noqa

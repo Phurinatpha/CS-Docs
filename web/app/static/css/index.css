@@ -1,6 +1,4 @@
-html * {
-  font-family: 'Sarabun', sans-serif;
-}
+
 
 /*-----------------------------------Three main buttons-----------------------------------*/
 .btn-act {
@@ -26,6 +24,7 @@ html * {
   width: 130px;
   margin-left: 25px;
   margin-bottom: 5px;
+  height: 80px
 }
 
 /* Apply styles to the first column */
@@ -33,6 +32,24 @@ html * {
   flex: 0 0 50%;
   max-width: 50%;
 }
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.create-form {
+  display: flex;
+  flex: 0 0 50%;
+  max-width: 50%;
+  justify-content: start;
+}
+.search-form{
+  display: flex;
+  flex: 0 0 50%;
+  max-width: 50%;
+  justify-content: flex-end;
+}
+
 
 .btn-create i {
   display: flex;
@@ -65,15 +82,66 @@ html * {
   display: table-cell;
 }
 
+.sub-doc-header {
+  /* for mobile responsive remove display: flex */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+.doc-head{
+  font-size: 24px;
+}
 .sub-doc {
+  font-size: 17px;
+}
+.sub-doc-mobile{
+  display: none;
   font-size: 18px;
 }
-
 #all-doc,
 #all-founded,
+#count_doc,
+#count_doc-s,
 #show-per-page {
   color: red;
 }
+
+/*-----------------------------------Search-----------------------------------*/
+.doc-search {
+  position: relative;
+   /* for mobile responsive set width to 100% */
+  width: 25%;
+ 
+}
+
+#customSearch {
+  font-size: 16px;
+  width: 100%;
+  height: 35px;
+  padding: 0px 20px 0px 40px; /* Adjust the padding as needed */
+  text-align: center;
+}
+
+
+.doc-search .bi-search {
+  position: absolute;
+  top: 5%;
+  left: 20px; /* Adjust the left position as needed */
+  font-size: 18px;
+  color: #022851; /* Adjust the icon color as needed */
+  cursor: pointer;
+}
+/* .doc-search .bi-plus{
+  position: absolute;
+  top: 5%;
+  right: 10px; 
+  font-size: 18px; 
+  color: #000; 
+
+} */
+
+
 
 /*-----------------------------------Table-----------------------------------*/
 .table-container {
@@ -87,6 +155,7 @@ html * {
   /* Might remove when add nav page */
   /* margin-bottom: 120px; */
 }
+
 
 .table th {
   background-color: #022851;
@@ -142,6 +211,7 @@ h2 {
   padding-top: 0px;
   margin-bottom: 7px;
   border-radius: 7px;
+  margin-top: 5%;
   border: none;
   color: #ffffff;
   background-color: #FAA849;
@@ -152,7 +222,7 @@ h2 {
   width: 130px;
   padding: 0px;
   padding-top: 0px;
-  margin-bottom: 20%;
+  margin-bottom: 5%;
   border-radius: 7px;
   border: none;
   color: #ffffff;
@@ -246,4 +316,76 @@ h2 {
 .current-page {
   background-color: #022851 !important;
   color: #FFF !important;
+}
+
+
+
+/*-----------------------------------------Responsive-----------------------------------------*/
+@media only screen and (max-width: 768px) {
+  .sub-doc{    
+    text-align: center;
+  }
+  .sub-doc-header {
+    display: inline;
+  }
+  .doc-search {
+    width: 100%;
+   
+  }
+  .dropdown-item i {
+   
+    padding-left: 32%;
+  }
+
+}
+
+
+@media only screen and (max-width: 540px) {
+  .doc-head{
+    font-size: 20px;
+  }
+  
+  .sub-doc{
+    font-size: 16px;
+  }
+
+  .sub-doc-header {
+    display: inline;
+  }
+
+  .doc-search {
+    width: 100%;
+  }
+}
+
+
+/* Extra small devices (phones) */
+@media only screen and (max-width: 480px) {
+  .dropdown-item i {
+    padding-left: 25%;
+  }
+
+  .sub-doc-header {
+    display: inline;
+  }
+
+  .sub-doc{
+    display: none;
+    color: #09ff00;
+  }
+
+  .sub-doc-mobile{
+    display: block;
+    text-align: center;
+  }
+
+  .doc-search {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  .btn-act.btn-primary.d-sm-table{
+    margin-left: 10px;
+  }
 }

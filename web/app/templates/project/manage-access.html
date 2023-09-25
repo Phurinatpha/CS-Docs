@@ -33,7 +33,7 @@
                 </button>
 
                 <!-- Modal zone -->
-                <div class="modal fade bd-modal-xl" data-keyboard="false">
+                <div class="modal fade bd-modal-xl" id="modal-user-form"data-keyboard="false">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
 
@@ -43,24 +43,25 @@
                                 <button type="button" id="closeModal" class="close"
                                     data-dismiss="modal">&times;</button>
                                 <!-- Add your content here -->
-                                <div class="grant-container">
+                                <form class="grant-container" id="user_form" action="/user_form">
                                     <p class="grant-header"><i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</p>
 
-                                    <div class="grant-group">
+                                     <!--  <div class="grant-group">
                                         <label>ชื่อจริง</label>
-                                        <div class="input-container">
-                                            <input id="input-fname" placeholder="ชื่อจริง">
-                                        </div>
-                                    </div>
+                                        <div class="input-container">-->
+                                            <input type="hidden" id="input-fname" placeholder="ชื่อจริง" value="">
+                                       <!--  </div>
+                                    </div>-->
 
-                                    <div class="grant-group">
+                                    <!--<div class="grant-group">
                                         <label>นามสกุล</label>
-                                        <div class="input-container">
-                                            <input id="input-lname" placeholder="นามสกุล">
-                                        </div>
-                                    </div>
+                                        <div class="input-container">-->
+                                            <input type="hidden" id="input-lname" placeholder="นามสกุล" value="">
+                                       <!-- </div>
+                                    </div>-->
 
                                     <div class="grant-group">
+                                        <input type="hidden"id = "user_id"  name="id" value="">
                                         <label>E-mail</label>
                                         <div class="input-container">
                                             <input id="input-email" name="add-user-email" placeholder="E-mail address">
@@ -72,10 +73,10 @@
                                     <div class="grant-group">
                                         <label>ระดับสิทธิ์การเข้าถึง</label>
 
-                                        <input type="radio" id="admin" name="answer-a" value="ธุรการ">
+                                        <input type="radio" id="admin" name="answer-a" value="True">
                                         <label class="radio" for="admin">ธุรการ</label>
 
-                                        <input type="radio" id="user" name="answer-a" value="บุคลากร">
+                                        <input type="radio" id="user" name="answer-a" value="False">
                                         <label class="radio" for="user">บุคลากร</label>
 
                                     </div>
@@ -84,7 +85,7 @@
                                         <button class="grant-btn" type="submit" name="add-user-submit">
                                             <i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -97,12 +98,12 @@
             <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด <span id="user-count"></span> คน แสดงหน้าละ <span
                     id="show-per-page">10</span> รายการ</p>
         </div>
-    </div>
+    
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom: 30px;">
             <div>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="access-table">
+                    <table class="table table-striped" id="access-table" data-filter-control="true">
                         <thead>
                             <tr>
                                 <th class="text-center" data-formatter="runningFormatter">
@@ -136,7 +137,7 @@
                                 </th>
 
                                 <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                                    data-events="operateEvents">
+                                data-events="operateEvents">
                                     <span class="text">
                                         แก้ไขสิทธิ์การเข้าถึง
                                     </span>
@@ -168,15 +169,24 @@
 
 
         });
+        $('#access-table').bootstrapTable('refreshOptions',{
+            filterOptions: {
+                'filterAlgorithm': (row, filters)=> {
+                    return row.name !=" ";
+                }
+            }
+        });
+    
+
         $('#access-table').bootstrapTable('hideColumn', 'id');
-        console.log("tr :", document.getElementsByTagName('tr').length);
+        //console.log("tr :", document.getElementsByTagName('tr').length);
         var js = document.createElement("script");
         js.src = "/static/js/pagination.js";
         document.head.appendChild(js);
     }
 
     $(document).ready(function () {
-        $.getJSON("/user", populate_table);
+       
         $.ajax({
             dataType: "json",
             url: "/user",
@@ -189,10 +199,105 @@
     });
     //run number function
     function runningFormatter(value, row, index) {
-        return index + 1;
+        return index+1;
+      } 
+      //edit and delete button
+    function edit_del_Formatter(value, row, index) {
+        return [
+            '<div class="btn-edit-del" >',
+            '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+            '<button class="user_delete btn-del"  >', 'ลบ', '</button>',
+            '</div>'
+
+        ].join('')
     }
 
-    //edit and delete button
+    
+    //This part must be edit with user db
+    window.operateEvents = {
+        'click .user_delete': function (e, value, row, index) {
+            console.log("delete");
+            //delete_button_sweet(row.id);
+            user_delete_sweet(row.id);
+        },
+        'click .user_edit': function (e, value, row, index) {
+            prePopulateForm(row);
+        }
+    }
+
+    function prePopulateForm(row) {
+        document.getElementById('user_form').reset();
+        $('#user_id').val(row.id);
+        email = row.email.split("@");
+        $('#input-email').val(email[0]);
+        if (row.role == "true"){
+            document.getElementById("admin").checked = true ;
+        }
+        else{
+            document.getElementById("user").checked = true ;
+        }
+
+    }
+
+    function delete_user(id) {
+        event.preventDefault();
+        del = id
+        var url = "/user_delete"
+        var formData = new FormData();
+        formData.append('id', del)
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (response) {
+            //console.log('Success', response);
+            console.log("deleted!!");
+          },
+          error: function (error) {
+            console.error('Error', error);
+          }
+        });
+      }
+
+      $("#user_form").submit(function (event) {
+        // prevent default html form submission action
+        event.preventDefault();
+        // Create a new FormData object
+        var formData = new FormData();
+        var ele = document.getElementsByName('answer-a');
+        for (i = 0; i < ele.length; i++) {
+            if (ele[i].checked)
+                var role = ele[i].value;
+        }
+        console.log(role);
+        formData.append('id', $('#user_id').val());
+        formData.append('role', role);
+        formData.append('email', $('#input-email').val()+"@cmu.ac.th");
+        console.log(formData);  
+        var $form = $(this);
+        var url = $form.attr("action");  
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function(response) {
+          console.log("send");
+          $('#modal-user-form').modal('toggle');
+          
+          document.getElementById('user_form').reset();
+            
+          },
+          error: function(error) {
+            console.error('Error', error);
+          }
+        });
+        });
+
+        //edit and delete button
     function edit_del_Formatter(value, row, index) {
         return [
             '<div class="btn-edit-del" >',

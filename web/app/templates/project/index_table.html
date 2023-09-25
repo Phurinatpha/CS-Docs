@@ -1,18 +1,27 @@
 {% extends "project/base.html" %}
 {% block content %}
+<!-- Pikaday CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.min.css">
+
+<!-- Moment.js -->
+<script  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js">new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|th/)</script>
+
+<!-- Pikaday JS -->
+<script  src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.min.js"></script>
+<script  src="https://cdn.jsdelivr.net/npm/pikaday/plugins/pikaday.jquery.min.js"></script>
+
 <link rel="stylesheet" href="/static/css/index.css">
 <link rel="stylesheet" href="/static/css/form.css">
 <div class="container">
   <div class="row" style="padding-top: 20px;">
-    <div class="col-md-6">
-      <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal"
-        data-target=".bd-modal-xl">
+    <div class="create-form">
+      <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal" data-target=".modal">
         <i class="bi bi-plus-circle-fill"></i>
         สร้างคำสั่ง
       </button>
       <!-- Modal zone -->
-      <div class="modal fade bd-modal-xl" id="modal-form" data-keyboard="false">
-        <div class="modal-dialog modal-xl">
+      <div class="modal fade" id="modal-form" data-keyboard="false">
+        <div class="modal-dialog modal-full">
           <div class="modal-content">
 
 
@@ -31,49 +40,33 @@
                     <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
 
                     <div class="form-group">
-                      <label>เลขที่คำสั่ง</label>
-                      <input type="text" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
+                      <label for="refer_num">เลขที่คำสั่ง</label>
+                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
                     </div>
 
                     <div class="form-group">
-                      <label>เอกสารลงวันที่</label>
+                      <label  for="thaiDatePicker">เอกสารลงวันที่</label>
                       <!--this input is id of order_table-->
                       <input type="hidden" id="doc_id" name="id" value="">
                       <!--this input is user id set default to 1-->
                       <input type="hidden" name="user_id" value="1">
                       <!-- Separate select elements for day, month, and year -->
-                      <select name="day" id="daySelect">
-                        <option value="" disabled selected>วันที่</option>
-                      </select>
-                      <select name="month" id="monthSelect">
-                        <option value="" disabled selected>เดือน</option>
-                        <option id="M_0">มกราคม</option>
-                        <option id="M_1">กุมภาพันธ์</option>
-                        <option id="M_2">มีนาคม</option>
-                        <option id="M_3">เมษายน</option>
-                        <option id="M_4">พฤษภาคม</option>
-                        <option id="M_5">มิถุนายน</option>
-                        <option id="M_6">กรกฎาคม</option>
-                        <option id="M_7">สิงหาคม</option>
-                        <option id="M_8">กันยายน</option>
-                        <option id="M_9">ตุลาคม</option>
-                        <option id="M_10">พฤศจิกายน</option>
-                        <option id="M_11">ธันวาคม</option>
-                      </select>
-                      <select name="ref_year" id="yearSelect">
-                        <option value="" disabled selected>ปี</option>
-                      </select>
+                        <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required>
+                        <i class="bi bi-calendar"></i>
                     </div>
-                    <input type="hidden" id="date_combind" name="doc_date"></input>
+
+
+
+                    <input type="hidden" id="date_combind" name="doc_date" required></input>
                     <div class="form-group-subject">
-                      <label for="subject">เรื่อง</label>
-                      <textarea id="descrip" name="subject"></textarea>
+                      <label for="descrip">เรื่อง</label>
+                      <textarea id="descrip" name="subject" required></textarea>
                     </div>
                   </div>
 
                 </div>
 
-                <!---2nd part-->
+                <!-----------------------------------2nd part----------------------------------->
                 <div class="tab" id="tab-2">
                   <div class="tab-container">
                     <p class="attachment">2 ) รายชื่อคณะกรรมการ</p>
@@ -86,7 +79,7 @@
                   </div>
                 </div>
 
-                <!---3rd part---->
+                <!-----------------------------------3rd part----------------------------------->
                 <div class="tab" id="tab-3">
                   <div class="tab-container">
                     <p class="attachment">3 ) ไฟล์แนบ</p>
@@ -118,9 +111,9 @@
                 </div>
               </form>
 
-              <script src="/static/js/form.js"></script>
 
             </div>
+
 
           </div>
         </div>
@@ -130,11 +123,11 @@
     </div>
 
     <div
-      class="col-md-6 d-sm-flex d-md-flex d-lg-flex d-xl-flex d-xxl-flex justify-content-md-end justify-content-lg-end justify-content-xl-end justify-content-xxl-end">
-      <button class="btn-act btn-primary d-sm-table " type="button">
+      class="search-form">
+      <!-- <button class="btn-act btn-primary d-sm-table " type="button">
         <i class="bi bi-book"></i>
         เอกสารคำสั่ง
-      </button>
+      </button> -->
 
       <a href="{{ url_for('search') }}" style="text-decoration: none;">
         <button class="btn-act btn-primary d-sm-table " type="button">
@@ -149,17 +142,36 @@
 <div class="table-container">
   <div class="container">
     <div class="col-md-12" style="margin-top: 30px;">
-      <h2 style="font-size: 24px;">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
-      <div>
-        <p class="sub-doc">มีเอกสารทั้งหมด <span id="count_doc"></span> รายการ แสดงหน้าละ <span
-            id="show-per-page">10</span> รายการ</p>
+      <h2 class="doc-head">รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์</h2>
+      <div class="sub-doc-header">
+
+        <p class="sub-doc-mobile">
+          มีเอกสารทั้งหมด <span id="count_doc-s"> </span>  รายการ
+        </p>
+
+        <p class="sub-doc">
+          มีเอกสารทั้งหมด <span id="count_doc"> </span>
+          รายการ แสดงหน้าละ
+          <span id="show-per-page">10</span> รายการ
+        </p>
+        
+        
+
+        <div class="doc-search">
+          <i class="bi bi-search"></i>
+          <input type="text" id="customSearch" placeholder="ค้นหารายการเอกสารคำสั่ง">
+          <!-- <i class="bi bi-plus"></i> -->
+        </div>
+
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12" style="margin-bottom: 30px;">
         <div>
           <div class="table-responsive">
-            <table class="table table-striped" data-search="true" id="document-table">
+            <table class="table table-striped" data-search="true" data-searchable="true"
+              data-search-selector="#customSearch"
+                id="document-table">
               <thead>
                 <tr>
                   <th class="text-center" data-formatter="runningFormatter">
@@ -167,7 +179,7 @@
                       ลำดับ
                     </span>
                   </th>
-                  <th data-field="id">
+                  <th data-field="id" hidden>
                     <span class="text">
                       id
                     </span>
@@ -192,6 +204,13 @@
                       วันที่ออกคำสั่ง
                     </span>
                   </th>
+                  <th data-field="ori_date" hidden>
+                  </th>
+                  <th class="text-center" data-field="ref_name" hidden>
+                    <span class="text">
+                      รายชื่อกรรมการ
+                    </span>
+                  </th>
                   <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
                     data-events="clip_icon_Events">
                     <span class="text">
@@ -200,9 +219,9 @@
                   </th>
                   <!--dataFormat-->
                   <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                    data-events="operateEvents">
+                    data-events="edit_del_Events">
                     <span class="text">
-
+                      แก้ไข / ลบ
                     </span>
                   </th>
                 </tr>
@@ -222,21 +241,32 @@
   </div>
 </div>
 
-<div class="pagination">
+<div class="pagination" id ="doc_pagination">
   <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
   <div id="pageNumbers" class="pagination-links"></div>
   <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
+
+<script src="/static/js/form.js"></script>
 
 <!-- Do not move script below -->
 <script>
   function populate_table(document_data) {
     $('#document-table').bootstrapTable({
 
-      data: document_data
-
+      data: document_data,
+      serverSide: true,
+      deferRender: true
 
     });
+    $('#document-table').bootstrapTable('refreshOptions',{
+      filterOptions: {
+          'filterAlgorithm': (row,index, filters)=> {
+            //console.log(row.subject);
+            return row.subject != null;
+      }
+    }
+  });
     //console.log(document_data);
     //load pagination.js script after populateTable
     console.log("tr :", document.getElementsByTagName('tr').length);
@@ -245,6 +275,8 @@
     document.head.appendChild(js);
     //document.getElementById("count_doc").innerHTML = $('#document-table tr').length -1;
     $('#document-table').bootstrapTable('hideColumn', 'id');
+    $('#document-table').bootstrapTable('hideColumn', 'ref_name');
+    $('#document-table').bootstrapTable('hideColumn', 'ori_date');
   }
 
   //page function use to set offset of document query
@@ -285,15 +317,15 @@
       dataType: "json",
       url: "/document",
       success: function (data) {
-        console.log("data :", data.length);
+        console.log("data length:", data.length);
         document.getElementById("count_doc").innerHTML = data.length;
+        document.getElementById("count_doc-s").innerHTML = data.length;
         populate_table(data);
         document.getElementById('spinner')
           .style.display = 'none';
       }
     });
   });
-
 
   //this call offset0 of document
   /*(function () {
@@ -326,7 +358,10 @@
   }
 
   function refresh_table(document_data) {
+    page = document.getElementById("pageNumbers");
+    pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
     $('#document-table').bootstrapTable('load', document_data);
+    showPage(pageNum);
   }
 
   function clip_icon_Formatter(value, row, index) {
@@ -342,8 +377,8 @@
   //edit and delete button
   function edit_del_Formatter(value, row, index) {
     return [
-      '<div class="btn-edit-del" >',
-      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+      '<div class="btn-edit-del">',
+      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
       '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
       '</div>'
 
@@ -353,45 +388,42 @@
   function runningFormatter(value, row, index) {
     return index + 1;
   }
+
   window.clip_icon_Events = {
     'click .pdf_viewer': function (e, value, row, index) {
-      open_pdf(row.id);
+      open_pdf(row.id, row);
     }
   }
-  window.operateEvents = {
+
+  window.edit_del_Events = {
     'click .doc_delete': function (e, value, row, index) {
-      console.log("delete");
       delete_button_sweet(row.id);
     },
     'click .doc_edit': function (e, value, row, index) {
-      console.log("edit");
       prePopulateForm(row);
 
     }
   }
+
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
     $('#doc_id').val(row.id);
+    console.log(row.id);
     $('#refer_num').val(parseInt(row.ref_num));
-    date = row.doc_date
-    datelist = date.split(" ");
-    day = document.getElementById("daySelect");
-    day.value = parseInt(datelist[0]);
-    year = document.getElementById("yearSelect");
-    year.value = parseInt(datelist[2]);
-    $('#monthSelect').val(datelist[1]);
+    $('#thaiDatePicker').val(row.ori_date);
     $('#descrip').val(row.subject);
-    str_ref_name = row.ref_name.join('\n');
+    str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
     uploadedFileName = preload_pdf(row.id);
     console.log(uploadedFileName);
-    var uploadedFileContainer = document.getElementById('uploaded-file-container');
-    var dragAndDropZone = document.getElementById('drag-and-drop');
-    uploadedFileName = preload_pdf(row.id);// Store the uploaded file name in the global variable
-    document.getElementById('uploaded-file-name').textContent = uploadedFileName;
-    uploadedFileContainer.style.display = 'block';
-    dragAndDropZone.style.display = 'none';
-
+    if (uploadedFileName != "") {
+      var uploadedFileContainer = document.getElementById('uploaded-file-container');
+      var dragAndDropZone = document.getElementById('drag-and-drop');
+      uploadedFileName = preload_pdf(row.id);// Store the uploaded file name in the global variable
+      document.getElementById('uploaded-file-name').textContent = uploadedFileName;
+      uploadedFileContainer.style.display = 'block';
+      dragAndDropZone.style.display = 'none';
+    }
   }
 
 
@@ -412,67 +444,41 @@
         //console.log('Success', response);
         console.log("deleted!!");
         refresh();
+        var count_doc = document.getElementById("count_doc").innerHTML;
+        document.getElementById("count_doc").innerHTML = parseInt(count_doc) - 1;
+        //document.getElementById("count_doc-s").innerHTML ;
+        
       },
       error: function (error) {
         console.error('Error', error);
       }
     });
   }
+
   function open_form() {
     console.log("Form openned");
-    populateDaysAndYears();
-  }
-
-  $("#myForm").submit(function (event) {
-    // prevent default html form submission action
-    //event.preventDefault();
-    event.preventDefault();
-    document.getElementById("date_combind").value = document.getElementById("daySelect").value + " " + document.getElementById("monthSelect").value + " " + document.getElementById("yearSelect").value
-    // Create a new FormData object
-    var formData = new FormData();
-    name_list = document.getElementById("name_list").value
-    name_list = name_list.split("\n")
-    console.log(name_list)
-    // Log the formData to verify its content
-    console.log(formData);
-
-    // Append the file to the FormData object
-    var file = $('input[name="doc_data"]')[0].files[0];
-    console.log("file :", file);
-    formData.append('doc_data', file);
-    formData.append('id', $('#doc_id').val());
-    // Add other form data to the FormData object
-    formData.append('subject', $('#descrip').val());
-    formData.append('doc_date', $('#date_combind').val());
-    formData.append('ref_num', $('#refer_num').val());
-    formData.append('ref_year', $('#yearSelect').val());
-    formData.append('name_list', name_list);
-    formData.append('user_id', 1);
-
-
-    console.log(formData);
-    var $form = $(this);
-    var url = $form.attr("action");
+    var defaultDate = new Date();
+    thaiDatePicker.setDate(defaultDate); 
+    // populateDaysAndYears();
     $.ajax({
-      type: 'POST',
-      url: url,
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log("send");
-        $('#modal-form').modal('toggle');
-        refresh();
-        resetForm();
-
-
-      },
-      error: function (error) {
-        console.error('Error', error);
+      dataType: "json",
+      url: "/document",
+      success: function (data) {
+        ref_data = data[0].ref_num;
+        arr_ref = ref_data.split("/");
+        console.log("data :", parseInt(arr_ref[0]));
+        ref_num = parseInt(arr_ref[0]);
+        
+        document.getElementById("refer_num").value = ref_num + 1;
       }
     });
-  });
+  }
 
+
+
+  $('#document-table').on('search.bs.table', function () {
+    showPage(1);
+  });
 </script>
 
 

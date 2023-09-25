@@ -2,7 +2,7 @@ form {
     background: #ffffff;
     margin: 10px auto;
     padding: 15px 40px 40px 40px;
-    width: 90%;
+    width: 100%;
 }
 
 
@@ -22,7 +22,7 @@ input {
 }
 
 .index-btn {
- 
+
     margin: 40px 25px 0 25px;
     background: #3EBC2A;
     color: #ffffff;
@@ -31,7 +31,7 @@ input {
     font-size: 17px;
     cursor: pointer;
     transition: 0.3s;
-    width: 100%;
+    width: 90%;
     border-radius: 10px;
 }
 
@@ -45,13 +45,11 @@ input {
 
 .tab-container {
     padding: 0px 25px 0px 25px;
+    margin-top: 40px;
 }
 
 label {
-    /* Optional styling for the label text */
-    width: 180px;
     font-weight: bold;
-
 }
 
 .pop-up-header {
@@ -59,7 +57,7 @@ label {
     color: #ffffff;
     background-color: #022851;
     padding: 5px 15px 5px 15px;
-    
+
 }
 
 .tab .attachment {
@@ -69,6 +67,17 @@ label {
     margin-bottom: 20px;
     font-weight: 500;
 }
+
+
+.modal-full {
+    min-width: 65%;
+  
+    /* margin-left: 80; */
+}
+
+/* .modal-full .modal-content {
+    min-height: 80vh;
+} */
 
 
 /*-----------------------------------------tab-1-----------------------------------------*/
@@ -85,50 +94,62 @@ label {
     align-items: start;
 
     /* Aligns items vertically within the flex container */
-    margin-bottom: 10px;
-    /* Adds space between this and other form groups */
+   
+}
+
+.form-group label,
+.form-group-subject label {
+    width: 20%;
+    
 }
 
 input {
     width: 200px;
+    margin-bottom: 10px;
 }
 
+#thaiDatePicker{
+    cursor: pointer;
+}
+.bi-calendar{ 
+    margin-left: -35px;
+    font-size: 18px;
+    transform: translateY(-22%);    
+    pointer-events: none; /* Prevent the icon from blocking input events */
+}
 /* Styles for the date select */
-.form-group select {
+/* .form-group select {
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
+} */
 
 /* Optional style to add space between the selects */
-.form-group select:not(:last-child) {
+/* .form-group select:not(:last-child) {
     margin-right: 5px;
-}
+} */
 
-#descrip,
-#preview-descrip {
-
+#descrip {
     /* Add your desired styles for the textarea here */
-    margin-top: 10px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    height: 90px;
-    width: 82.5%;
+    height: 60px;
+    width: 60%;
     resize: vertical;
     /* Allow vertical resizing of the textarea */
 }
 
 
 /*-----------------------------------------tab 2-----------------------------------------*/
-.form-group-2 {
+.form-group-2,
+.form-head {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Style the label to make it look like a header */
@@ -139,22 +160,128 @@ input {
     font-weight: bold;
     background-color: #ccc;
     color: #022851;
-
+    border-top-left-radius: 4px 4px;
+    border-top-right-radius: 4px 4px;
 }
 
-#name_list,
-#preview-name_list {
+.form-head {
+    width: 100%;
+}
+
+.form-group-2 h3,
+#name_list {
+    width: 70%;
+}
+
+#name_list {
     font-size: 16px;
     border: 1px solid #ccc;
-    width: 812px;
-    height: 300px;
-    padding: 10px;
     resize: vertical;
-    /* Allow vertical resizing of the textarea */
+    height: 100px;
+    padding: 10px;
+    border-bottom-left-radius: 4px 4px;
+    border-bottom-right-radius: 4px 4px;
 }
 
 
-@media only screen and (max-width: 1600px) {
+/*-----------------------------------------tab 3-----------------------------------------*/
+.form-group-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#tab-3 h1 {
+    font-size: 30px;
+    width: auto;
+}
+
+#tab-3 h3,
+#tab-4 h3 {
+    font-size: 18px;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+.or {
+    padding: 10px 0px 0px 0px;
+}
+
+.click-to-add {
+    position: relative;
+    font-size: 20px;
+    width: auto;
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+}
+
+.click-to-add:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #022851;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+    transform: scaleX(0);
+}
+
+.click-to-add:hover:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.hidden {
+    display: none;
+}
+
+#drag-and-drop {
+    display: flex;
+    height: 400px;
+    width: 70%;
+    border: 1px dashed #aaa;
+    padding: 20px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#uploaded-file-container {
+    width: 70%;
+    height: 200px;
+    border: 1px dashed #aaa;
+    padding: 20px;
+    /* DO NOT REMOVE this "display setting" is a part of upload file 
+    this will make part of display uploaded file to be hidden
+    before upload file*/
+    display: none;
+    text-align: left;
+}
+
+.file-container {
+    display: flex;
+    
+}
+
+#uploaded-file-name {
+    flex: 1;
+    /* This will make the paragraph take up remaining space */
+}
+
+#remove-btn {
+    margin-left: 10px;
+    /* Add some space between the paragraph and the icon */
+    cursor: pointer;
+}
+
+
+/*-----------------------------------------Responsive-----------------------------------------*/
+
+/* @media only screen and (max-width: 1600px) {
     .form-group-2 {
         display: flex;
         flex-direction: column;
@@ -163,13 +290,16 @@ input {
     }
 
     #name_list {
-        width: 500px;
+        width: 550px;
         background-color: #f31111;
+    }
+    
+    #descrip{
+        width: 76%;
     }
 }
 
 
-/*-----------------------------------------Responsive-----------------------------------------*/
 @media only screen and (max-width: 1024px) {
     .form-group-2 {
         display: flex;
@@ -178,8 +308,7 @@ input {
         justify-content: center;
     }
 
-    #name_list,
-    #preview-name_list {
+    #name_list{
         width: 370px;
         background-color: #0aee3b;
     }
@@ -198,117 +327,149 @@ input {
         width: 350px;
         background-color: #0a7cf7;
     }
-}
+} */
 
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 768px) {
-    .form-group-2 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+
+
+
+@media only screen and (max-width: 1025px) {
+
+    .modal-full {
+        min-width: 80%;
+
     }
 
-    #name_list,
-    #preview-name_list {
-        width: 310px;
+    form {
+        padding: 15px 10px 10px 10px;
+    }
+
+    .form-group label,
+    .form-group-subject label {
+        font-size: 16px;
+        width: 25%;
+    }
+
+    
+
+    /*---------tab 2---------*/
+    #name_list {
         background-color: #cffc06;
     }
+
+    /*---------tab 3---------*/
+    #tab-3 h1 {
+        font-size: 20px;
+        width: auto;
+    }
+
+    .click-to-add {
+        font-size: 18px;
+    }
 }
-
-/*-----------------------------------------tab 3-----------------------------------------*/
-.form-group-3 {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-}
-
-#tab-3 h1 {
-    font-size: 30px;
-    width: auto;
-}
-
-#tab-3 h3,
-#tab-4 h3 {
-    font-size: 18px;
-    border-bottom: 1px solid #D9D9D9;
-}
-
-.or{
-    padding: 10px 0px 0px 0px;
-}
-
-.click-to-add {
-    position: relative;
-    font-size: 20px;
-    width: auto;
-    cursor: pointer;
-    text-decoration: none;
-    color: #000;
-
-}
-
-.click-to-add:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #022851;
-    transform-origin: bottom right;
-    transition: transform 0.25s ease-out;
-    transform: scaleX(0);
+@media only screen and (max-width: 530px){
+    #name_list {
+        background-color: #1f06fc;
+    }
+    .form-group label,
+    .form-group-subject label, .form-group select {
+        width: 30%;
+        
+    }
 }
 
 
-.click-to-add:hover:after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-}
 
-.hidden {
-    display: none;
-}
+/* Extra small devices (phones) */
+@media only screen and (max-width: 480px) {
+    .modal-full {
+        min-width: 95%;
+    }
+    
+    form {
+        padding: 15px 0px 0px 0px;
+    }
 
-#drag-and-drop {
-    display: flex;
-    height: 400px;
-    width: 82%;
-    border: 1px dashed #aaa;
-    padding: 20px;
-    text-align: center;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+    /*---------tab 1---------*/
+    .pop-up-header {
+        font-size: 20px;
+    }
 
-#uploaded-file-container {
-    width: 100%;
-    height: 200px;
-    border: 1px dashed #aaa;
-    padding: 20px;
-    /* DO NOT REMOVE this "display setting" is a part of upload file 
-    this will make part of display uploaded file to be hidden
-    before upload file*/
-    display: none;
-    text-align: left;
-}
+    .form-group,.form-group-subject {
+        display: inline-table;
+        
+    }
+    .form-group{
+        margin-bottom: 20px;
+    }
+    
+    .form-group label,
+    .form-group-subject label {
+        width: 100%;
+        
+    }
 
-.file-container {
-    display: flex;
-    align-items: center;
-}
 
-#uploaded-file-name {
-    flex: 1;
-    /* This will make the paragraph take up remaining space */
-}
+    .form-group input{
+        margin-top: 10px; 
+        margin-left: 12%;
+        font-size: 14px;
+    }
 
-#remove-btn {
-    margin-left: 10px;
-    /* Add some space between the paragraph and the icon */
-    cursor: pointer;
+   
+
+    #daySelect{
+        margin-left: 10%;
+    }
+    #descrip {
+        width: 100%;
+        margin-left: 15%;
+    }
+    
+
+    /*---------tab 2---------*/
+    .form-group-2 h3, #name_list {
+        width: 80%;
+    }
+
+    #name_list {
+        background-color: #fc0606;
+    }
+
+    /*---------tab 3---------*/
+    #tab-3 h1 {
+        font-size: 16px;
+        width: auto;
+    }
+
+    #tab-3 h3{
+        font-size: 14px;
+    }
+
+    #uploaded-file-container{
+        width: 80%;
+        height: 150px;
+        padding: 10px;
+    }
+    #uploaded-file-name{
+        font-size: 12px;
+       
+    }
+    .bi-check-circle-fill,.bi-trash-fill{
+        font-size: 10px;
+        vertical-align: auto;
+    }
+
+    #remove-btn{
+        margin-top: -7px;
+    }
+    .click-to-add {
+        font-size: 16px;
+    }
+
+    #drag-and-drop {
+        width: 80%;
+        height: 180px;
+    }
+
 }

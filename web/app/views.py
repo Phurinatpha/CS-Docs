@@ -37,6 +37,8 @@ oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx"
 oauth_token_url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
 wsapi_get_basicinfo_url = "https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo"
 
+
+
 @app.route('/')
 def home():
     if 'access_token' in session:
@@ -44,6 +46,7 @@ def home():
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
+            
             return redirect(url_for("index"))
         else:
             auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
@@ -67,28 +70,15 @@ def oauth_login():
             user = User.query.filter_by(email=email).first()
             app.logger.debug(user_data.get('firstname_TH') + ' and ' + user_data['lastname_TH'])
             app.logger.debug(user_data['cmuitaccount'])
-            
-            if user:
-                if user.firstname == '':
-                    firstname = user_data.get('firstname_TH')
-                    lastname = user_data.get('lastname_TH')
-                    app.logger.debug(user.email)
-                    app.logger.debug(user.firstname)
-                    # random_pass_len = 8
-                    # password = ''.join(secrets.choice(string.ascii_uppercase + string.digits)
-                    #                 for i in range(random_pass_len))
-                    # new_user = AuthUser(email=email,
-                    #                         password=generate_password_hash(
-                    #                             password, method='sha256'))
-                    new_user_info = User(firstname=firstname,lastname=lastname,role='',email=email)
-                    # db.session.add(new_user)
-                    db.session.add(new_user_info)
-                    db.session.commit()
-                    user = AuthUser.query.filter_by(email=email).first()
-                    login_user(user)
-                else:
-                    user = AuthUser.query.filter_by(email=email).first()
-                    login_user(user)
+            if user and user.firstname == '':
+                app.logger.debug(user.email)
+                app.logger.debug(user.firstname)
+                user_entry = user.update_name(
+                    firstname=user_data.get('firstname_TH'),
+                    lastname=user_data['lastname_TH']
+                )
+                db.session.commit()
+                login_user(user)
             return redirect(url_for('index'))
         else:
             return 'Error getting access token'
@@ -100,9 +90,9 @@ def oauth_login():
 @app.route('/logout')
 @login_required
 def logout():
-    logout_user()
     session.clear()
-    return redirect(url_for('index'))
+    logout_user()
+    return redirect(index)
 
 def get_oauth_token(code):
     payload = {
@@ -139,11 +129,11 @@ def index():
         user_data = get_user_data(access_token)
         if user_data:
             
-            email = user_data.get('cmuitaccount')
-            user = User.query.filter_by(email=email).first()
-            
-            app.logger.debug(user.email)
-            return render_template("project/index_table.html")
+            user_data_ = {
+                'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
+                'email': user_data.get('cmuitaccount')
+                }
+            return render_template("project/index_table.html",user=user_data_)
         else:
             auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
             return redirect(auth_url)
@@ -159,7 +149,11 @@ def base():
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
-            return render_template("project/base.html")
+            user_data_ = {
+                'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
+                'email': user_data.get('cmuitaccount')
+                }
+            return render_template("project/base.html",user=user_data_)
         else:
             auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
             return redirect(auth_url)
@@ -172,18 +166,20 @@ def base():
 def form():
     if request.method == 'POST':
         doc_data = request.files.get('doc_data')
-        app.logger.debug("doc data :",doc_data)
-        app.logger.debug("posted activate")
+        #app.logger.debug("doc data :",doc_data)
         validated = True
         validated_dict = dict()
-        valid_keys = ['subject', 'doc_date', 'ref_num','ref_year','user_id']
+                # Read the contents of the uploaded file as bytes
+        ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
+
+        valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
 
         # Access the uploaded file using request.files
         name_list =  request.form.get('name_list')
         id_ = request.form.get('id','')
         name_list = name_list.split(",")
         name_list =  [i for i in name_list if i != ""]
-        app.logger.debug("name_list = ",name_list)
+        #app.logger.debug("name_list = ",name_list)
         # validate the input
         for key in request.form:
             if key not in valid_keys:
@@ -197,46 +193,59 @@ def form():
 
         if validated:
             if not id_:
-                # Read the contents of the uploaded file as bytes
-                doc_content = doc_data.read()
-                # Create a new Document object with the uploaded file
+                empty_order = order_info.query.filter(order_info.subject == None).first()
+                #app.logger.debug("empty_order", empty_order)
+                if empty_order != None:
+                    app.logger.debug(empty_order)
+                    db.session.delete(empty_order)
+                    db.session.commit()
                 order_entry = order_info(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
-                ref_num=validated_dict['ref_num'],
+                ref_num= validated_dict['ref_num'],
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
                 )
                 db.session.add(order_entry)
                 db.session.commit()
-                doc_entry = doc_info(
-                order_id = order_entry.id,
-                filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-                doc_data=doc_content
+                if doc_data != None :
+                    doc_content = doc_data.read()
+                    doc_entry = doc_info(
+                    order_id = order_entry.id,
+                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    doc_data=doc_content
                 )
-                db.session.add(doc_entry)   
+                    db.session.add(doc_entry)   
             else:
+                app.logger.debug("update")
                 order = order_info.query.get(id_)
                 order_entry = order.update(
                 subject=validated_dict['subject'],
-                doc_date=validated_dict['doc_date'],
                 ref_num=validated_dict['ref_num'],
+                doc_date=validated_dict['doc_date'],
                 ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
                 )
                 if doc_data != None :
                     doc_content = doc_data.read()
-                    doc = doc_info.query.filter(doc_info.order_id == id_).first()   
-                    doc_entry = doc.update(
-                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-                    doc_data=doc_content
-                    )
-            db.session.commit()
-            return index()
+                    doc = doc_info.query.filter(doc_info.order_id == id_).first()
+                    if doc != None: 
+                        doc_entry = doc.update(
+                        doc_data=doc_content
+                        )
+                    else:
+                        doc_entry = doc_info(
+                        order_id = order.id,
+                        filename= str(order.ref_num)+"/"+str(order.ref_year),
+                        doc_data=doc_content)
+                        db.session.add(doc_entry)
 
-        return index()  
+            db.session.commit()
+            return home()
+
+        return home()  
     return render_template("project/form.html")
 
 @app.route('/preview_pdf', methods=('GET', 'POST'))
@@ -270,23 +279,66 @@ def remove():
         try:
             #contact = Contact.query.get(id_)
             order = order_info.query.get(id_)
+            app.logger.debug("order :",order)
+            latest_order = order_info.query.order_by(desc(order_info.id)).first()
             doc = doc_info.query.filter(doc_info.order_id == id_).first()
-            if current_user.role == "admin":
-                db.session.delete(order)
+            app.logger.debug("latest :",latest_order)
+            if doc != None:
                 db.session.delete(doc)
+            if order != latest_order:
+                db.session.delete(order)
+            else :
+                order_entry = order.mini_update(
+                subject=None
+                )
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
             raise
-    return index()
+    return home()()
 
 @app.route('/search')
 def search():
-    return render_template("project/search.html")
+    if 'access_token' in session:
+        # User is already authenticated, retrieve user data
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        if user_data:
+            user_data_ = {
+                'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
+                'email': user_data.get('cmuitaccount')
+                }
+            
+            return render_template("project/search.html",user=user_data_)
+        else:
+            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+            return redirect(auth_url)
+    else:
+        # Redirect to the OAuth provider for authentication
+        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+        return redirect(auth_url)
+
 
 @app.route('/access')
 def access():
-    return render_template("project/manage-access.html")
+    if 'access_token' in session:
+        # User is already authenticated, retrieve user data
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        if user_data:
+            user_data_ = {
+                'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
+                'email': user_data.get('cmuitaccount')
+                }
+            return render_template("project/manage-access.html",user=user_data_)
+        else:
+            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+            return redirect(auth_url)
+    else:
+        # Redirect to the OAuth provider for authentication
+        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
+        return redirect(auth_url)
+    
 
 @app.route('/crash')
 def crash():
@@ -309,6 +361,59 @@ def user_data():
     app.logger.debug(str(len(documents)) + " already entry")
  
     return jsonify(documents)
+
+@app.route('/user_form' , methods=('GET', 'POST'))
+def user_form():
+    if request.method == 'POST':
+        app.logger.debug("posted activate")
+        validated = True
+        validated_dict = dict()
+        valid_keys = ['role','email']
+
+        # Access the uploaded file using request.files
+        id_ = request.form.get('id','')
+        # validate the input
+        for key in request.form:
+            app.logger.debug(key)
+            if key not in valid_keys:
+                continue
+            value = request.form[key].strip()
+            if not value or value == 'undefined':
+                validated = False
+                break
+            app.logger.debug(value)
+            validated_dict[key] = value
+
+        if validated:
+            if not id_:
+                app.logger.debug("add new user")
+                # Create a new Document object with the uploaded file
+                user_entry = User(
+                firstname="",
+                lastname="",
+                role=bool(validated_dict['role']),
+                email=validated_dict['email']
+                )
+                db.session.add(user_entry)
+            else:
+                user = User.query.get(id_)
+                user_entry = user.update(
+                email=validated_dict['email'],
+                role=bool(validated_dict['role'])
+                )
+            #     if doc_data != None :
+            #         doc_content = doc_data.read()
+            #         doc = doc_info.query.filter(doc_info.order_id == id_).first()   
+            #         doc_entry = doc.update(
+            #         filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+            #         doc_data=doc_content
+            #         )
+            db.session.commit()
+            return home()
+
+        return home()  
+    return ''
+
 @app.route("/data")
 def doc_data():
     documents = []
@@ -362,99 +467,53 @@ def download(doc_id):
 # def dashboard():
 #     return 
 
-@app.route('/login', methods=('GET', 'POST'))
-def login():
-    if request.method == 'POST':
-        # login code goes here
-        email = request.form.get('email')
-        password = request.form.get('password')
-        remember = bool(request.form.get('remember'))
-
-
-        user = AuthUser.query.filter_by(email=email).first()
- 
-        # check if the user actually exists
-        # take the user-supplied password, hash it, and compare it to the
-        # hashed password in the database
-        if not user or not check_password_hash(user.password, password):
-            flash('Please check your login details and try again.')
-            # if the user doesn't exist or password is wrong, reload the page
-            return redirect(url_for('login'))
-
-
-        # if the above check passes, then we know the user has the right
-        # credentials
-        login_user(user, remember=remember)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('home')
-        return redirect(next_page)
-    return render_template('project/login.html')
-
-@app.route('/signup', methods=('GET', 'POST'))
-def signup():
+@app.route('/user_delete', methods=('GET', 'POST'))
+def user_remove():
     if request.method == 'POST':
         result = request.form.to_dict()
-        app.logger.debug(str(result))
+        app.logger.debug(result)
+        id_ = result.get('id', '')
+        try:
+            #contact = Contact.query.get(id_)
+            order = User.query.get(id_)
+            db.session.delete(order)
+            db.session.commit()
+        except Exception as ex:
+            app.logger.debug(ex)
+            raise
+    return home()
+
+# @app.route('/login', methods=('GET', 'POST'))
+# def login():
+#     if request.method == 'POST':
+#         # login code goes here
+#         email = request.form.get('email')
+#         password = request.form.get('password')
+#         remember = bool(request.form.get('remember'))
+
+
+#         user = User.query.filter_by(email=email).first()
  
-        validated = True
-        validated_dict = {}
-        valid_keys = ['email','firstname','lastname','role', 'password']
+#         # check if the user actually exists
+#         # take the user-supplied password, hash it, and compare it to the
+#         # hashed password in the database
+#         if not user or not check_password_hash(user.password, password):
+#             flash('Please check your login details and try again.')
+#             # if the user doesn't exist or password is wrong, reload the page
+#             return redirect(url_for('login'))
+#         # if the above check passes, then we know the user has the right
+#         # credentials
+#         login_user(user, remember=remember)
+#         next_page = request.args.get('next')
+#         if not next_page or url_parse(next_page).netloc != '':
+#             next_page = url_for('home')
+#         return redirect(next_page)
+#     return render_template('project/login.html')
 
-
-        # validate the input
-        for key in result:
-            app.logger.debug(str(key)+": " + str(result[key]))
-            # screen of unrelated inputs
-            if key not in valid_keys:
-                continue
-
-
-            value = result[key].strip()
-            if not value or value == 'undefined':
-                validated = False
-                break
-            validated_dict[key] = value
-            # code to validate and add user to database goes here
-        app.logger.debug("validation done")
-        if validated:
-            app.logger.debug('validated dict: ' + str(validated_dict))
-            email = validated_dict['email']
-            password = validated_dict['password']
-            firstname = validated_dict['firstname']
-            lastname = validated_dict['lastname']
-            role = validated_dict['role']
-            # if this returns a user, then the email already exists in database
-            user = AuthUser.query.filter_by(email=email).first()
-            
-
-            if user:
-                # if a user is found, we want to redirect back to signup
-                # page so user can try again
-                flash('Email address already exists')
-                return redirect(url_for('signup'))
-
-
-            # create a new user with the form data. Hash the password so
-            # the plaintext version isn't saved.
-            app.logger.debug("preparing to add")
-            new_user = AuthUser(email=email,
-                                password=generate_password_hash(
-                                    password, method='sha256'))
-            new_user_info = User(firstname=firstname,lastname=lastname,role=role,email=email)
-            # add the new user to the database
-            db.session.add(new_user)
-            db.session.commit()
-            db.session.add(new_user_info)
-            db.session.commit()
-
-
-        return redirect(url_for('login'))
-    return render_template('project/signup.html')
 
 
 @login_manager.user_loader
 def load_user(user_id):
     # since the user_id is just the primary key of our
     # user table, use it in the query for the user
-    return AuthUser.query.get(int(user_id))
+    return User.query.get(int(user_id))
