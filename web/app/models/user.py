@@ -1,5 +1,6 @@
 from app import db
 from sqlalchemy_serializer import SerializerMixin
+from flask_login import UserMixin
 
 def role_name(role):
     if role == True:
@@ -7,7 +8,7 @@ def role_name(role):
     else:
         return "บุคลากร"
 
-class User(db.Model, SerializerMixin):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -40,6 +41,10 @@ class User(db.Model, SerializerMixin):
             'role': role_name(self.role),
             'email': self.email
         }
+    
     def is_active(self):
         # Return True if the user account is active, or False if it's disabled
         return True  # Modify this based on your application's logic
+
+    def get(user_id):
+            return User.query.get(user_id)
