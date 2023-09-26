@@ -179,17 +179,12 @@
                       ลำดับ
                     </span>
                   </th>
-                  <th data-field="id" hidden>
-                    <span class="text">
-                      id
-                    </span>
-                  </th>
                   <th class="text-center" style="width: 100px;" data-field="ref_num">
                     <span class="text">
                       เลขคําสั่ง
                     </span>
                   </th>
-                  <th class="text-center" style="width: 480px;" data-field="subject">
+                  <th class="text"  data-field="subject">
                     <span class="text">
                       เรื่อง
                     </span>
@@ -206,11 +201,6 @@
                   </th>
                   <th data-field="ori_date" hidden>
                   </th>
-                  <th class="text-center" data-field="ref_name" hidden>
-                    <span class="text">
-                      รายชื่อกรรมการ
-                    </span>
-                  </th>
                   <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
                     data-events="clip_icon_Events">
                     <span class="text">
@@ -222,6 +212,16 @@
                     data-events="edit_del_Events">
                     <span class="text">
                       แก้ไข / ลบ
+                    </span>
+                  </th>
+                  <th class="text-center" data-field="ref_name" hidden>
+                    <span class="text">
+                      รายชื่อกรรมการ
+                    </span>
+                  </th>
+                  <th data-field="id" hidden>
+                    <span class="text">
+                      id
                     </span>
                   </th>
                 </tr>
@@ -241,9 +241,11 @@
   </div>
 </div>
 
-<div class="pagination" id ="doc_pagination">
+<div class="pagination flex-wrap ml-3" id ="doc_pagination">
+  <a href="#" id="prevPage-mobile"><i class="fas fa-chevron-left"></i></a>
   <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
   <div id="pageNumbers" class="pagination-links"></div>
+  <a href="#" id="nextPage-mobile"><i class="fas fa-chevron-right"></i></a>
   <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 

@@ -172,8 +172,21 @@
 }
 
 .table-striped>tbody>tr>td {
-  font-size: 14px;
+  font-size: 15px;
 }
+
+.table-striped > thead > tr > th:nth-child(3) {
+  text-align: center;
+}
+
+.table-striped > tbody > tr td:nth-child(3) {
+  min-width: 250px; /* Set the maximum width before word wrap */
+  word-wrap: break-word;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 
 /* Apply alternating background colors to even rows */
 .table-striped>tbody>tr:nth-child(2n)>td,
@@ -298,7 +311,7 @@ h2 {
   margin-right: 10px;
   margin-left: 10px;
   border-radius: 5px;
-  width: 100px;
+  /* width: 100px; */
   height: 30px;
   line-height: 30px;
   text-align: center;
@@ -343,7 +356,13 @@ h2 {
 }
 
 
+
 /*-----------------------------------------Responsive-----------------------------------------*/
+@media only screen and (min-width: 768px){
+  #prevPage-mobile, #nextPage-mobile{
+    display: none;
+  }
+}
 @media only screen and (max-width: 768px) {
   .sub-doc {
     text-align: center;
@@ -360,6 +379,18 @@ h2 {
 
   .dropdown-item i {
     padding-left: 32%;
+  }
+  #prevPage-mobile, #nextPage-mobile{
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  #prevPage-mobile, #nextPage-mobile{
+    display: inline;
+  }
+  #prevPage, #nextPage{
+    display: none;
   }
 }
 
@@ -378,6 +409,18 @@ h2 {
 
   .doc-search {
     width: 100%;
+  }
+
+  .pagination-links a{
+    width: 30px;
+  }
+
+  #prevPage-mobile, #nextPage-mobile{
+    display: inline;
+  }
+
+  #prevPage, #nextPage{
+    display: none;
   }
 }
 
@@ -405,6 +448,13 @@ h2 {
   .doc-search {
     width: 100%;
   }
+
+
+  .pagination-links a{
+    width: 25px;
+  }
+ 
+
 }
 
 @media only screen and (max-width: 376px) {
