@@ -17,13 +17,18 @@ class order_info(db.Model, SerializerMixin):
     __tablename__ = "order_info"
 
 
-    id = db.Column(db.Integer, primary_key=True)
+    #id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(500))
     doc_date = db.Column(db.Date)
     ref_num = db.Column(db.Integer)
     ref_year = db.Column(db.Integer)
     ref_name = db.Column(db.ARRAY(db.String))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    __table_args__ = (
+    db.PrimaryKeyConstraint(
+        "ref_num", "ref_year",name="pk_id"
+        ),
+    )
 
     def __init__(self, subject, doc_date, ref_num, ref_year, ref_name,user_id):
         self.subject = subject
@@ -35,11 +40,9 @@ class order_info(db.Model, SerializerMixin):
 
 
 
-    def update(self, subject,ref_num, doc_date,  ref_year, ref_name,user_id):
+    def update(self, subject, doc_date,   ref_name,user_id):
         self.subject = subject
-        self.ref_num = ref_num
         self.doc_date = doc_date
-        self.ref_year = ref_year
         self.ref_name = ref_name
         self.user_id = user_id
 
@@ -48,7 +51,7 @@ class order_info(db.Model, SerializerMixin):
     
     def to_dict(self):
         return {
-            'id': self.id,
+            #'id': self.pk_id,
             'ref_num': str(self.ref_num)+"/"+str(self.ref_year),
             'subject': self.subject,
             'doc_date': to_date(self.doc_date),
@@ -61,12 +64,20 @@ class doc_info(db.Model, SerializerMixin):
 
 
     id = db.Column(db.Integer, primary_key=True)
-    order_id = db.Column(db.Integer,  db.ForeignKey("order_info.id"), unique = True)
+    order_refnum = db.Column(db.Integer)
+    order_refyear = db.Column(db.Integer)
     filename = db.Column(db.String(20))
     doc_data = db.Column(db.LargeBinary)
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+             ['order_refnum', 'order_refyear'],
+            ['order_info.ref_num', 'order_info.ref_year'],
+        ),
+)
 
-    def __init__(self, order_id, filename, doc_data):
-        self.order_id = order_id
+    def __init__(self, order_refnum, order_refyear, filename, doc_data):
+        self.order_refnum = order_refnum
+        self.order_refyear = order_refyear
         self.filename = filename
         self.doc_data = doc_data
     def update(self,  doc_data):
@@ -75,6 +86,6 @@ class doc_info(db.Model, SerializerMixin):
     def to_dict(self):
         return {
             'id': self.id,
-            'order_id': self.order_id,
+            'order_id': str(self.order_refnum)+" "+str(self.order_refyear),
             'filename': self.filename
         }

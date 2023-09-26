@@ -110,14 +110,13 @@
     
 
 //this function use to open pdf file on clip icons
-  function open_pdf(x,row){
+  function open_pdf(ref_num, ref_year, row){
       console.log("will open pdf soon")
       event.preventDefault();
-      id  = x
-      console.log("id ="+id);
       var url = "/preview_pdf"
       var formData = new FormData();
-      formData.append('id', id)
+      formData.append('ref_num', ref_num)
+      formData.append('ref_year', ref_year)
       $.ajax({
         type: 'POST',
         url: url,
@@ -173,14 +172,13 @@
     }
   }
 //preload pdf name on prepopulate document form
-  function preload_pdf(x){
+  function preload_pdf(ref_num, ref_year){
     event.preventDefault();
-    id  = x
     fileName = "";
-    
     var url = "/preview_pdf"
     var formData = new FormData();
-    formData.append('id', id)
+    formData.append('ref_num', ref_num)
+    formData.append('ref_year', ref_year)
     $.ajax({
       type: 'POST',
       url: url,
@@ -190,6 +188,7 @@
       async: false,
       success: function(response) {
         fileName = response.doc_name ;
+        console.log("filename :",fileName);
         
       }
     });

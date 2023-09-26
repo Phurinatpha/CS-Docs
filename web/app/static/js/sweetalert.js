@@ -1,6 +1,6 @@
 
 // Add a click event listener to all "delete" buttons with the class "btn-del"
-function delete_button_sweet(id)  {
+function delete_button_sweet(ref_num, ref_year)  {
   console.log("delete")
     Swal.fire({
       titleText: 'ยืนยันการลบข้อมูล ?',
@@ -15,7 +15,7 @@ function delete_button_sweet(id)  {
     }).then((result) => {
       if (result.isConfirmed) {
         
-        delete_doc(id)
+        delete_doc(ref_num, ref_year)
         Swal.fire({
           title: 'ลบเอกสารคำสั่งสำเร็จ !',
           icon: 'success',

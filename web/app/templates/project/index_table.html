@@ -393,13 +393,21 @@
 
   window.clip_icon_Events = {
     'click .pdf_viewer': function (e, value, row, index) {
-      open_pdf(row.id, row);
+      refnum = row.ref_num;
+      str_ref = refnum.split("/");
+      ref_num = str_ref[0]
+      ref_year = str_ref[1]
+      open_pdf(ref_num, ref_year, row);
     }
   }
 
   window.edit_del_Events = {
     'click .doc_delete': function (e, value, row, index) {
-      delete_button_sweet(row.id);
+      refnum = row.ref_num;
+      str_ref = refnum.split("/");
+      ref_num = str_ref[0]
+      ref_year = str_ref[1]
+      delete_button_sweet(ref_num, ref_year);
     },
     'click .doc_edit': function (e, value, row, index) {
       prePopulateForm(row);
@@ -409,14 +417,16 @@
 
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
-    $('#doc_id').val(row.id);
-    console.log(row.id);
-    $('#refer_num').val(parseInt(row.ref_num));
+    refnum = row.ref_num;
+    str_ref = refnum.split("/");
+    ref_num = str_ref[0]
+    ref_year = str_ref[1]
+    $('#refer_num').val(parseInt(ref_num));
     $('#thaiDatePicker').val(row.ori_date);
     $('#descrip').val(row.subject);
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
-    uploadedFileName = preload_pdf(row.id);
+    uploadedFileName = preload_pdf(ref_num,ref_year);
     console.log(uploadedFileName);
     if (uploadedFileName != "") {
       var uploadedFileContainer = document.getElementById('uploaded-file-container');
@@ -429,13 +439,12 @@
   }
 
 
-  function delete_doc(id) {
+  function delete_doc(ref_num, ref_year) {
     event.preventDefault();
-    del = id
-    console.log("del id =" + del);
     var url = "/delete"
     var formData = new FormData();
-    formData.append('id', del)
+    formData.append('ref_num', ref_num)
+    formData.append('ref_year', ref_year)
     $.ajax({
       type: 'POST',
       url: url,
