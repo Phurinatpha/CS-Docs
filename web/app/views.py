@@ -81,7 +81,7 @@ def oauth_login():
 @app.route('/logout')
 def logout():
     session.clear()
-    # logout_user()
+    logout_user()
     return redirect(url_for('home'))
 
 def get_oauth_token(code):
@@ -123,6 +123,23 @@ def index():
             return render_template("project/index_table.html", user=user_data_)
     
     return redirect(generate_auth_url())
+
+    # return render_template("project/index_table.html") #for without login test
+
+# @app.route('/base')
+# def base():
+#     if 'access_token' in session:
+#         access_token = session['access_token']
+#         user_data = get_user_data(access_token)
+#         if user_data:
+#             user_data_ = {
+#                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
+#                 'email': user_data.get('cmuitaccount')
+#             }
+#             return render_template("project/index_table.html", user=user_data_)
+    
+#     return redirect(generate_auth_url())
+
 
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
