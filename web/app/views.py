@@ -83,16 +83,18 @@ def oauth_login():
         else:
             return 'Error getting access token'
     else:
-        error = request.args.get('error')
-        error_description = request.args.get('error_description')
-        return f'Error: {error}, Description: {error_description}'
+        # error = request.args.get('error')
+        # error_description = request.args.get('error_description')
+        # return f'Error: {error}, Description: {error_description}'
+        return redirect(url_for('home'))
 
 @app.route('/logout')
 @login_required
 def logout():
+    app.logger.debug("session : " + session)
     session.clear()
     logout_user()
-    return redirect(index)
+    return redirect(url_for('home'))
 
 def get_oauth_token(code):
     payload = {
