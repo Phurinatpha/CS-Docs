@@ -7,7 +7,7 @@ from sqlalchemy import desc
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 from sqlalchemy.sql import text
-from flask_login import login_user, login_required, logout_user , current_user
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 from app import app
 from app import db
@@ -20,11 +20,7 @@ from app.models.Document import order_info, doc_info
 import secrets
 import string
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     # since the user_id is just the primary key of our
-#     # user table, use it in the query for the user
-#     return AuthUser.query.get(int(user_id))
+
 
 client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
 client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
@@ -37,48 +33,44 @@ oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx"
 oauth_token_url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
 wsapi_get_basicinfo_url = "https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo"
 
+login_manager = LoginManager(app)
 
+@login_manager.user_loader
+def load_user(user_id):
+    # since the user_id is just the primary key of our
+    # user table, use it in the query for the user
+    return User.query.get(int(user_id))
+
+def generate_auth_url():
+    return f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
 
 @app.route('/')
 def home():
     if 'access_token' in session:
-        # User is already authenticated, retrieve user data
-        access_token = session['access_token']
-        user_data = get_user_data(access_token)
-        if user_data:
-            
-            return redirect(url_for("index"))
-        else:
-            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-            return redirect(auth_url)
+        return redirect(url_for("index"))
     else:
-        # Redirect to the OAuth provider for authentication
-        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-        return redirect(auth_url)
+        return redirect(generate_auth_url())
 
 @app.route('/oauth/callback')
 def oauth_login():
     code = request.args.get('code')
     if code:
-        # Exchange the authorization code for an access token
         access_token = get_oauth_token(code)
         if access_token:
-            # Store the access token in the session
             session['access_token'] = access_token
             user_data = get_user_data(access_token)
             email = user_data.get('cmuitaccount')
             user = User.query.filter_by(email=email).first()
-            app.logger.debug(user_data.get('firstname_TH') + ' and ' + user_data['lastname_TH'])
-            app.logger.debug(user_data['cmuitaccount'])
+            
             if user and user.firstname == '':
-                app.logger.debug(user.email)
-                app.logger.debug(user.firstname)
                 user_entry = user.update_name(
                     firstname=user_data.get('firstname_TH'),
                     lastname=user_data['lastname_TH']
                 )
+                db.session.add(user_entry)
                 db.session.commit()
                 login_user(user)
+            
             return redirect(url_for('index'))
         else:
             return 'Error getting access token'
@@ -89,11 +81,11 @@ def oauth_login():
         return redirect(url_for('home'))
 
 @app.route('/logout')
-@login_required
 def logout():
     app.logger.debug("session : " + session)
     session.clear()
     logout_user()
+    return redirect(url_for('home'))
     return redirect(url_for('home'))
 
 def get_oauth_token(code):
@@ -123,46 +115,35 @@ def get_user_data(access_token):
         return None
 
 @app.route('/index')
-def index(): 
-    #fix here
+def index():
     if 'access_token' in session:
-        # User is already authenticated, retrieve user data
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
-            
             user_data_ = {
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
-                }
-            return render_template("project/index_table.html",user=user_data_)
-        else:
-            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-            return redirect(auth_url)
-    else:
-        # Redirect to the OAuth provider for authentication
-        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-        return redirect(auth_url)
+            }
+            return render_template("project/index_table.html", user=user_data_)
+    
+    return redirect(generate_auth_url())
 
-@app.route('/base')
-def base():
-    if 'access_token' in session:
-        # User is already authenticated, retrieve user data
-        access_token = session['access_token']
-        user_data = get_user_data(access_token)
-        if user_data:
-            user_data_ = {
-                'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
-                'email': user_data.get('cmuitaccount')
-                }
-            return render_template("project/base.html",user=user_data_)
-        else:
-            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-            return redirect(auth_url)
-    else:
-        # Redirect to the OAuth provider for authentication
-        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-        return redirect(auth_url)
+    # return render_template("project/index_table.html") #for without login test
+
+# @app.route('/base')
+# def base():
+#     if 'access_token' in session:
+#         access_token = session['access_token']
+#         user_data = get_user_data(access_token)
+#         if user_data:
+#             user_data_ = {
+#                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
+#                 'email': user_data.get('cmuitaccount')
+#             }
+#             return render_template("project/index_table.html", user=user_data_)
+    
+#     return redirect(generate_auth_url())
+
 
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
@@ -324,22 +305,16 @@ def search():
 @app.route('/access')
 def access():
     if 'access_token' in session:
-        # User is already authenticated, retrieve user data
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         if user_data:
             user_data_ = {
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
-                }
-            return render_template("project/manage-access.html",user=user_data_)
-        else:
-            auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-            return redirect(auth_url)
-    else:
-        # Redirect to the OAuth provider for authentication
-        auth_url = f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
-        return redirect(auth_url)
+            }
+            return render_template("project/index_table.html", user=user_data_)
+    
+    return redirect(generate_auth_url())
     
 
 @app.route('/crash')
@@ -512,10 +487,3 @@ def user_remove():
 #         return redirect(next_page)
 #     return render_template('project/login.html')
 
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    # since the user_id is just the primary key of our
-    # user table, use it in the query for the user
-    return User.query.get(int(user_id))
