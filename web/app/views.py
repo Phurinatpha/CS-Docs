@@ -47,7 +47,20 @@ def generate_auth_url():
 @app.route('/')
 def home():
     if 'access_token' in session:
-        return redirect(url_for("index"))
+        if 'access_token' in session:
+            access_token = session['access_token']
+            user_data = get_user_data(access_token)
+            email = user_data.get('cmuitaccount')
+            user = User.query.filter_by(email=email).first()
+
+            if user:
+                app.logger.debug("User and Firstname = ''")
+                
+                new_firstname = user_data.get('firstname_TH')
+                new_lastname = user_data['lastname_TH']
+                user.update_name(new_firstname, new_lastname)
+                db.session.commit()
+            return redirect(url_for("index"))
     else:
         return redirect(generate_auth_url())
 
@@ -61,31 +74,31 @@ def oauth_login():
             user_data = get_user_data(access_token)
             email = user_data.get('cmuitaccount')
             user = User.query.filter_by(email=email).first()
-            
-            if user and user.firstname == '':
+            app.logger.debug('email : ' + email)
+
+            if user and user.firstname is None:
+                app.logger.debug("User and Firstname = ''")
                 user_entry = user.update_name(
                     firstname=user_data.get('firstname_TH'),
                     lastname=user_data['lastname_TH']
                 )
-                db.session.add(user_entry)
                 db.session.commit()
                 login_user(user)
-            
-            return redirect(url_for('index'))
-        else:
-            return 'Error getting access token'
-    else:
-        # error = request.args.get('error')
-        # error_description = request.args.get('error_description')
-        # return f'Error: {error}, Description: {error_description}'
-        return redirect(url_for('home'))
+                return redirect(url_for('home'))
+            elif user:
+                app.logger.debug("User" + email)
+                login_user(user)
+                return redirect(url_for('home'))             
+
+    error = request.args.get('error')
+    error_description = request.args.get('error_description')
+    return f'Error: {error}, Description: {error_description}, No response Code'
+
 
 @app.route('/logout')
 def logout():
-    app.logger.debug("session : " + session)
     session.clear()
     logout_user()
-    return redirect(url_for('home'))
     return redirect(url_for('home'))
 
 def get_oauth_token(code):
@@ -228,7 +241,7 @@ def form():
             db.session.commit()
             return home()
 
-        return home()  
+        return home()
     return render_template("project/form.html")
 
 @app.route('/preview_pdf', methods=('GET', 'POST'))
@@ -312,7 +325,7 @@ def access():
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
             }
-            return render_template("project/index_table.html", user=user_data_)
+            return render_template("project/manage-access.html", user=user_data_)
     
     return redirect(generate_auth_url())
     
@@ -486,4 +499,3 @@ def user_remove():
 #             next_page = url_for('home')
 #         return redirect(next_page)
 #     return render_template('project/login.html')
-

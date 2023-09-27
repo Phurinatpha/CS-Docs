@@ -19,11 +19,11 @@ def create_db():
 def seed_db():  
     db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role=True,email="flask@1234"))
     db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role=False,email="ksalf@4321"))
-    db.session.add(User(firstname='แสงตะวัน',lastname="ภู่พุ่ม",role=True,email="Saengtawan_p@cmu.ac.th"))
+    db.session.add(User(firstname='แสงตะวัน',lastname="ภู่พุ่ม",role=True,email="saengtawan_p@cmu.ac.th"))
     db.session.commit()
     count = 1
     i = 1
-    while count < 50 :
+    while count < 3 :
         db.session.add(
             order_info(subject='ฮัลโหลนี่คือข้อมูลจาก database จะขึ้นไหมน้าา', doc_date='2566-6-2',ref_num=i,ref_year='2566',ref_name=['Mr. Compsci ChiangMai University'],user_id='1'))
         db.session.add(

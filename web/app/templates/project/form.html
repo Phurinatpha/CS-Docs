@@ -50,7 +50,7 @@
           <!--this input is id of order_table-->
           <input type="hidden" name="id" value="">
           <!--this input is user id set default to 1-->
-          <input type="hidden" name="user_id" value="1">
+          <input type="hidden" name="user_id" id="usr_id" value="2">
           <!-- Separate select elements for day, month, and year -->
           <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required>
           <i class="bi bi-plus"></i>
@@ -142,7 +142,7 @@
       formData.append('ref_num', $('#refer_num').val());
       formData.append('ref_year', $('#yearSelect').val());
       formData.append('name_list', name_list);
-      formData.append('user_id', 1);
+      formData.append('user_id', $('#usr_id').val());
 
 
       console.log(formData);
