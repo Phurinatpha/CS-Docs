@@ -18,9 +18,15 @@ input {
   display: flex;
   justify-content: center;
 }
+.search-btn-wrapper i{
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
 
 .search-btn {
-  margin: 20px 15px 0 0;
+  display: flex;
+  align-items: center;
   background: #022851;
   color: #ffffff;
   border: none;
@@ -44,7 +50,8 @@ input {
 }
 
 .search-header {
-  font-size: 24px;
+  display: flex;
+  font-size: 20px;
   color: #ffffff;
   background-color: #022851;
   margin: 28px 0;
@@ -52,8 +59,9 @@ input {
 }
 
 .search-header i {
-  display: inline;
-  margin-right: 5px; /* Add some spacing between the icon and text if needed */
+  display: flex;
+  align-items: center;
+  margin-right: 10px; /* Add some spacing between the icon and text if needed */
 }
 
 .found-container {

@@ -1,33 +1,23 @@
-html * {
-  font-family: 'Sarabun', sans-serif;
-}
 
 /*-----------------------------------buttons-----------------------------------*/
-.btn-act {
+.btn-act-m {
   padding: 5px 10px;
   font-size: 1em;
   border-radius: 10px;
   text-decoration: none;
 }
 
-.btn-primary {
-  background-color: #022851;
-  color: #fff;
-  border: none;
-
-}
-
-.btn-act.btn-primary.btn-create {
+.btn-act-m.btn-primary.btn-create {
   height: 80px;
   width: 180px;
 }
 
-.btn-act.btn-primary.btn-add-person {
+.btn-act-m.btn-primary.btn-add-person {
   height: 80px;
   width: 120px;
 }
 
-.btn-act.btn-primary.d-sm-table {
+.btn-act-m.btn-primary.d-sm-table {
   width: 130px;
   margin-left: 25px;
   margin-bottom: 5px;
@@ -43,10 +33,15 @@ html * {
   align-items: center;
 }
 
+.doc-search input{
+  border: 1px solid #aaaaaa;
+  border-radius: 7px;
+  margin-bottom: 10px;
+}
 
 /*-----------------------------------text-----------------------------------*/
 .access-header {
-  font-size: 1.4em;
+  font-size: 20px;
   color: #ffffff;
   background-color: #022851;
   margin: 28px 0;
@@ -54,49 +49,29 @@ html * {
 }
 
 .h2-eligible {
-  font-size: 1.3em;
+  font-size: 18px;
   font-weight: 600;
   border-bottom: 1px solid #022851;
   margin-top: -25px;
 }
 
 .sub-doc {
-  font-size: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  font-size: 16px;
 }
 
-#all-doc,
+
 #user-count,
+#user-count-s,
 #show-per-page {
   color: red;
+  margin: 0 5px 0 5px;
 }
 
 
 /*-----------------------------------Modal-----------------------------------*/
-.modal-dialog.modal-xl {
-  max-width: 67.6%;
-  /* max-width: 80%; */
-  margin: 4.7rem auto;
-}
-
-.close {
-  position: absolute;
-  top: 0;
-  right: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  /* Choose your preferred color for the close button */
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-/* Adding a hover effect to the close button */
-.close:hover {
-  color: #ff0000;
-  /* Choose your preferred color for the close button on hover */
-}
-
 label {
   /* Optional styling for the label text */
   width: 180px;
@@ -116,13 +91,15 @@ label {
 
 #input-email {
   width: 197px;
+  border: 1px solid #aaaaaa;;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .grant-group .input-container {
   display: flex;
-  border: 1px solid #ccc;
-  /* Add border to the input-container */
-  border-radius: 7px;
+  /* border: 1px solid #ccc;
+  border-radius: 7px; */
 }
 
 .grant-group input {
@@ -132,8 +109,11 @@ label {
 }
 
 .grant-group .input-group-addon {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   background-color: #eee;
-  border-left: 1px solid #ccc;
+  border: 1px solid #aaaaaa;;
+  border-width:1px 1px 1px 0;
   /* Add left border to the span element */
   padding: 10px;
   /* Add padding for spacing */
@@ -145,7 +125,8 @@ label {
 }
 
 .grant-btn {
-  margin: 20px 15px 0 0;
+  display: flex;
+  align-items: center;
   background: #022851;
   color: #ffffff;
   border: none;
@@ -160,14 +141,20 @@ label {
   opacity: 0.8;
 }
 
+.grant-btn-wrapper i {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
 .grant-container {
   margin: 10px auto;
-  padding: 0px 40px 40px 40px;
-  width: 90%;
+  width: 93.4%;
 }
 
 .grant-header {
-  font-size: 24px;
+  display: flex;
+  font-size: 20px;
   color: #ffffff;
   background-color: #022851;
   margin: 28px 0;
@@ -175,8 +162,9 @@ label {
 }
 
 .grant-header i {
-  display: inline;
-  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
   /* Add some spacing between the icon and text if needed */
 }
 
@@ -186,6 +174,7 @@ label {
   /* Aligns items vertically within the flex container */
   margin-bottom: 10px;
   /* Adds space between this and other form groups */
+  padding: 0px 25px 0px 25px;
 }
 
 
@@ -209,116 +198,26 @@ label {
   justify-content: end;
 }
 
-.table th {
-  background-color: #022851;
-  color: #fff;
+
+.table-striped > tbody > tr td:nth-child(2) {
+  min-width: 300px !important; /* Set the maximum width before word wrap */
 }
 
-h2 {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #D9D9D9;
+.table-striped > tbody > tr td:nth-child(3) {
+  min-width: 400px !important; /* Set the maximum width before word wrap */
 }
 
-/* Apply styles to the row */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-}
+/*-----------------------------------------Responsive-----------------------------------------*/
+@media only screen and (max-width: 655px){
+  .grant-container{
+    padding: 0;
+  }
 
-.user-row {
-  margin-bottom: 100px;
-}
+  .grant-group{
+    display: inline-table;
+  }
 
-
-/*-----------------------------------Edit & Del button----------------------------------- */
-.btn-edit-del {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Align buttons horizontally in the center */
-}
-
-/* Styling for the buttons inside the table cell */
-.table .btn-edit {
-  width: 130px;
-  /* Change this value to adjust the button width */
-  padding: 0px;
-  padding-top: 0px;
-  margin-bottom: 7px;
-  border-radius: 7px;
-  margin-top: 2%;
-  border: none;
-  color: #ffffff;
-  background-color: #FAA849;
-}
-
-.table .btn-del {
-  width: 130px;
-  padding: 0px;
-  padding-top: 0px;
-  margin-bottom: 2%;
-  border-radius: 7px;
-  border: none;
-  color: #ffffff;
-  background-color: #DE4545;
-  cursor: pointer;
-}
-
-
-/*-----------------------------------Pagination-----------------------------------*/
-.pagination {
-  display: flex;
-  position: relative;
-  border-radius: 50px;
-  justify-content: center;
-  margin-bottom: 50px;
-  margin-top: 50px;
-}
-
-.pagination a {
-  margin-right: 10px;
-  margin-left: 10px;
-  border-radius: 5px;
-  width: 100px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  color: #333;
-  font-size: 16px;
-  font-weight: 700;
-  transition: .3s linear;
-  text-decoration: none;
-}
-
-.pagination a:hover {
-  background-color: #022851;
-  color: #fff;
-}
-
-.pagination-links {
-  text-align: center;
-}
-
-.pagination-links a {
-  font-size: 12px;
-  display: inline-block;
-  width: 45px;
-  height: 30px;
-  margin-right: 5px;
-  margin-left: 5px;
-  color: black;
-  border-radius: 5px;
-  padding: 0;
-  border: 1px solid #D9D9D9;
-}
-
-.pagination-links a:hover {
-  background-color: #555;
-  color: white;
-}
-
-/* Style for the current page link (overrides the existing styles) */
-.current-page {
-  background-color: #022851 !important;
-  color: #FFF !important;
+  label{
+    width: 100%;
+  }
 }

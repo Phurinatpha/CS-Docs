@@ -71,3 +71,13 @@ function user_delete_sweet(id)  {
       });
   }
 
+function create_sweet(){
+  console.log("create")
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'บันทึกเอกสารสำเร็จ',
+    showConfirmButton: false,
+    timer: 1500
+  })
+}

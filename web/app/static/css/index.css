@@ -123,10 +123,10 @@
 }
 
 #customSearch {
-  font-size: 14px;
+  font-size: 16px;
   width: 100%;
-  height: 35px;
-  padding: 0px 20px 0px 40px;
+  /* height: 35px; */
+  padding: 6px 20px 6px 40px;
   /* Adjust the padding as needed */
   text-align: center;
 }
@@ -139,7 +139,7 @@
   font-size: 18px;
   color: #022851;
   /* Adjust the icon color as needed */
-  cursor: pointer;
+  cursor: unset;
 }
 
 /* .doc-search .bi-plus{
@@ -184,7 +184,7 @@
   word-wrap: break-word;
   text-align: left;
   padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 20px;  
 }
 
 
@@ -243,7 +243,7 @@ h2 {
 
 /* Styling for the buttons inside the table cell */
 .table .btn-edit {
-  width: 130px;
+  width: 90px;
   /* Change this value to adjust the button width */
   padding: 0px;
   padding-top: 0px;
@@ -256,7 +256,7 @@ h2 {
 }
 
 .table .btn-del {
-  width: 130px;
+  width: 90px;
   padding: 0px;
   padding-top: 0px;
   margin-bottom: 5%;
@@ -269,11 +269,10 @@ h2 {
 
 
 /*-----------------------------------Modal-----------------------------------*/
-.modal-dialog.modal-xl {
-  max-width: 67.6%;
-  /* max-width: 80%; */
+.modal-full {
+  min-width: 65%;
+  padding-top: 45px;
 
-  margin: 4.7rem auto;
 }
 
 .close {
@@ -308,8 +307,10 @@ h2 {
 }
 
 .pagination a {
-  margin-right: 10px;
-  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
   border-radius: 5px;
   /* width: 100px; */
   height: 30px;
@@ -358,12 +359,18 @@ h2 {
 
 
 /*-----------------------------------------Responsive-----------------------------------------*/
+@media only screen and (max-width: 1025px) {
+  .modal-full {
+      min-width: 80%;
+  }
+}
+
 @media only screen and (min-width: 768px){
   #prevPage-mobile, #nextPage-mobile{
     display: none;
   }
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 767px) {
   .sub-doc {
     text-align: center;
     margin-bottom: 5px;
@@ -377,9 +384,7 @@ h2 {
     width: 100%;
   }
 
-  .dropdown-item i {
-    padding-left: 32%;
-  }
+  
   #prevPage-mobile, #nextPage-mobile{
     display: none;
   }
@@ -425,11 +430,12 @@ h2 {
 }
 
 /* Extra small devices (phones) */
-@media only screen and (max-width: 480px) {
-  .dropdown-item i {
-    padding-left: 25%;
+@media only screen and (max-width: 495px) {
+  .modal-full {
+    min-width: 95%;
   }
 
+ 
   .sub-doc-header {
     display: inline;
   }

@@ -1,20 +1,20 @@
 {% extends "project/base.html" %}
 {% block content %}
 <link rel="stylesheet" href="/static/css/m-access.css">
+<link rel="stylesheet" href="/static/css/index.css">
+
 <!-- <link rel="stylesheet" href="/static/css/grant.css"> -->
 
 <div class="container">
     <div class="row" style="padding-top: 20px;">
         <div class="col-md-6">
             <a href="{{ url_for('home') }}">
-                <button class="btn-act btn-primary btn-create">
+                <button class="btn-act-m btn-primary btn-create">
                     <i class="bi bi-book"></i>
                     ไปยังหน้าเอกสารคำสั่ง
                 </button>
             </a>
         </div>
-
-
     </div>
 </div>
 
@@ -23,67 +23,58 @@
 </div>
 
 <div class="access-container">
-
     <div class="container">
         <div class="col-md-12" style="margin-top: 30px;">
             <div class="add-personel">
-                <button class="btn-act btn-primary btn-add-person " data-toggle="modal" data-target=".bd-modal-xl">
+                <button class="btn-act-m btn-primary btn-add-person " data-toggle="modal" data-target=".modal">
                     <i class="bi bi-plus-circle-fill"></i>
                     เพิ่มบุคลาการ
                 </button>
 
                 <!-- Modal zone -->
-                <div class="modal fade bd-modal-xl" id="modal-user-form"data-keyboard="false">
-                    <div class="modal-dialog modal-xl">
+                <div class="modal fade" id="modal-form" data-keyboard="false">
+                    <div class="modal-dialog modal-full">
                         <div class="modal-content">
-
-
                             <!-- Modal body -->
                             <div class="modal-body">
                                 <button type="button" id="closeModal" class="close"
                                     data-dismiss="modal">&times;</button>
                                 <!-- Add your content here -->
                                 <form class="grant-container" id="user_form" action="/user_form">
-                                    <p class="grant-header"><i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</p>
+                                    <p class="grant-header"><i class="bi bi-plus-circle-fill"></i>จัดการบุคลาการ</p>
 
-                                     <!--  <div class="grant-group">
+                                    <!--  <div class="grant-group">
                                         <label>ชื่อจริง</label>
                                         <div class="input-container">-->
-                                            <input type="hidden" id="input-fname" placeholder="ชื่อจริง" value="">
-                                       <!--  </div>
+                                    <input type="hidden" id="input-fname" placeholder="ชื่อจริง" value="">
+                                    <!--  </div>
                                     </div>-->
 
                                     <!--<div class="grant-group">
                                         <label>นามสกุล</label>
                                         <div class="input-container">-->
-                                            <input type="hidden" id="input-lname" placeholder="นามสกุล" value="">
-                                       <!-- </div>
+                                    <input type="hidden" id="input-lname" placeholder="นามสกุล" value="">
+                                    <!-- </div>
                                     </div>-->
-
                                     <div class="grant-group">
-                                        <input type="hidden"id = "user_id"  name="id" value="">
+                                        <input type="hidden" id="user_id" name="id" value="">
                                         <label>E-mail</label>
                                         <div class="input-container">
                                             <input id="input-email" name="add-user-email" placeholder="E-mail address">
                                             <span class="input-group-addon">@cmu.ac.th</span>
                                         </div>
-
                                     </div>
-
                                     <div class="grant-group">
                                         <label>ระดับสิทธิ์การเข้าถึง</label>
-
                                         <input type="radio" id="admin" name="answer-a" value="True">
                                         <label class="radio" for="admin">ธุรการ</label>
 
                                         <input type="radio" id="user" name="answer-a" value="False">
                                         <label class="radio" for="user">บุคลากร</label>
-
                                     </div>
-
                                     <div class="grant-btn-wrapper">
                                         <button class="grant-btn" type="submit" name="add-user-submit">
-                                            <i class="bi bi-plus-circle-fill"></i>เพิ่มบุคลาการ</button>
+                                            <i class="bi bi-plus-circle-fill"></i>บันทึกสิทธิ์</button>
                                     </div>
                                 </form>
                             </div>
@@ -93,69 +84,88 @@
             </div>
             <!-- End of Modal zone -->
         </div>
+
         <h2 class="h2-eligible">ผู้มีสิทธิ์การเข้าถึง</h2>
-        <div>
-            <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด <span id="user-count"></span> คน แสดงหน้าละ <span
+
+        <div class="sub-doc-header">
+
+            <p class="sub-doc-mobile">
+                ผู้มีสิทธิ์การเข้าถึงทั้งหมด<span id="user-count-s"> </span>คน
+            </p>
+
+            <p class="sub-doc">ผู้มีสิทธิ์การเข้าถึงทั้งหมด<span id="user-count"></span>คน แสดงหน้าละ <span
                     id="show-per-page">10</span> รายการ</p>
+
+
+
+            <div class="doc-search">
+                <i class="bi bi-search"></i>
+                <input type="text" id="customSearch" placeholder="ค้นหารายชื่อผู้มีสิทธิ์การเข้าถึง">
+                <!-- <i class="bi bi-plus"></i> -->
+            </div>
+
         </div>
-    
-    <div class="row">
-        <div class="col-md-12" style="margin-bottom: 30px;">
-            <div>
-                <div class="table-responsive">
-                    <table class="table table-striped" id="access-table" data-filter-control="true">
-                        <thead>
-                            <tr>
-                                <th class="text-center" data-formatter="runningFormatter">
-                                    <span class="text">
-                                        ลำดับ
-                                    </span>
-                                </th>
 
-                                <th data-field="id" hidden>
-                                    <span class="text">
-                                        id
-                                    </span>
-                                </th>
 
-                                <th class="text-center" style="width: 400px;" data-field="name">
-                                    <span class="text">
-                                        ชื่อจริง - นามสกุล
-                                    </span>
-                                </th>
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom: 30px;">
+                <div>
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="access-table" data-filter-control="true"
+                            data-search="true" data-searchable="true" data-search-selector="#customSearch">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-formatter="runningFormatter">
+                                        <span class="text">
+                                            ลำดับ
+                                        </span>
+                                    </th>
 
-                                <th class="text-center" style="width: 200px;" data-field="email">
-                                    <span class="text">
-                                        E-mail
-                                    </span>
-                                </th>
+                                    <th data-field="id" hidden>
+                                        <span class="text">
+                                            id
+                                        </span>
+                                    </th>
 
-                                <th class="text-center" data-field="role">
-                                    <span class="text">
-                                        ระดับสิทธิ์การเข้าถึง
-                                    </span>
-                                </th>
+                                    <th class="text-center" style="width: 400px;" data-field="name">
+                                        <span class="text">
+                                            ชื่อจริง - นามสกุล
+                                        </span>
+                                    </th>
 
-                                <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                                data-events="operateEvents">
-                                    <span class="text">
-                                        แก้ไขสิทธิ์การเข้าถึง
-                                    </span>
-                                </th>
-                            </tr>
-                        </thead>
+                                    <th class="text-center" style="width: 200px;" data-field="email">
+                                        <span class="text">
+                                            E-mail
+                                        </span>
+                                    </th>
 
-                    </table>
+                                    <th class="text-center" data-field="role">
+                                        <span class="text">
+                                            ระดับสิทธิ์การเข้าถึง
+                                        </span>
+                                    </th>
+
+                                    <th class="text-center" data-field="data-buttons"
+                                        data-formatter="edit_del_Formatter" data-events="operateEvents">
+                                        <span class="text">
+                                            แก้ไขสิทธิ์การเข้าถึง
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 
-<div class="pagination">
+<div class="pagination flex-wrap ml-3" id="doc_pagination">
+    <a href="#" id="prevPage-mobile"><i class="fas fa-chevron-left"></i></a>
     <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
     <div id="pageNumbers" class="pagination-links"></div>
+    <a href="#" id="nextPage-mobile"><i class="fas fa-chevron-right"></i></a>
     <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
@@ -169,14 +179,14 @@
 
 
         });
-        $('#access-table').bootstrapTable('refreshOptions',{
+        $('#access-table').bootstrapTable('refreshOptions', {
             filterOptions: {
-                'filterAlgorithm': (row, filters)=> {
-                    return row.name !=" ";
+                'filterAlgorithm': (row, filters) => {
+                    return row.name != " ";
                 }
             }
         });
-    
+
 
         $('#access-table').bootstrapTable('hideColumn', 'id');
         //console.log("tr :", document.getElementsByTagName('tr').length);
@@ -186,33 +196,23 @@
     }
 
     $(document).ready(function () {
-       
+
         $.ajax({
             dataType: "json",
             url: "/user",
             success: function (data) {
                 console.log("data :", data.length);
                 document.getElementById("user-count").innerHTML = data.length;
+                document.getElementById("user-count-s").innerHTML = data.length;
                 populate_table(data);
             }
         });
     });
     //run number function
     function runningFormatter(value, row, index) {
-        return index+1;
-      } 
-      //edit and delete button
-    function edit_del_Formatter(value, row, index) {
-        return [
-            '<div class="btn-edit-del" >',
-            '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
-            '<button class="user_delete btn-del"  >', 'ลบ', '</button>',
-            '</div>'
-
-        ].join('')
+        return index + 1;
     }
 
-    
     //This part must be edit with user db
     window.operateEvents = {
         'click .user_delete': function (e, value, row, index) {
@@ -230,11 +230,11 @@
         $('#user_id').val(row.id);
         email = row.email.split("@");
         $('#input-email').val(email[0]);
-        if (row.role == "true"){
-            document.getElementById("admin").checked = true ;
+        if (row.role == "true") {
+            document.getElementById("admin").checked = true;
         }
-        else{
-            document.getElementById("user").checked = true ;
+        else {
+            document.getElementById("user").checked = true;
         }
 
     }
@@ -246,22 +246,22 @@
         var formData = new FormData();
         formData.append('id', del)
         $.ajax({
-          type: 'POST',
-          url: url,
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function (response) {
-            //console.log('Success', response);
-            console.log("deleted!!");
-          },
-          error: function (error) {
-            console.error('Error', error);
-          }
+            type: 'POST',
+            url: url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                //console.log('Success', response);
+                console.log("deleted!!");
+            },
+            error: function (error) {
+                console.error('Error', error);
+            }
         });
-      }
+    }
 
-      $("#user_form").submit(function (event) {
+    $("#user_form").submit(function (event) {
         // prevent default html form submission action
         event.preventDefault();
         // Create a new FormData object
@@ -274,34 +274,34 @@
         console.log(role);
         formData.append('id', $('#user_id').val());
         formData.append('role', role);
-        formData.append('email', $('#input-email').val()+"@cmu.ac.th");
-        console.log(formData);  
+        formData.append('email', $('#input-email').val() + "@cmu.ac.th");
+        console.log(formData);
         var $form = $(this);
-        var url = $form.attr("action");  
+        var url = $form.attr("action");
         $.ajax({
-          type: 'POST',
-          url: url,
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function(response) {
-          console.log("send");
-          $('#modal-user-form').modal('toggle');
-          
-          document.getElementById('user_form').reset();
-            
-          },
-          error: function(error) {
-            console.error('Error', error);
-          }
-        });
-        });
+            type: 'POST',
+            url: url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log("send");
+                $('#modal-user-form').modal('toggle');
 
-        //edit and delete button
+                document.getElementById('user_form').reset();
+
+            },
+            error: function (error) {
+                console.error('Error', error);
+            }
+        });
+    });
+
+    //edit and delete button
     function edit_del_Formatter(value, row, index) {
         return [
             '<div class="btn-edit-del" >',
-            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".bd-modal-xl">', 'แก้ไข', '</button>',
+            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
             '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
             '</div>'
 
