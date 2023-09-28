@@ -372,16 +372,23 @@ def user_form():
         if validated:
             if not id_:
                 app.logger.debug("add new user")
+                app.logger.debug("role1 : " + validated_dict['role'])
                 # Create a new Document object with the uploaded file
+                if validated_dict['role'] == "True":
+                    role_ = True
+                elif validated_dict['role'] == "False":
+                    role_ = False
+                app.logger.debug("role2 : " + str(role_))
                 user_entry = User(
                 firstname="",
                 lastname="",
-                role=bool(validated_dict['role']),
+                role=role_,
                 email=validated_dict['email']
                 )
                 db.session.add(user_entry)
             else:
                 user = User.query.get(id_)
+                app.logger.debug("role : " + validated_dict['role'])
                 user_entry = user.update(
                 email=validated_dict['email'],
                 role=bool(validated_dict['role'])
