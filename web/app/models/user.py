@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(100))
     lastname = db.Column(db.String(100))
-    role = db.Column(db.Boolean)
+    role = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(100))
 
     def __init__(self, firstname, lastname, role, email):

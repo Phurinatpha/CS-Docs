@@ -126,7 +126,7 @@ $(document).ready(function () {
     formData.append('ref_num', $('#refer_num').val());
     formData.append('ref_year', str_date[2]);
     formData.append('name_list', name_list);
-    formData.append('user_id', 1);
+    formData.append('user_id', $('#usr_id').val());
 
 
     console.log(formData);

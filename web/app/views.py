@@ -13,13 +13,8 @@ from app import app
 from app import db
 from app import login_manager
 
-from app.models.authuser import AuthUser
 from app.models.user import User
 from app.models.Document import order_info, doc_info
-
-import secrets
-import string
-
 
 
 client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
@@ -47,20 +42,9 @@ def generate_auth_url():
 @app.route('/')
 def home():
     if 'access_token' in session:
-        if 'access_token' in session:
-            access_token = session['access_token']
-            user_data = get_user_data(access_token)
-            email = user_data.get('cmuitaccount')
-            user = User.query.filter_by(email=email).first()
+        app.logger.debug("homeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 
-            if user:
-                app.logger.debug("User and Firstname = ''")
-                
-                new_firstname = user_data.get('firstname_TH')
-                new_lastname = user_data['lastname_TH']
-                user.update_name(new_firstname, new_lastname)
-                db.session.commit()
-            return redirect(url_for("index"))
+        return redirect(url_for("index"))
     else:
         return redirect(generate_auth_url())
 
@@ -68,37 +52,40 @@ def home():
 def oauth_login():
     code = request.args.get('code')
     if code:
+        app.logger.debug("-----------------------------in if code callback-----------------------------")
+
         access_token = get_oauth_token(code)
         if access_token:
+            app.logger.debug("-----------------------------in if access callback-----------------------------")
             session['access_token'] = access_token
             user_data = get_user_data(access_token)
             email = user_data.get('cmuitaccount')
             user = User.query.filter_by(email=email).first()
-            app.logger.debug('email : ' + email)
-
-            if user and user.firstname is None:
-                app.logger.debug("User and Firstname = ''")
-                user_entry = user.update_name(
-                    firstname=user_data.get('firstname_TH'),
-                    lastname=user_data['lastname_TH']
-                )
-                db.session.commit()
-                login_user(user)
-                return redirect(url_for('home'))
-            elif user:
-                app.logger.debug("User" + email)
-                login_user(user)
-                return redirect(url_for('home'))             
-
-    error = request.args.get('error')
-    error_description = request.args.get('error_description')
-    return f'Error: {error}, Description: {error_description}, No response Code'
-
+            
+            if user:
+                if user.firstname == '':
+                    app.logger.debug("-----------------------------in if user callback-----------------------------")
+                    new_firstname = user_data.get('firstname_TH')
+                    new_lastname = user_data['lastname_TH']
+                    user.update_name(new_firstname, new_lastname)
+                    db.session.commit()
+                    return redirect(url_for('index'))   
+                else:
+                    return redirect(url_for('index'))   
+            else:
+                app.logger.debug("-----------------------------in else user callback-----------------------------")
+                session.clear() #DO NOT MOVE OR DELETE, prevent who can not access
+                return 'Access denie' #Can edit here for good look view
+        else:
+            return 'Error getting access token'
+    # error = request.args.get('error')
+    # error_description = request.args.get('error_description')
+    return redirect(url_for('home'))
 
 @app.route('/logout')
 def logout():
     session.clear()
-    logout_user()
+    # logout_user()
     return redirect(url_for('home'))
 
 def get_oauth_token(code):
@@ -132,14 +119,21 @@ def index():
     if 'access_token' in session:
         access_token = session['access_token']
         user_data = get_user_data(access_token)
-        if user_data:
+        email = user_data.get('cmuitaccount')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            usr_email = user.email
+            firstname = user.firstname
+            lastname = user.lastname
             user_data_ = {
-                'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
-                'email': user_data.get('cmuitaccount')
+                'id' : user.id,
+                'name': firstname + " " + lastname,
+                'email': usr_email
             }
-            return render_template("project/index_table.html", user=user_data_)
+        return render_template("project/index_table.html", user=user_data_)
     
     return redirect(generate_auth_url())
+
 
     # return render_template("project/index_table.html") #for without login test
 
@@ -156,7 +150,7 @@ def index():
 #             return render_template("project/index_table.html", user=user_data_)
     
 #     return redirect(generate_auth_url())
-
+8
 
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
@@ -239,10 +233,11 @@ def form():
                         db.session.add(doc_entry)
 
             db.session.commit()
+            
             return home()
 
         return home()
-    return render_template("project/form.html")
+    return render_template("project/index_table.html")
 
 @app.route('/preview_pdf', methods=('GET', 'POST'))
 def preview_pdf():
