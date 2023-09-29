@@ -20,6 +20,7 @@ def seed_db():
     db.session.add(User(firstname='สมชาย',lastname="ทรงแบด",role=True,email="flask@1234"))
     db.session.add(User(firstname='น้องแคท',lastname="แซดบ๋อย",role=False,email="ksalf@4321"))
     db.session.add(User(firstname='แสงตะวัน',lastname="ภู่พุ่ม",role=True,email="saengtawan_p@cmu.ac.th"))
+    db.session.add(User(firstname='ธีรภัทร์',lastname="นิลศิริ",role=True,email="thiraphat_n@cmu.ac.th"))
     db.session.commit()
     count = 1
     i = 1

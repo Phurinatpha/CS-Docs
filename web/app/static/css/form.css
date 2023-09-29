@@ -58,9 +58,11 @@ label {
 
 .pop-up-header {
     font-size: 20px;
+    text-align: center;
     color: #ffffff;
     background-color: #022851;
     padding: 5px 15px 5px 15px;
+    border-radius: 10px;
 
 }
 
@@ -71,18 +73,6 @@ label {
     margin-bottom: 20px;
     font-weight: 500;
 }
-
-
-.modal-full {
-    min-width: 65%;
-  
-    /* margin-left: 80; */
-}
-
-/* .modal-full .modal-content {
-    min-height: 80vh;
-} */
-
 
 /*-----------------------------------------tab-1-----------------------------------------*/
 .form-group {

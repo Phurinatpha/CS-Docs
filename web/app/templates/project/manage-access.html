@@ -15,74 +15,77 @@
                 </button>
             </a>
         </div>
-    </div>
-</div>
+        <div class="add-personel">
+            <button class="btn-act-m btn-primary btn-add-person " data-toggle="modal" data-target=".modal">
+                <i class="bi bi-plus-circle-fill"></i>
+                เพิ่มบุคลาการ
+            </button>
 
-<div>
-    <p class="access-header">จัดการและดูสิทธิ์การเข้าถึง</p>
-</div>
+            <!-- Modal zone -->
+            <div class="modal fade" id="modal-user-form" data-keyboard="false">
+                <div class="modal-dialog modal-full">
+                    <div class="modal-content">
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
+                            <!-- Add your content here -->
+                            <form class="grant-container" id="user_form" action="/user_form">
+                                <p class="grant-header">
+                                    <!-- <i class="bi bi-plus-circle-fill"></i> -->
+                                    จัดการสิทธิ์การเข้าถึง
+                                </p>
 
-<div class="access-container">
-    <div class="container">
-        <div class="col-md-12" style="margin-top: 30px;">
-            <div class="add-personel">
-                <button class="btn-act-m btn-primary btn-add-person " data-toggle="modal" data-target=".modal">
-                    <i class="bi bi-plus-circle-fill"></i>
-                    เพิ่มบุคลาการ
-                </button>
+                                <!--  <div class="grant-group">
+                                    <label>ชื่อจริง</label>
+                                    <div class="input-container">-->
+                                <input type="hidden" id="input-fname" placeholder="ชื่อจริง" value="">
+                                <!--  </div>
+                                </div>-->
 
-                <!-- Modal zone -->
-                <div class="modal fade" id="modal-user-form" data-keyboard="false">
-                    <div class="modal-dialog modal-full">
-                        <div class="modal-content">
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                                <button type="button" id="closeModal" class="close"
-                                    data-dismiss="modal">&times;</button>
-                                <!-- Add your content here -->
-                                <form class="grant-container" id="user_form" action="/user_form">
-                                    <p class="grant-header"><i class="bi bi-plus-circle-fill"></i>จัดการบุคลาการ</p>
-
-                                    <!--  <div class="grant-group">
-                                        <label>ชื่อจริง</label>
-                                        <div class="input-container">-->
-                                    <input type="hidden" id="input-fname" placeholder="ชื่อจริง" value="">
-                                    <!--  </div>
-                                    </div>-->
-
-                                    <!--<div class="grant-group">
-                                        <label>นามสกุล</label>
-                                        <div class="input-container">-->
-                                    <input type="hidden" id="input-lname" placeholder="นามสกุล" value="">
-                                    <!-- </div>
-                                    </div>-->
-                                    <div class="grant-group">
-                                        <input type="hidden" id="user_id" name="id" value="">
-                                        <label>E-mail</label>
-                                        <div class="input-container">
-                                            <input id="input-email" name="add-user-email" placeholder="E-mail address">
-                                            <span class="input-group-addon">@cmu.ac.th</span>
-                                        </div>
+                                <!--<div class="grant-group">
+                                    <label>นามสกุล</label>
+                                    <div class="input-container">-->
+                                <input type="hidden" id="input-lname" placeholder="นามสกุล" value="">
+                                <!-- </div>
+                                </div>-->
+                                <div class="grant-group">
+                                    <input type="hidden" id="user_id" name="id" value="">
+                                    <label>E-mail</label>
+                                    <div class="input-container">
+                                        <input id="input-email" name="add-user-email" placeholder="E-mail address">
+                                        <span class="input-group-addon">@cmu.ac.th</span>
                                     </div>
-                                    <div class="grant-group">
-                                        <label>ระดับสิทธิ์การเข้าถึง</label>
-                                        <input type="radio" id="admin" name="answer-a" value="True">
-                                        <label class="radio" for="admin">ธุรการ</label>
+                                </div>
+                                <div class="grant-group">
+                                    <label>ระดับสิทธิ์การเข้าถึง</label>
+                                    <input type="radio" id="admin" name="answer-a" value="True">
+                                    <label class="radio" for="admin">ธุรการ</label>
 
-                                        <input type="radio" id="user" name="answer-a" value="False">
-                                        <label class="radio" for="user">บุคลากร</label>
-                                    </div>
-                                    <div class="grant-btn-wrapper">
-                                        <button class="grant-btn" type="submit" name="add-user-submit">
-                                            <i class="bi bi-plus-circle-fill"></i>บันทึกสิทธิ์</button>
-                                    </div>
-                                </form>
-                            </div>
+                                    <input type="radio" id="user" name="answer-a" value="False">
+                                    <label class="radio" for="user">บุคลากร</label>
+                                </div>
+                                <div class="grant-btn-wrapper">
+                                    <button class="grant-btn" type="submit" name="add-user-submit">
+                                        <i  class="fa-regular fa-floppy-disk"></i>บันทึกสิทธิ์</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- End of Modal zone -->
+        </div>
+        <!-- End of Modal zone -->
+    </div>
+</div>
+
+<!-- <div>
+    <p class="access-header">จัดการและดูสิทธิ์การเข้าถึง</p>
+</div> -->
+
+<div class="access-container">
+    <div class="container">
+        <div class="col-md-12" style="margin-top: 30px;">
+
         </div>
 
         <h2 class="h2-eligible">ผู้มีสิทธิ์การเข้าถึง</h2>
@@ -121,19 +124,15 @@
                                         </span>
                                     </th>
 
-                                    <th data-field="id" hidden>
-                                        <span class="text">
-                                            id
-                                        </span>
-                                    </th>
+                                    
 
-                                    <th class="text-center" style="width: 400px;" data-field="name">
+                                    <th class="text-center" data-field="name">
                                         <span class="text">
                                             ชื่อจริง - นามสกุล
                                         </span>
                                     </th>
 
-                                    <th class="text-center" style="width: 200px;" data-field="email">
+                                    <th class="text-center"  data-field="email">
                                         <span class="text">
                                             E-mail
                                         </span>
@@ -149,6 +148,12 @@
                                         data-formatter="edit_del_Formatter" data-events="operateEvents">
                                         <span class="text">
                                             แก้ไขสิทธิ์การเข้าถึง
+                                        </span>
+                                    </th>
+
+                                    <th data-field="id" hidden>
+                                        <span class="text">
+                                            id
                                         </span>
                                     </th>
                                 </tr>
@@ -287,7 +292,7 @@
         });
     });
 
-        //edit and delete button
+    //edit and delete button
     function edit_del_Formatter(value, row, index) {
         return [
             '<div class="btn-edit-del" >',
@@ -299,30 +304,30 @@
     }
 
     //This part must be edit with user db
-//    window.operateEvents = {
-//       'click .doc_delete': function (e, value, row, index) {
-//            console.log("docdelete");
-//            delete_button_sweet(row.id);
-//            delete_user(row.id)
-//        },
-//        'click .doc_edit': function (e, value, row, index) {
-            //console.log("edit");
-//            prePopulateForm(row);
-//
-//        }
-//    }
+    //    window.operateEvents = {
+    //       'click .doc_delete': function (e, value, row, index) {
+    //            console.log("docdelete");
+    //            delete_button_sweet(row.id);
+    //            delete_user(row.id)
+    //        },
+    //        'click .doc_edit': function (e, value, row, index) {
+    //console.log("edit");
+    //            prePopulateForm(row);
+    //
+    //        }
+    //    }
 
-        //This part must be edit with user db
-        window.operateEvents = {
-            'click .user_delete': function (e, value, row, index) {
-                console.log("usrdelete");
-                user_delete_sweet(row.id);
-            },
-            'click .user_edit': function (e, value, row, index) {
-                console.log("edit");
-                prePopulateForm(row);
-            }
+    //This part must be edit with user db
+    window.operateEvents = {
+        'click .user_delete': function (e, value, row, index) {
+            console.log("usrdelete");
+            user_delete_sweet(row.id);
+        },
+        'click .user_edit': function (e, value, row, index) {
+            console.log("edit");
+            prePopulateForm(row);
         }
+    }
 </script>
 
 
