@@ -218,7 +218,6 @@ def form():
 
                 order_entry = order.update(
                 subject=validated_dict['subject'],
-                ref_num=validated_dict['ref_num'],
                 doc_date=validated_dict['doc_date'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
@@ -285,7 +284,7 @@ def remove():
         year = result.get('ref_year', '')
         try:
             #contact = Contact.query.get(id_)
-            order = order_info.query.filter(and_(order_info.ref_num == int(num) , \
+            order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
                                              order_info.ref_year == int(year))).first()
             app.logger.debug("order :",order)
             latest_order = order_info.query.order_by(order_info.ref_num.desc(),order_info.ref_year.desc()).first()
@@ -304,7 +303,7 @@ def remove():
         except Exception as ex:
             app.logger.debug(ex)
             raise
-    return home()()
+    return home()
 
 @app.route('/search')
 def search():

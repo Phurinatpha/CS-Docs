@@ -213,17 +213,7 @@
         return index + 1;
     }
 
-    //This part must be edit with user db
-    window.operateEvents = {
-        'click .user_delete': function (e, value, row, index) {
-            console.log("delete");
-            //delete_button_sweet(row.id);
-            user_delete_sweet(row.id);
-        },
-        'click .user_edit': function (e, value, row, index) {
-            prePopulateForm(row);
-        }
-    }
+
 
     function prePopulateForm(row) {
         document.getElementById('user_form').reset();
@@ -301,25 +291,38 @@
     function edit_del_Formatter(value, row, index) {
         return [
             '<div class="btn-edit-del" >',
-            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
-            '<button class="doc_delete btn-del"  >', 'ลบ', '</button>',
+            '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
+            '<button class="user_delete btn-del"  >', 'ลบ', '</button>',
             '</div>'
 
         ].join('')
     }
 
     //This part must be edit with user db
-    window.operateEvents = {
-        'click .doc_delete': function (e, value, row, index) {
-            console.log("delete");
-            delete_button_sweet(row.id);
-        },
-        'click .doc_edit': function (e, value, row, index) {
-            console.log("edit");
-            prePopulateForm(row);
+//    window.operateEvents = {
+//       'click .doc_delete': function (e, value, row, index) {
+//            console.log("docdelete");
+//            delete_button_sweet(row.id);
+//            delete_user(row.id)
+//        },
+//        'click .doc_edit': function (e, value, row, index) {
+            //console.log("edit");
+//            prePopulateForm(row);
+//
+//        }
+//    }
 
+        //This part must be edit with user db
+        window.operateEvents = {
+            'click .user_delete': function (e, value, row, index) {
+                console.log("usrdelete");
+                user_delete_sweet(row.id);
+            },
+            'click .user_edit': function (e, value, row, index) {
+                console.log("edit");
+                prePopulateForm(row);
+            }
         }
-    }
 </script>
 
 
