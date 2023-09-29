@@ -10,10 +10,14 @@ input {
     padding: 10px;
     box-sizing: border-box;
     width: 100%;
-    font-size: 17px;
+    font-size: 16px;
     border: 1px solid #aaaaaa;
     border-radius: 7px;
+    width: 200px;
+    margin-bottom: 10px;
 }
+
+
 
 
 .index-btn-wrapper {
@@ -53,7 +57,7 @@ label {
 }
 
 .pop-up-header {
-    font-size: 24px;
+    font-size: 20px;
     color: #ffffff;
     background-color: #022851;
     padding: 5px 15px 5px 15px;
@@ -99,14 +103,11 @@ label {
 
 .form-group label,
 .form-group-subject label {
+    font-size: 15px;
     width: 20%;
     
 }
 
-input {
-    width: 200px;
-    margin-bottom: 10px;
-}
 
 #thaiDatePicker{
     cursor: pointer;
@@ -193,7 +194,7 @@ input {
 }
 
 #tab-3 h1 {
-    font-size: 30px;
+    font-size: 22px;
     width: auto;
 }
 
@@ -209,7 +210,7 @@ input {
 
 .click-to-add {
     position: relative;
-    font-size: 20px;
+    font-size: 18px;
     width: auto;
     cursor: pointer;
     text-decoration: none;
@@ -263,8 +264,7 @@ input {
 }
 
 .file-container {
-    display: flex;
-    
+    display: flex;    
 }
 
 #uploaded-file-name {
@@ -280,66 +280,8 @@ input {
 
 
 /*-----------------------------------------Responsive-----------------------------------------*/
-
-/* @media only screen and (max-width: 1600px) {
-    .form-group-2 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #name_list {
-        width: 550px;
-        background-color: #f31111;
-    }
-    
-    #descrip{
-        width: 76%;
-    }
-}
-
-
-@media only screen and (max-width: 1024px) {
-    .form-group-2 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #name_list{
-        width: 370px;
-        background-color: #0aee3b;
-    }
-}
-
-@media only screen and (max-width: 992px) {
-    .form-group-2 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #name_list,
-    #preview-name_list {
-        width: 350px;
-        background-color: #0a7cf7;
-    }
-} */
-
-
-
-
-
 @media only screen and (max-width: 1025px) {
-
-    .modal-full {
-        min-width: 80%;
-
-    }
-
+   
     form {
         padding: 15px 10px 10px 10px;
     }
@@ -350,12 +292,10 @@ input {
         width: 25%;
     }
 
-    
-
     /*---------tab 2---------*/
-    #name_list {
+    /* #name_list {
         background-color: #cffc06;
-    }
+    } */
 
     /*---------tab 3---------*/
     #tab-3 h1 {
@@ -367,25 +307,20 @@ input {
         font-size: 18px;
     }
 }
+
 @media only screen and (max-width: 530px){
-    #name_list {
+    /* #name_list {
         background-color: #1f06fc;
-    }
+    } */
+
     .form-group label,
     .form-group-subject label, .form-group select {
         width: 30%;
-        
     }
 }
 
-
-
 /* Extra small devices (phones) */
 @media only screen and (max-width: 480px) {
-    .modal-full {
-        min-width: 95%;
-    }
-    
     form {
         padding: 15px 0px 0px 0px;
     }
@@ -397,8 +332,8 @@ input {
 
     .form-group,.form-group-subject {
         display: inline-table;
-        
     }
+
     .form-group{
         margin-bottom: 20px;
     }
@@ -406,9 +341,7 @@ input {
     .form-group label,
     .form-group-subject label {
         width: 100%;
-        
     }
-
 
     .form-group input{
         margin-top: 10px; 
@@ -416,25 +349,23 @@ input {
         font-size: 14px;
     }
 
-   
-
     #daySelect{
         margin-left: 10%;
     }
+
     #descrip {
         width: 100%;
         margin-left: 15%;
     }
-    
 
     /*---------tab 2---------*/
     .form-group-2 h3, #name_list {
         width: 80%;
     }
 
-    #name_list {
+    /* #name_list {
         background-color: #fc0606;
-    }
+    } */
 
     /*---------tab 3---------*/
     #tab-3 h1 {
@@ -451,10 +382,12 @@ input {
         height: 150px;
         padding: 10px;
     }
+
     #uploaded-file-name{
         font-size: 12px;
        
     }
+
     .bi-check-circle-fill,.bi-trash-fill{
         font-size: 10px;
         vertical-align: auto;
@@ -471,5 +404,4 @@ input {
         width: 80%;
         height: 180px;
     }
-
 }

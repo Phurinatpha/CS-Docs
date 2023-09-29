@@ -41,7 +41,7 @@
 
                     <div class="form-group">
                       <label for="refer_num">เลขที่คำสั่ง</label>
-                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
+                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" readonly>
                     </div>
 
                     <div class="form-group">
@@ -51,7 +51,7 @@
                       <!--this input is user id set default to 1-->
                       <input type="hidden" id="usr_id" name="user_id" value="{{ user.id }}">
                       <!-- Separate select elements for day, month, and year -->
-                        <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required>
+                        <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required readonly>
                         <i class="bi bi-calendar"></i>
                     </div>
 
@@ -179,17 +179,12 @@
                       ลำดับ
                     </span>
                   </th>
-                  <th data-field="id" hidden>
-                    <span class="text">
-                      id
-                    </span>
-                  </th>
                   <th class="text-center" style="width: 100px;" data-field="ref_num">
                     <span class="text">
                       เลขคําสั่ง
                     </span>
                   </th>
-                  <th class="text-center" style="width: 480px;" data-field="subject">
+                  <th class="text"  data-field="subject">
                     <span class="text">
                       เรื่อง
                     </span>
@@ -206,11 +201,6 @@
                   </th>
                   <th data-field="ori_date" hidden>
                   </th>
-                  <th class="text-center" data-field="ref_name" hidden>
-                    <span class="text">
-                      รายชื่อกรรมการ
-                    </span>
-                  </th>
                   <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
                     data-events="clip_icon_Events">
                     <span class="text">
@@ -222,6 +212,16 @@
                     data-events="edit_del_Events">
                     <span class="text">
                       แก้ไข / ลบ
+                    </span>
+                  </th>
+                  <th class="text-center" data-field="ref_name" hidden>
+                    <span class="text">
+                      รายชื่อกรรมการ
+                    </span>
+                  </th>
+                  <th data-field="id" hidden>
+                    <span class="text">
+                      id
                     </span>
                   </th>
                 </tr>
@@ -241,9 +241,11 @@
   </div>
 </div>
 
-<div class="pagination" id ="doc_pagination">
+<div class="pagination flex-wrap ml-3" id ="doc_pagination">
+  <a href="#" id="prevPage-mobile"><i class="fas fa-chevron-left"></i></a>
   <a href="#" id="prevPage"><i class="fas fa-chevron-left"></i> ก่อนหน้า</a>
   <div id="pageNumbers" class="pagination-links"></div>
+  <a href="#" id="nextPage-mobile"><i class="fas fa-chevron-right"></i></a>
   <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
@@ -391,13 +393,21 @@
 
   window.clip_icon_Events = {
     'click .pdf_viewer': function (e, value, row, index) {
-      open_pdf(row.id, row);
+      refnum = row.ref_num;
+      str_ref = refnum.split("/");
+      ref_num = str_ref[0]
+      ref_year = str_ref[1]
+      open_pdf(ref_num, ref_year, row);
     }
   }
 
   window.edit_del_Events = {
     'click .doc_delete': function (e, value, row, index) {
-      delete_button_sweet(row.id);
+      refnum = row.ref_num;
+      str_ref = refnum.split("/");
+      ref_num = str_ref[0]
+      ref_year = str_ref[1]
+      delete_button_sweet(ref_num, ref_year);
     },
     'click .doc_edit': function (e, value, row, index) {
       prePopulateForm(row);
@@ -407,14 +417,16 @@
 
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
-    $('#doc_id').val(row.id);
-    console.log(row.id);
-    $('#refer_num').val(parseInt(row.ref_num));
+    refnum = row.ref_num;
+    str_ref = refnum.split("/");
+    ref_num = str_ref[0]
+    ref_year = str_ref[1]
+    $('#refer_num').val(parseInt(ref_num));
     $('#thaiDatePicker').val(row.ori_date);
     $('#descrip').val(row.subject);
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
-    uploadedFileName = preload_pdf(row.id);
+    uploadedFileName = preload_pdf(ref_num,ref_year);
     console.log(uploadedFileName);
     if (uploadedFileName != "") {
       var uploadedFileContainer = document.getElementById('uploaded-file-container');
@@ -427,13 +439,12 @@
   }
 
 
-  function delete_doc(id) {
+  function delete_doc(ref_num, ref_year) {
     event.preventDefault();
-    del = id
-    console.log("del id =" + del);
     var url = "/delete"
     var formData = new FormData();
-    formData.append('id', del)
+    formData.append('ref_num', ref_num)
+    formData.append('ref_year', ref_year)
     $.ajax({
       type: 'POST',
       url: url,

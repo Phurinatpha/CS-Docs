@@ -23,7 +23,7 @@ def seed_db():
     db.session.commit()
     count = 1
     i = 1
-    while count < 3 :
+    while count < 10 :
         db.session.add(
             order_info(subject='ฮัลโหลนี่คือข้อมูลจาก database จะขึ้นไหมน้าา', doc_date='2566-6-2',ref_num=i,ref_year='2566',ref_name=['Mr. Compsci ChiangMai University'],user_id='1'))
         db.session.add(

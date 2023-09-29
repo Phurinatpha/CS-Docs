@@ -6,9 +6,9 @@ import base64
 from sqlalchemy import desc
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, and_
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-
+import datetime
 from app import app
 from app import db
 from app import login_manager
@@ -152,6 +152,8 @@ def index():
 #     return redirect(generate_auth_url())
 8
 
+
+
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
     if request.method == 'POST':
@@ -160,13 +162,12 @@ def form():
         validated = True
         validated_dict = dict()
                 # Read the contents of the uploaded file as bytes
-        ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
+        #ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
 
         valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
 
         # Access the uploaded file using request.files
         name_list =  request.form.get('name_list')
-        id_ = request.form.get('id','')
         name_list = name_list.split(",")
         name_list =  [i for i in name_list if i != ""]
         #app.logger.debug("name_list = ",name_list)
@@ -182,7 +183,10 @@ def form():
             validated_dict[key] = value
 
         if validated:
-            if not id_:
+            order = order_info.query.filter(and_(order_info.ref_num == int(validated_dict['ref_num']) , \
+                                             order_info.ref_year == int(validated_dict['ref_year']))).first()
+            app.logger.debug("order :",order)
+            if order == None:
                 empty_order = order_info.query.filter(order_info.subject == None).first()
                 #app.logger.debug("empty_order", empty_order)
                 if empty_order != None:
@@ -202,35 +206,39 @@ def form():
                 if doc_data != None :
                     doc_content = doc_data.read()
                     doc_entry = doc_info(
-                    order_id = order_entry.id,
-                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    order_refnum = order_entry.ref_num,
+                    order_refyear = order_entry.ref_year,
+                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
                     doc_data=doc_content
                 )
                     db.session.add(doc_entry)   
+                
             else:
                 app.logger.debug("update")
-                order = order_info.query.get(id_)
+
                 order_entry = order.update(
                 subject=validated_dict['subject'],
                 ref_num=validated_dict['ref_num'],
                 doc_date=validated_dict['doc_date'],
-                ref_year=validated_dict['ref_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
                 )
                 if doc_data != None :
                     doc_content = doc_data.read()
-                    doc = doc_info.query.filter(doc_info.order_id == id_).first()
+                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                             doc_info.order_refyear == order.ref_year)).first()
                     if doc != None: 
                         doc_entry = doc.update(
                         doc_data=doc_content
                         )
                     else:
                         doc_entry = doc_info(
-                        order_id = order.id,
+                        order_refnum = order.ref_num,
+                        order_refyear = order.ref_year,
                         filename= str(order.ref_num)+"/"+str(order.ref_year),
                         doc_data=doc_content)
                         db.session.add(doc_entry)
+                
 
             db.session.commit()
             
@@ -245,9 +253,14 @@ def preview_pdf():
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(result)
-        id_ = result.get('id', '')
+        num = result.get('ref_num', '')
+        year = result.get('ref_year', '')
+        app.logger.debug('ref_num',num,'ref_year',year)
         try:
-            doc = doc_info.query.filter(doc_info.order_id == id_).first()
+            order = order_info.query.filter(and_(order_info.ref_num == int(num) , \
+                                             order_info.ref_year == int(year))).first()
+            doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                             doc_info.order_refyear == order.ref_year)).first()
             if doc is not None:  # Check if a document was found
                 doc_data = doc.doc_data
                 encoded_pdf_data = base64.b64encode(doc_data).decode('utf-8')
@@ -260,28 +273,33 @@ def preview_pdf():
             raise
     return ''
 
+
+
 @app.route('/delete', methods=('GET', 'POST'))
 def remove():
     app.logger.debug("REMOVE")
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(result)
-        id_ = result.get('id', '')
+        num = result.get('ref_num', '')
+        year = result.get('ref_year', '')
         try:
             #contact = Contact.query.get(id_)
-            order = order_info.query.get(id_)
+            order = order_info.query.filter(and_(order_info.ref_num == int(num) , \
+                                             order_info.ref_year == int(year))).first()
             app.logger.debug("order :",order)
-            latest_order = order_info.query.order_by(desc(order_info.id)).first()
-            doc = doc_info.query.filter(doc_info.order_id == id_).first()
+            latest_order = order_info.query.order_by(order_info.ref_num.desc(),order_info.ref_year.desc()).first()
+            doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                             doc_info.order_refyear == order.ref_year)).first()
             app.logger.debug("latest :",latest_order)
             if doc != None:
                 db.session.delete(doc)
             if order != latest_order:
                 db.session.delete(order)
             else :
-                order_entry = order.mini_update(
-                subject=None
-                )
+                order.mini_update(
+                                    subject=None
+                                  )
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
@@ -343,8 +361,7 @@ def user_data():
     documents = []
     db_documents = User.query.all()
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    app.logger.debug(str(len(documents)) + " already entry")
- 
+    app.logger.debug(str(len(documents)) + " already entry") 
     return jsonify(documents)
 
 @app.route('/user_form' , methods=('GET', 'POST'))
@@ -389,9 +406,14 @@ def user_form():
             else:
                 user = User.query.get(id_)
                 app.logger.debug("role : " + validated_dict['role'])
+                if validated_dict['role'] == "True":
+                    role_ = True
+                elif validated_dict['role'] == "False":
+                    role_ = False
+                app.logger.debug("role2 : " + str(role_))
                 user_entry = user.update(
                 email=validated_dict['email'],
-                role=bool(validated_dict['role'])
+                role=role_
                 )
             #     if doc_data != None :
             #         doc_content = doc_data.read()
@@ -418,11 +440,12 @@ def doc_data():
 @app.route("/document")
 def data():
     documents = []
-    db_documents = order_info.query.order_by(desc(order_info.id))
-     #db_documents = db_documents.limit(10)
+    db_documents = order_info.query.order_by(order_info.ref_num.desc(), order_info.ref_year.desc())
+    #db_documents = order_info.query.latest()
+    #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry")
-    
+
     return jsonify(documents)
     #if request.method == 'POST':
        # documents = []
@@ -441,6 +464,7 @@ def data():
         # app.logger.debug("documents =", documents)
         # return jsonify(documents)
 
+
 @app.route('/download/<int:doc_id>')
 def download(doc_id):
     doc =  doc_info.query.filter(doc_info.order_id == doc_id).first()
@@ -458,6 +482,7 @@ def download(doc_id):
 # @app.route('/dashboard')
 # def dashboard():
 #     return 
+
 
 @app.route('/user_delete', methods=('GET', 'POST'))
 def user_remove():
