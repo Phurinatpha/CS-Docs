@@ -23,7 +23,8 @@ class order_info(db.Model, SerializerMixin):
     ref_num = db.Column(db.Integer)
     ref_year = db.Column(db.Integer)
     ref_name = db.Column(db.ARRAY(db.String))
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    # user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
+    user_id = db.Column(db.Integer)
     __table_args__ = (
     db.PrimaryKeyConstraint(
         "ref_num", "ref_year",name="pk_id"
