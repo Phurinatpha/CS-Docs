@@ -509,13 +509,17 @@ def user_remove():
         result = request.form.to_dict()
         app.logger.debug(result)
         id_ = result.get('id', '')
+        is_null = order_info.query.filter(order_info.user_id == id_ ).first()
         try:
             #contact = Contact.query.get(id_)
             user = User.query.get(id_)
-            user_entry = user.update(
+            if is_null != None:
+                user_entry = user.update(
                 email=None,
                 role=None
                 )
+            else:
+                db.session.delete(user)
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
