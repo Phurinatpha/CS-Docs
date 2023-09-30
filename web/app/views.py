@@ -362,7 +362,7 @@ def db_connection():
 @app.route("/user")
 def user_data():
     documents = []
-    db_documents = User.query.all()
+    db_documents = User.query.order_by(User.id.desc())
     documents = list(map(lambda x: x.to_dict(), db_documents))
     app.logger.debug(str(len(documents)) + " already entry") 
     return jsonify(documents)
@@ -442,11 +442,14 @@ def doc_data():
 
 @app.route("/document")
 def data():
+    limit = int(request.args.get('limit', 1000))
     documents = []
-    db_documents = order_info.query.order_by(order_info.ref_num.desc(), order_info.ref_year.desc())
+    db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())
     #db_documents = order_info.query.latest()
     #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
+    documents.insert(0, len(documents))
+    documents = documents[:limit]
     app.logger.debug(str(len(documents)) + " already entry")
 
     return jsonify(documents)
@@ -495,8 +498,11 @@ def user_remove():
         id_ = result.get('id', '')
         try:
             #contact = Contact.query.get(id_)
-            order = User.query.get(id_)
-            db.session.delete(order)
+            user = User.query.get(id_)
+            user_entry = user.update(
+                email=None,
+                role=None
+                )
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
