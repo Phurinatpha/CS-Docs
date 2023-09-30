@@ -56,7 +56,7 @@
                                         <span class="input-group-addon">@cmu.ac.th</span>
                                     </div>
                                 </div>
-                                <div class="grant-group">
+                                <div class="grant-group-level">
                                     <label>ระดับสิทธิ์การเข้าถึง</label>
                                     <input type="radio" id="admin" name="answer-a" value="True">
                                     <label class="radio" for="admin">ธุรการ</label>
@@ -186,7 +186,7 @@
         $('#access-table').bootstrapTable('refreshOptions', {
             filterOptions: {
                 'filterAlgorithm': (row, filters) => {
-                    return row.name != " ";
+                    return row.name != " " && row.email != null;
                 }
             }
         });
@@ -290,6 +290,13 @@
             contentType: false,
             processData: false,
             success: function (response) {
+                Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'บันทึกสิทธิ์สำเร็จ',
+                showConfirmButton: false,
+                timer: 1500
+                })
                 refresh();
                 $('#modal-user-form').modal('toggle');
                 document.getElementById('user_form').reset();

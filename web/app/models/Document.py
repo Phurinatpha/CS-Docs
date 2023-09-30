@@ -58,6 +58,7 @@ class order_info(db.Model, SerializerMixin):
             'doc_date': to_date(self.doc_date),
             'ori_date':to_ori_date(self.doc_date),
             'ref_name': ','.join([str(elem) for elem in self.ref_name]),
+
             'user_name' : User.get_name(User.query.get(self.user_id))
         }
 class doc_info(db.Model, SerializerMixin):

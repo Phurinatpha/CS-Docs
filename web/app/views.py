@@ -167,7 +167,9 @@ def form():
             #app.logger.debug("doc data :",doc_data)
             validated = True
             validated_dict = dict()
-                    # Read the contents of the uploaded file as bytes
+            delete_pdf = request.form.get('delete_pdf', '')
+            app.logger.debug("delete_pdf ",delete_pdf)
+                # Read the contents of the uploaded file as bytes
             #ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
 
             valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
@@ -222,28 +224,34 @@ def form():
                 else:
                     app.logger.debug("update")
 
-                    order_entry = order.update(
-                    subject=validated_dict['subject'],
-                    doc_date=validated_dict['doc_date'],
-                    ref_name=name_list,
-                    user_id=validated_dict['user_id']
-                    )
-                    if doc_data != None :
-                        doc_content = doc_data.read()
-                        doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
-                                                doc_info.order_refyear == order.ref_year)).first()
-                        if doc != None: 
-                            doc_entry = doc.update(
-                            doc_data=doc_content
+                order_entry = order.update(
+                subject=validated_dict['subject'],
+                doc_date=validated_dict['doc_date'],
+                ref_name=name_list,
+                user_id=validated_dict['user_id']
+                )
+                if doc_data != None :
+                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                             doc_info.order_refyear == order.ref_year)).first()
+                    doc_content = doc_data.read()
+                    if doc != None: 
+                        doc_entry = doc.update(
+                        doc_data=doc_content
                             )
-                        else:
-                            doc_entry = doc_info(
-                            order_refnum = order.ref_num,
-                            order_refyear = order.ref_year,
-                            filename= str(order.ref_num)+"/"+str(order.ref_year),
-                            doc_data=doc_content)
-                            db.session.add(doc_entry)
-                    
+                    else :
+                        doc_entry = doc_info(
+                        order_refnum = order.ref_num,
+                        order_refyear = order.ref_year,
+                        filename= str(order.ref_num)+"/"+str(order.ref_year),
+                        doc_data=doc_content)
+                        db.session.add(doc_entry)
+                else:
+                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                             doc_info.order_refyear == order.ref_year)).first()
+                    if doc != None:
+                        if  delete_pdf == 'true':
+                            db.session.delete(doc)
+                
 
                 db.session.commit()
                 
@@ -468,13 +476,18 @@ def doc_data():
 
 @app.route("/document")
 def data():
-    limit = int(request.args.get('limit', 1000))
+    limit = int(request.args.get('limit', 10000))
     documents = []
     db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())
+    is_null = order_info.query.filter(order_info.subject == None ).first()
+    if is_null == None:
+        null = 0
+    else:
+        null = 1
     #db_documents = order_info.query.latest()
     #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    documents.insert(0, len(documents))
+    documents.insert(0, len(documents) - null)
     documents = documents[:limit]
     app.logger.debug(str(len(documents)) + " already entry")
 
@@ -529,8 +542,11 @@ def user_remove():
         if user.role == True:
             try:
                 #contact = Contact.query.get(id_)
-                order = User.query.get(id_)
-                db.session.delete(order)
+                user = User.query.get(id_)
+                user_entry = user.update(
+                email=None,
+                role=None
+                )
                 db.session.commit()
             except Exception as ex:
                 app.logger.debug(ex)
