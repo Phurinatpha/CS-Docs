@@ -138,8 +138,8 @@
             titleText: 'ไม่พบไฟล์ต้องการเพิ่มหรือไม่ ?',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#BABABA',
+            confirmButtonColor: '#3EBC2A',
+            cancelButtonColor: '#d33',
             confirmButtonText: 'ต้องการ',
             cancelButtonText: 'ปิด',
           }).then((result) => {
@@ -188,7 +188,6 @@
       async: false,
       success: function(response) {
         fileName = response.doc_name ;
-        console.log("filename :",fileName);
         
       }
     });

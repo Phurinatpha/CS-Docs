@@ -15,9 +15,28 @@ input {
     border-radius: 7px;
     width: 200px;
     margin-bottom: 10px;
+    outline: none;
 }
 
+input[type=text]:focus {
+    border: 1px solid #aaaaaa;
+    -moz-box-shadow:0 0 5px 0px #36485c;
+    -webkit-box-shadow:0 0 5px 0px #36485c;
+    box-shadow:0 0 5px 0px #36485c;
+  }
 
+textarea{
+    border: 1px solid #aaaaaa;
+    outline: none;
+}
+
+textarea:focus{
+    border: 1px solid #aaaaaa;
+    -moz-box-shadow:0 0 5px 0px #36485c;
+    -webkit-box-shadow:0 0 5px 0px #36485c;
+    box-shadow:0 0 5px 0px #36485c;
+    box-shadow:0 0 5px 0px #36485c;
+}
 
 
 .index-btn-wrapper {
@@ -74,6 +93,13 @@ label {
     font-weight: 500;
 }
 
+
+/*-----------------------------------SweetAlert-----------------------------------*/
+div:where(.swal2-container) div:where(.swal2-popup) {
+    padding: 25px 0 45px 0;
+  }
+  
+
 /*-----------------------------------------tab-1-----------------------------------------*/
 .form-group {
     display: flex;
@@ -98,6 +124,9 @@ label {
     
 }
 
+#refer_num{
+    background: #e0e0e0;
+}
 
 #thaiDatePicker{
     cursor: pointer;

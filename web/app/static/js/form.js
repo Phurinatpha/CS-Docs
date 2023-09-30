@@ -35,13 +35,12 @@ function handleDrop(event) {
   event.preventDefault();
   const file = event.dataTransfer.files[0];
   handleFile(file);
-  updatePreview(file); // Pass the file object to updatePreview
+  // updatePreview(file); // Pass the file object to updatePreview
 }
 
 function handleFileSelect(event) {
   const file = event.target.files[0];
   handleFile(file);
-  updatePreview(file); // Pass the file object to updatePreview
 }
 
 function handleFile(file) {
