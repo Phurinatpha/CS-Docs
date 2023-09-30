@@ -1,5 +1,7 @@
 {% extends "project/base.html" %}
 {% block content %}
+<!-- Pikaday CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.min.css">
 
 <!-- Moment.js -->
 <script
@@ -9,14 +11,11 @@
 <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pikaday/plugins/pikaday.jquery.min.js"></script>
 
-<!-- Pikaday CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.min.css">
-<!-- CSS -->
-<link rel="stylesheet" href="/static/css/index.css">
-<link rel="stylesheet" href="/static/css/form.css">
 <!-- Paliday CSS -->
 <link rel="stylesheet" href="/static/css/palitday.css">
 
+<link rel="stylesheet" href="/static/css/index.css">
+<link rel="stylesheet" href="/static/css/form.css">
 <div class="container">
   <div class="row" style="padding-top: 20px;">
     <div class="create-form">
@@ -46,7 +45,7 @@
 
                     <div class="form-group">
                       <label for="refer_num">เลขที่คำสั่ง</label>
-                      <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" >
+                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" readonly>
                     </div>
 
                     <div class="form-group">
@@ -418,7 +417,7 @@
 
     }
   }
-  function get_countNumber() {
+  function get_countNumber(){
     $.ajax({
       dataType: "json",
       url: "/document",
