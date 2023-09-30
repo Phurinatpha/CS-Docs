@@ -1,3 +1,8 @@
+/*-----------------------------------SweetAlert-----------------------------------*/
+div:where(.swal2-container) div:where(.swal2-popup) {
+  padding: 25px 0 45px 0;
+}
+
 
 /*-----------------------------------buttons-----------------------------------*/
 .btn-act-m {
@@ -50,6 +55,7 @@
 
 .h2-eligible {
   font-size: 20px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #D9D9D9;
 }
 
@@ -72,7 +78,8 @@
 /*-----------------------------------Modal-----------------------------------*/
 .modal-full {
   min-width: 45% !important;
-  padding-top: 45px;
+  padding-top: 45px !important;
+  padding-bottom: 45px !important;
 
 }
 
@@ -95,10 +102,29 @@ label {
 }
 
 #input-email {
-  width: 197px;
+  width: 200px;
   border: 1px solid #aaaaaa;;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+  
+  outline: none;
+}
+
+#input-email:focus{
+    border-radius: 10px;
+    -moz-box-shadow:0 0 5px 0px #36485c;
+    -webkit-box-shadow:0 0 5px 0px #36485c;
+    box-shadow:0 0 5px 0px #36485c;
+}
+
+.grant-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Aligns items vertically within the flex container */
+  margin-bottom: 20px;
+  /* Adds space between this and other form groups */
+  padding: 0px 10px 0px 10px;
 }
 
 .grant-group .input-container {
@@ -110,18 +136,33 @@ label {
 .grant-group input {
   /* flex: 1;   */
   padding: 10px;
+  position: absolute;
   /* Add padding for spacing */
 }
 
 .grant-group .input-group-addon {
+  margin-left: 180px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-  background-color: #eee;
+  background-color: #e7e6e6;
   border: 1px solid #aaaaaa;;
   border-width:1px 1px 1px 0;
   /* Add left border to the span element */
   padding: 10px;
+  padding-left: 30px;
   /* Add padding for spacing */
+}
+
+.grant-group-level{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0px 10px 0px 10px;
+}
+
+.grant-group-level input{
+  padding: 10px;
 }
 
 .grant-btn-wrapper {
@@ -176,15 +217,7 @@ label {
   /* Add some spacing between the icon and text if needed */
 }
 
-.grant-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* Aligns items vertically within the flex container */
-  margin-bottom: 20px;
-  /* Adds space between this and other form groups */
-  padding: 0px 10px 0px 10px;
-}
+
 
 
 /*-----------------------------------Table-----------------------------------*/
@@ -225,14 +258,16 @@ label {
     padding: 0;
   }
 
-  .grant-group{
+  .grant-group, .grant-group-level{
     display: inline-table;
     margin-bottom: 30px;
+    padding: 0px;
   }
 
   label{
     width: 100%;
     margin-bottom: 10px;
+    margin-right: 0px;
   }
 }
 @media only screen and (max-width: 480px) {

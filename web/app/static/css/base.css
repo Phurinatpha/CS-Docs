@@ -130,6 +130,7 @@ footer li {
 }
 
 
+
 /*-----------------------------------SweetAlert Button-----------------------------------*/
 .swal2-styled.swal2-confirm {
   width: 100px;
@@ -137,6 +138,10 @@ footer li {
 
 .swal2-styled.swal2-cancel {
   width: 100px;
+}
+
+div:where(.swal2-container) div:where(.swal2-popup) {
+  padding: 25px 0 50px 0;
 }
 
 
