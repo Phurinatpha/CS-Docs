@@ -138,7 +138,7 @@
                                         </span>
                                     </th>
 
-                                    <th class="text-center" data-field="role">
+                                    <th class="text-center" data-field="str_role">
                                         <span class="text">
                                             ระดับสิทธิ์การเข้าถึง
                                         </span>
@@ -190,8 +190,6 @@
                 }
             }
         });
-
-
         $('#access-table').bootstrapTable('hideColumn', 'id');
         //console.log("tr :", document.getElementsByTagName('tr').length);
         var js = document.createElement("script");
@@ -224,7 +222,7 @@
         $('#user_id').val(row.id);
         email = row.email.split("@");
         $('#input-email').val(email[0]);
-        if (row.role == "true") {
+        if (row.str_role == "ธุรการ") {
             document.getElementById("admin").checked = true;
         }
         else {
@@ -232,6 +230,18 @@
         }
 
     }
+
+    function refresh() {
+        $.getJSON("/user", refresh_table);
+    
+      }
+    
+      function refresh_table(document_data) {
+        page = document.getElementById("pageNumbers");
+        pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
+        $('#access-table').bootstrapTable('load', document_data);
+        showPage(pageNum);
+      }
 
     function delete_user(id) {
         event.preventDefault();
@@ -248,6 +258,7 @@
             success: function (response) {
                 //console.log('Success', response);
                 console.log("deleted!!");
+                refresh();
             },
             error: function (error) {
                 console.error('Error', error);
@@ -279,9 +290,8 @@
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log("send");
+                refresh();
                 $('#modal-user-form').modal('toggle');
-
                 document.getElementById('user_form').reset();
 
             },

@@ -324,8 +324,8 @@
       url: "/document",
       success: function (data) {
         console.log("data length:", data.length);
-        document.getElementById("count_doc").innerHTML = data.length;
-        document.getElementById("count_doc-s").innerHTML = data.length;
+        document.getElementById("count_doc").innerHTML = data.length - 1;
+        document.getElementById("count_doc-s").innerHTML = data.length - 1;
         populate_table(data);
         document.getElementById('spinner')
           .style.display = 'none';
@@ -418,7 +418,18 @@
 
     }
   }
-
+  function get_countNumber(){
+    $.ajax({
+      dataType: "json",
+      url: "/document",
+      data: { limit: 1 },
+      success: function (data) {
+        console.log("data length:", data.length);
+        document.getElementById("count_doc").innerHTML = data;
+        document.getElementById("count_doc-s").innerHTML = data;
+      }
+    });
+  }
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
     refnum = row.ref_num;
@@ -460,7 +471,7 @@
         console.log("deleted!!");
         refresh();
         var count_doc = document.getElementById("count_doc").innerHTML;
-        document.getElementById("count_doc").innerHTML = parseInt(count_doc) - 1;
+        get_countNumber();
         //document.getElementById("count_doc-s").innerHTML ;
 
       },
@@ -479,7 +490,7 @@
       dataType: "json",
       url: "/document",
       success: function (data) {
-        ref_data = data[0].ref_num;
+        ref_data = data[1].ref_num;
         arr_ref = ref_data.split("/");
         console.log("data :", parseInt(arr_ref[0]));
         ref_num = parseInt(arr_ref[0]);
