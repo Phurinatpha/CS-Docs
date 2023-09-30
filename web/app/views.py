@@ -30,6 +30,10 @@ wsapi_get_basicinfo_url = "https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitacc
 
 login_manager = LoginManager(app)
 
+# if 'access_token' in session and session.permanent and session.modified:
+#     # Manually clear the session
+#     session.pop('access_token', None)
+
 @login_manager.user_loader
 def load_user(user_id):
     # since the user_id is just the primary key of our
