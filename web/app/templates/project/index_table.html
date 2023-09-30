@@ -324,9 +324,8 @@
       dataType: "json",
       url: "/document",
       success: function (data) {
-        console.log("data length:", data.length);
-        document.getElementById("count_doc").innerHTML = data.length - 1;
-        document.getElementById("count_doc-s").innerHTML = data.length - 1;
+        document.getElementById("count_doc").innerHTML = data[0];
+        document.getElementById("count_doc-s").innerHTML = data[0];
         populate_table(data);
         document.getElementById('spinner')
           .style.display = 'none';
@@ -443,11 +442,9 @@
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
     uploadedFileName = preload_pdf(ref_num, ref_year);
-    console.log(uploadedFileName);
     if (uploadedFileName != "") {
       var uploadedFileContainer = document.getElementById('uploaded-file-container');
       var dragAndDropZone = document.getElementById('drag-and-drop');
-      uploadedFileName = preload_pdf(row.id);// Store the uploaded file name in the global variable
       document.getElementById('uploaded-file-name').textContent = uploadedFileName;
       uploadedFileContainer.style.display = 'block';
       dragAndDropZone.style.display = 'none';

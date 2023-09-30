@@ -162,8 +162,31 @@
       var bytes = new Uint8Array(resData); //use this if data is raw bytes else directly pass resData
       var blob = new window.Blob([bytes], { type: 'application/pdf' });
 
+<<<<<<< HEAD
       if (ie || oldIE || ieEDGE) {
         window.navigator.msSaveBlob(blob, fileName);
+=======
+    }
+  }
+//preload pdf name on prepopulate document form
+  function preload_pdf(ref_num, ref_year){
+    event.preventDefault();
+    fileName = "";
+    var url = "/preview_pdf"
+    var formData = new FormData();
+    formData.append('ref_num', ref_num)
+    formData.append('ref_year', ref_year)
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      contentType: false,
+      processData: false,
+      async: false,
+      success: function(response) {
+        fileName = response.doc_name ;
+        
+>>>>>>> 1b01884ea77d5dac3da3dd3bb86627ca6a5c6010
       }
       else {
         var fileURL = URL.createObjectURL(blob);

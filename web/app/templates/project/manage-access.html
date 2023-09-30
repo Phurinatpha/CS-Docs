@@ -186,7 +186,7 @@
         $('#access-table').bootstrapTable('refreshOptions', {
             filterOptions: {
                 'filterAlgorithm': (row, filters) => {
-                    return row.name != " ";
+                    return row.name != " " && row.email != null;
                 }
             }
         });
