@@ -35,12 +35,13 @@ function handleDrop(event) {
   event.preventDefault();
   const file = event.dataTransfer.files[0];
   handleFile(file);
-  // updatePreview(file); // Pass the file object to updatePreview
+  updatePreview(file); // Pass the file object to updatePreview
 }
 
 function handleFileSelect(event) {
   const file = event.target.files[0];
   handleFile(file);
+  updatePreview(file); // Pass the file object to updatePreview
 }
 
 function handleFile(file) {
@@ -120,7 +121,12 @@ $(document).ready(function () {
     // Append the file to the FormData object
     var file = $('input[name="doc_data"]')[0].files[0];
     formData.append('doc_data', file);
-
+    if (document.getElementById('drag-and-drop').style.display != 'none'){
+      formData.append('delete_pdf', true); 
+    }
+    else{
+      formData.append('delete_pdf', false);
+    }
     // Add other form data to the FormData object
     formData.append('id', $('#doc_id').val());
     formData.append('subject', $('#descrip').val());
@@ -141,6 +147,10 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       success: function () {
+        $('#modal-form').modal('toggle');
+        resetForm();
+        refresh();
+        get_countNumber();
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -148,10 +158,6 @@ $(document).ready(function () {
           showConfirmButton: false,
           timer: 1500
         })
-        $('#modal-form').modal('toggle');
-        resetForm();
-        refresh();
-        get_countNumber();
 
       },
       error: function (error) {
