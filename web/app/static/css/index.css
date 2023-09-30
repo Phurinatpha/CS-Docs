@@ -1,3 +1,7 @@
+
+
+
+
 /*-----------------------------------Three main buttons-----------------------------------*/
 .btn-act {
   padding: 5px 10px;
@@ -90,6 +94,8 @@
 
 .doc-head {
   font-size: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D9D9D9;
 }
 
 .sub-doc {
@@ -128,7 +134,16 @@
   padding: 6px 20px 6px 40px;
   /* Adjust the padding as needed */
   text-align: center;
+  outline: none;
 }
+
+#customSearch:focus {
+  border: 1px solid #aaaaaa;
+  -moz-box-shadow:0 0 5px 0px #36485c;
+  -webkit-box-shadow:0 0 5px 0px #36485c;
+  box-shadow:0 0 5px 0px #36485c;
+}
+
 
 .doc-search .bi-search {
   position: absolute;
@@ -200,10 +215,10 @@
   background-color: inherit;
 }
 
-h2 {
+/* h2 {
   padding-bottom: 10px;
   border-bottom: 1px solid #D9D9D9;
-}
+} */
 
 .even-row .text-center,
 .even-row .text-start {
@@ -272,6 +287,7 @@ h2 {
 .modal-full {
   min-width: 65%;
   padding-top: 45px;
+  padding-bottom: 45px;
 
 }
 
@@ -362,10 +378,14 @@ h2 {
 @media only screen and (max-width: 1025px) {
   .modal-full {
       min-width: 80%;
+      padding-top:0px;
+      padding-bottom: 0px;
+
   }
 }
 
 @media only screen and (min-width: 768px){
+  
   #prevPage-mobile, #nextPage-mobile{
     display: none;
   }
