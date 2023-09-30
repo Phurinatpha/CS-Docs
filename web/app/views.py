@@ -48,6 +48,10 @@ def home():
     else:
         return redirect(generate_auth_url())
 
+@app.route('/403')
+def forbidden():
+    return render_template("project/403.html")
+
 @app.route('/oauth/callback')
 def oauth_login():
     code = request.args.get('code')
@@ -75,7 +79,7 @@ def oauth_login():
             else:
                 app.logger.debug("-----------------------------in else user callback-----------------------------")
                 session.clear() #DO NOT MOVE OR DELETE, prevent who can not access
-                return 'Access denie' #Can edit here for good look view
+                return render_template("project/403.html")
         else:
             return 'Error getting access token'
     # error = request.args.get('error')
