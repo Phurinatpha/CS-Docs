@@ -494,8 +494,11 @@ def user_remove():
         id_ = result.get('id', '')
         try:
             #contact = Contact.query.get(id_)
-            order = User.query.get(id_)
-            db.session.delete(order)
+            user = User.query.get(id_)
+            user_entry = user.update(
+                email=None,
+                role=None
+                )
             db.session.commit()
         except Exception as ex:
             app.logger.debug(ex)
