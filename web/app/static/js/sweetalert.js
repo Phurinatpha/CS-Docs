@@ -69,3 +69,20 @@ function user_delete_sweet(id) {
     }
   });
 }
+
+function user_logout() {
+  console.log("delete")
+  Swal.fire({
+    titleText: 'กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
+    icon: 'warning',
+    showCancelButton: false,
+    confirmButtonColor: '#3085d6',
+    confirmButtonText: 'ตกลง',
+
+
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = '/logout';
+    }
+  });
+}
