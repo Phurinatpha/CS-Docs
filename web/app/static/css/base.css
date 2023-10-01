@@ -165,9 +165,17 @@ footer li {
   width: 100px;
 }
 
+/* sweetalert frame */
 div:where(.swal2-container) div:where(.swal2-popup) {
   padding: 25px 0 50px 0;
 }
+
+/* text of sweetalert */
+div:where(.swal2-container) .swal2-html-container {
+  overflow: visible !important;
+}
+
+
 
 
 /*-----------------------------------------Responsive-----------------------------------------*/

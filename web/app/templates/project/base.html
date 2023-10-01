@@ -72,8 +72,10 @@
                 <i class="bi bi-person-circle"></i> <span>{{ user.name }}</span>
                 </button>
               <div class="dropdown-menu dropdown-menu-right">
+                {% if user.role == true %}
                 <a class="dropdown-item" href="{{ url_for('access') }}" id="access"><i
                     class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
+                {% endif %}
                 <a class="dropdown-item" href="{{ url_for('logout') }}" id="logout"><i
                     class="fa-solid fa-right-from-bracket"></i>ออกจากระบบ</a>
               </div>
@@ -111,7 +113,7 @@
   <script>
 
 
-    //this function use to open pdf file on clip icons
+    //this function use to open pdf file on clip icons as admin
     function open_pdf(ref_num, ref_year, row) {
       console.log("will open pdf soon")
       event.preventDefault();
@@ -137,19 +139,66 @@
         },
         error: function (error) {
           Swal.fire({
-            titleText: 'ไม่พบไฟล์ต้องการเพิ่มหรือไม่ ?',
+            titleText: 'ไม่พบไฟล์เอกสารคำสั่ง',
+            text: 'ต้องการเพิ่มไฟล์หรือไม่ ?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3EBC2A',
             cancelButtonColor: '#d33',
             confirmButtonText: 'ต้องการ',
             cancelButtonText: 'ยกเลิก',
+            
           }).then((result) => {
             if (result.isConfirmed) {
               prePopulateForm(row);
               $("#modal-form").modal();
             }
           });
+          // Apply custom styles to the SweetAlert Text
+          $('.swal2-container .swal2-html-container').css({
+            'font-size': '20px',
+            'overflow': 'visible'
+          });
+        }
+
+      });
+    }
+
+
+    //this function use to open pdf file on clip icons as normal user
+    function open_pdf_user(ref_num, ref_year, row) {
+      console.log("will open pdf soon")
+      event.preventDefault();
+      var url = "/preview_pdf"
+      var formData = new FormData();
+      formData.append('ref_num', ref_num)
+      formData.append('ref_year', ref_year)
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          var resData = response.doc_file;
+          pdf_data = atob(resData);
+          var fileName = response.doc_name;
+          var byteNumbers = new Array(pdf_data.length);
+          for (var i = 0; i < pdf_data.length; i++) {
+            byteNumbers[i] = pdf_data.charCodeAt(i);
+          }
+          openPDF(byteNumbers, fileName);
+        },
+        error: function (error) {
+          Swal.fire({
+            title: 'ไม่พบไฟล์เอกสารคำสั่ง',
+            text: 'ขณะนี้ยังไม่มีการเพิ่มเอกสารคำสั่ง',
+            icon: 'error',
+            
+            confirmButtonText: 'ตกลง',
+            
+            
+          })
         }
 
       });
