@@ -482,13 +482,20 @@
     console.log("Form openned");
     var defaultDate = new Date();
     thaiDatePicker.setDate(defaultDate);
+    ori_date = document.getElementById("thaiDatePicker").value
+    str_date = ori_date.split("/");
+    var formData = new FormData();
+    formData.append('ref_year', str_date[2]);
     // populateDaysAndYears();
     $.ajax({
-      dataType: "json",
+      type: 'POST',
+      data: formData,
       url: "/document",
+      contentType: false,
+      processData: false,
       success: function (data) {
-        ref_data = data[1].ref_num;
-        arr_ref = ref_data.split("/");
+        data_ref = data.ref_num
+        arr_ref = data_ref.split("/");
         console.log("data :", parseInt(arr_ref[0]));
         ref_num = parseInt(arr_ref[0]);
 
