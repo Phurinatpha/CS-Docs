@@ -11,7 +11,7 @@ app = Flask(__name__, static_folder='static')
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'bde092f73cf49e79fdff64de554f26ac20b3bff790564d0d'
 app.config['JSON_AS_ASCII'] = False
-app.permanent_session_lifetime = timedelta(minutes=1) # session timeout
+app.permanent_session_lifetime = timedelta(minutes=60) # session timeout
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite://")
