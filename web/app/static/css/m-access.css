@@ -7,19 +7,19 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 /*-----------------------------------buttons-----------------------------------*/
 .btn-act-m {
   padding: 5px 10px;
-  font-size: 1em;
+  font-size: 18px;
   border-radius: 10px;
   text-decoration: none;
 }
 
 .btn-act-m.btn-primary.btn-create {
-  height: 80px;
-  width: 180px;
+  height: 85px;
+  width: 150px;
 }
 
 .btn-act-m.btn-primary.btn-add-person {
-  height: 80px;
-  width: 120px;
+  height: 85px;
+  width: 150px;
 }
 
 .btn-act-m.btn-primary.d-sm-table {

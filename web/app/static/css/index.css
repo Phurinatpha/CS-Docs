@@ -8,7 +8,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 /*-----------------------------------Three main buttons-----------------------------------*/
 .btn-act {
   padding: 5px 10px;
-  font-size: 20px;
+  font-size: 18px;
   border-radius: 10px;
   text-decoration: none;
 }
@@ -20,8 +20,18 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 }
 
 .btn-act.btn-primary.btn-create {
-  height: 80px;
+  height: 85px;
   width: 175px;
+}
+
+.btn-primary{
+  transition: .2s ease-in-out 0s;
+}
+
+.btn-primary:hover{
+  transform: scale(1.05);
+  /* transition: 0.2s; */
+  background-color: #0e3e72;
 }
 
 .btn-act.btn-primary.d-sm-table {
@@ -236,18 +246,16 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 /*remove the box around the paperclip icon */
 .bi.bi-paperclip {
-  font-size: 1.1em;
+  font-size: 18px;
   border: none;
   background-color: transparent;
-  transition: transform 0.2s;
-  /* Add a transition for the transform property */
+  transition: .2s ease-in-out 0s;
 }
 
 .bi.bi-paperclip:hover {
   color: blue;
-  font-size: 1.2em;
-  transform: translateY(-5px);
-  /* Move the icon 5 pixels up on hover */
+  transform: scale(1.15);
+  /* transform: translateY(-5px); */
 }
 
 
@@ -271,6 +279,12 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   border: none;
   color: #ffffff;
   background-color: #FAA849;
+  transition: .2s ease-in-out 0s;
+}
+
+.table .btn-edit:hover {
+  transform: scale(1.05);
+  background-color: #fab362;
 }
 
 .table .btn-del {
@@ -283,6 +297,12 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   color: #ffffff;
   background-color: #DE4545;
   cursor: pointer;
+  transition: .2s ease-in-out 0s;
+}
+
+.table .btn-del:hover{
+  transform: scale(1.05);
+  background-color: #fa5b5b;
 }
 
 
