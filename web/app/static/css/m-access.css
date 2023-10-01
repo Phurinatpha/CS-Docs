@@ -1,6 +1,6 @@
 /*-----------------------------------SweetAlert-----------------------------------*/
 div:where(.swal2-container) div:where(.swal2-popup) {
-  padding: 25px 0 45px 0;
+  padding: 25px 0 45px 0 !important;
 }
 
 

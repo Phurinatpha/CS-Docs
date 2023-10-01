@@ -503,6 +503,11 @@
   $('#document-table').on('search.bs.table', function () {
     showPage(1);
   });
+  
+  //Disable body scrollbar
+  $('.modal').on('shown.bs.modal', function (e) {
+    $("body").addClass("modal-open"); //.modal-open is in base.css
+  });
 </script>
 
 

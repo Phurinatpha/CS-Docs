@@ -48,6 +48,10 @@ def home():
     else:
         return redirect(generate_auth_url())
 
+@app.route('/403')
+def forbidden():
+    return render_template("project/403.html")
+
 @app.route('/oauth/callback')
 def oauth_login():
     code = request.args.get('code')
@@ -75,7 +79,7 @@ def oauth_login():
             else:
                 app.logger.debug("-----------------------------in else user callback-----------------------------")
                 session.clear() #DO NOT MOVE OR DELETE, prevent who can not access
-                return 'Access denie' #Can edit here for good look view
+                return render_template("project/403.html")
         else:
             return 'Error getting access token'
     # error = request.args.get('error')
@@ -535,6 +539,7 @@ def user_remove():
         result = request.form.to_dict()
         app.logger.debug(result)
         id_ = result.get('id', '')
+        is_null = order_info.query.filter(order_info.user_id == id_ ).first()
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         email = user_data.get('cmuitaccount')
@@ -543,10 +548,13 @@ def user_remove():
             try:
                 #contact = Contact.query.get(id_)
                 user = User.query.get(id_)
-                user_entry = user.update(
-                email=None,
-                role=None
-                )
+                if is_null != None:
+                        user_entry = user.update(
+                    email=None,
+                    role=None
+                    )
+                else:
+                    db.session.delete(user)
                 db.session.commit()
             except Exception as ex:
                 app.logger.debug(ex)

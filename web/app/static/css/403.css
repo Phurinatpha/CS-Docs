@@ -1,0 +1,151 @@
+
+* {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Sarabun', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background: linear-gradient(to bottom right, #EEE, #aaaaaa); */
+  background-color: #1C2127;
+}
+
+/* Add styles for the close button */
+/* .close-button {
+  position: absolute;
+  font-size: 60px;
+  top: 30px; 
+  right: 30px; 
+  cursor: pointer;
+  color: #FF4742;
+  font-size: 24px;
+}
+.close-button i {
+  font-size: 40px;
+} */
+
+h1 {
+  margin: 20px 0 0 0;
+  font-size: 24px;
+  color: #FF4742;
+}
+h2{
+  margin:20px 0 20px;
+  font-size: 40px;
+  color: #e4e2e2;
+}
+
+p{
+  font-size: 24px;
+  color: #a4a4a4;
+  
+}
+.button-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.back-2-login {
+  /* background: #FF4742; */
+  background-color: initial;
+  border: 1px solid #FF4742;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  /* color: #FFFFFF; */
+  color: #FF4742;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 24px;
+  line-height: 16px;
+  width: 250px;
+  height: 50px;
+  margin-top: 10px;
+  outline: 0;
+  padding: 12px 14px;
+  text-align: center;
+  
+}
+
+/* .back-2-login:hover,
+.back-2-login:active {
+  background-color: initial;
+  background-position: 0 0;
+  color: #FF4742;
+}
+
+.back-2-login:active {
+  opacity: .5;
+} */
+
+.lock {
+  border-radius: 5px;
+  width: 55px;
+  height: 45px;
+  background-color: #FF4742;
+  animation: dip 1s;
+  animation-delay: 1.5s;
+}
+.lock::before, .lock::after {
+  content: "";
+  position: absolute;
+  border-left: 5px solid #FF4742;
+  height: 20px;
+  width: 15px;
+  left: calc(50% - 12.5px);
+}
+.lock::before {
+  top: -30px;
+  border: 5px solid #FF4742;
+  border-bottom-color: transparent;
+  border-radius: 15px 15px 0 0;
+  height: 30px;
+  animation: lock 2s, spin 2s;
+}
+.lock::after {
+  top: -10px;
+  border-right: 5px solid transparent;
+  animation: spin 2s;
+}
+
+@keyframes lock {
+  0% {
+    top: -45px;
+  }
+  65% {
+    top: -45px;
+  }
+  100% {
+    top: -30px;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: scaleX(-1);
+    left: calc(50% - 30px);
+  }
+  65% {
+    transform: scaleX(1);
+    left: calc(50% - 12.5px);
+  }
+}
+@keyframes dip {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+

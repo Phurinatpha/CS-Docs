@@ -1,3 +1,7 @@
+.modal-open {
+  overflow: hidden;
+}
+
 html * {
   font-family: 'Sarabun', sans-serif;
 }
