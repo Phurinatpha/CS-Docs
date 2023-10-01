@@ -196,39 +196,40 @@ def form():
                 app.logger.debug(value)
                 validated_dict[key] = value
 
-            if validated:
-                order = order_info.query.filter(and_(order_info.ref_num == int(validated_dict['ref_num']) , \
-                                                order_info.ref_year == int(validated_dict['ref_year']))).first()
-                app.logger.debug("order :",order)
-                if order == None:
-                    empty_order = order_info.query.filter(order_info.subject == None).first()
-                    #app.logger.debug("empty_order", empty_order)
-                    if empty_order != None:
-                        app.logger.debug(empty_order)
-                        db.session.delete(empty_order)
-                        db.session.commit()
-                    order_entry = order_info(
-                    subject=validated_dict['subject'],
-                    doc_date=validated_dict['doc_date'],
-                    ref_num= validated_dict['ref_num'],
-                    ref_year=validated_dict['ref_year'],
-                    ref_name=name_list,
-                    user_id=validated_dict['user_id']
-                    )
-                    db.session.add(order_entry)
+        if validated:
+
+            order = order_info.query.filter(and_(order_info.ref_num == int(validated_dict['ref_num']) , \
+                                             order_info.ref_year == int(validated_dict['ref_year']))).first()
+            app.logger.debug("order :",order)
+            if order == None:
+                empty_order = order_info.query.filter(order_info.subject == None).first()
+                #app.logger.debug("empty_order", empty_order)
+                if empty_order != None:
+                    app.logger.debug(empty_order)
+                    db.session.delete(empty_order)
                     db.session.commit()
-                    if doc_data != None :
-                        doc_content = doc_data.read()
-                        doc_entry = doc_info(
-                        order_refnum = order_entry.ref_num,
-                        order_refyear = order_entry.ref_year,
-                        filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-                        doc_data=doc_content
-                    )
-                        db.session.add(doc_entry)   
-                    
-                else:
-                    app.logger.debug("update")
+                order_entry = order_info(
+                subject=validated_dict['subject'],
+                doc_date=validated_dict['doc_date'],
+                ref_num= validated_dict['ref_num'],
+                ref_year=validated_dict['ref_year'],
+                ref_name=name_list,
+                user_id=validated_dict['user_id']
+                )
+                db.session.add(order_entry)
+                db.session.commit()
+                if doc_data != None :
+                    doc_content = doc_data.read()
+                    doc_entry = doc_info(
+                    order_refnum = order_entry.ref_num,
+                    order_refyear = order_entry.ref_year,
+                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    doc_data=doc_content
+                )
+                    db.session.add(doc_entry)   
+                
+            else:
+                app.logger.debug("update")
 
                 order_entry = order.update(
                 subject=validated_dict['subject'],
@@ -480,10 +481,17 @@ def doc_data():
 
     return jsonify(documents)
 
-@app.route("/document")
+@app.route("/document" , methods=('GET', 'POST'))
 def data():
-    limit = int(request.args.get('limit', 10000))
     documents = []
+    if request.method == 'POST':
+        year = request.form.get('ref_year', '')
+        find_refnum = order_info.query.filter(order_info.ref_year == int(year) ).order_by(order_info.ref_num.desc()).first()
+        app.logger.debug("find_refnum",find_refnum)
+
+        return jsonify(find_refnum.to_dict())
+    limit = int(request.args.get('limit', 10000))
+    
     db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())
     is_null = order_info.query.filter(order_info.subject == None ).first()
     if is_null == None:
