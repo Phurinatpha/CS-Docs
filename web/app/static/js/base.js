@@ -24,20 +24,19 @@ function toggleNavbar() {
 
 
 // Set the session timeout duration in milliseconds (e.g., 1 hour)
-const sessionTimeoutDuration = 60000; // 1 min in milliseconds
+const sessionTimeoutDuration = 3600000; // 1 hr in milliseconds
 
 // Function to log the user out
 function logout() {
     // Perform any necessary logout actions (e.g., clearing session, redirecting)
-    // ...
     window.location.href = '/logout'; // Redirect to the logout route
 }
 
 // Function to reset the session timeout timer
-function resetSessionTimeout() {
-    clearTimeout(sessionTimeoutTimer); // Clear the previous timer
-    sessionTimeoutTimer = setTimeout(logout, sessionTimeoutDuration);
-}
+// function resetSessionTimeout() {
+//     clearTimeout(sessionTimeoutTimer); // Clear the previous timer
+//     sessionTimeoutTimer = setTimeout(logout, sessionTimeoutDuration);
+// }
 
 // Initialize the session timeout timer on page load
 let sessionTimeoutTimer = setTimeout(logout, sessionTimeoutDuration);
