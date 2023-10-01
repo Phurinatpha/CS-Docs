@@ -16,6 +16,8 @@ from app import login_manager
 from app.models.user import User
 from app.models.Document import order_info, doc_info
 
+from datetime import datetime 
+
 
 client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
 client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
@@ -155,7 +157,7 @@ def index():
 #             return render_template("project/index_table.html", user=user_data_)
     
 #     return redirect(generate_auth_url())
-8
+
 
 
 
