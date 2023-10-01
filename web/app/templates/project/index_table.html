@@ -1,7 +1,5 @@
 {% extends "project/base.html" %}
 {% block content %}
-<!-- Pikaday CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.min.css">
 
 <!-- Moment.js -->
 <script
@@ -11,11 +9,14 @@
 <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pikaday/plugins/pikaday.jquery.min.js"></script>
 
+<!-- Pikaday CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.min.css">
+<!-- CSS -->
+<link rel="stylesheet" href="/static/css/index.css">
+<link rel="stylesheet" href="/static/css/form.css">
 <!-- Paliday CSS -->
 <link rel="stylesheet" href="/static/css/palitday.css">
 
-<link rel="stylesheet" href="/static/css/index.css">
-<link rel="stylesheet" href="/static/css/form.css">
 <div class="container">
   <div class="row" style="padding-top: 20px;">
     <div class="create-form">
@@ -45,7 +46,7 @@
 
                     <div class="form-group">
                       <label for="refer_num">เลขที่คำสั่ง</label>
-                      <input type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" readonly>
+                      <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" >
                     </div>
 
                     <div class="form-group">
@@ -417,7 +418,7 @@
 
     }
   }
-  function get_countNumber(){
+  function get_countNumber() {
     $.ajax({
       dataType: "json",
       url: "/document",
@@ -482,13 +483,20 @@
     console.log("Form openned");
     var defaultDate = new Date();
     thaiDatePicker.setDate(defaultDate);
+    ori_date = document.getElementById("thaiDatePicker").value
+    str_date = ori_date.split("/");
+    var formData = new FormData();
+    formData.append('ref_year', str_date[2]);
     // populateDaysAndYears();
     $.ajax({
-      dataType: "json",
+      type: 'POST',
+      data: formData,
       url: "/document",
+      contentType: false,
+      processData: false,
       success: function (data) {
-        ref_data = data[1].ref_num;
-        arr_ref = ref_data.split("/");
+        data_ref = data.ref_num
+        arr_ref = data_ref.split("/");
         console.log("data :", parseInt(arr_ref[0]));
         ref_num = parseInt(arr_ref[0]);
 
@@ -501,6 +509,11 @@
 
   $('#document-table').on('search.bs.table', function () {
     showPage(1);
+  });
+  
+  //Disable body scrollbar
+  $('.modal').on('shown.bs.modal', function (e) {
+    $("body").addClass("modal-open"); //.modal-open is in base.css
   });
 </script>
 

@@ -8,11 +8,11 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-  <script  src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 
   <!-- Bootstrap Table -->
   <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
-  <script  src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+  <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
 
   <!-- Bootstrap-Icon -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -31,7 +31,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
 
   <!-- Include SweetAlert2 -->
-  <script async src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -40,13 +40,13 @@
     crossorigin="anonymous"></script>
 
   <!-- toggleNavbar -->
-  <!-- Do not change the version of this or the code will fuck up (5.3.1) -->
+  <!-- Do not change the version of this (4.0.0) and dont move it to the top, it will make navbar dropdown not working -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
 
 
-  <title>CS Doc</title>
+  <title>CS Gen-Doc</title>
 
 </head>
 
@@ -72,8 +72,10 @@
                 <i class="bi bi-person-circle"></i> {{ user.name }}
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="{{ url_for('access') }}" id="access"><i class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
-                <a class="dropdown-item" href="{{ url_for('logout') }}" id="logout"><i class="fa-solid fa-right-from-bracket"></i>ออกจากระบบ</a>
+                <a class="dropdown-item" href="{{ url_for('access') }}" id="access"><i
+                    class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
+                <a class="dropdown-item" href="{{ url_for('logout') }}" id="logout"><i
+                    class="fa-solid fa-right-from-bracket"></i>ออกจากระบบ</a>
               </div>
             </div>
           </li>
@@ -107,10 +109,10 @@
 
   <script src="/static/js/base.js"></script>
   <script>
-    
 
-//this function use to open pdf file on clip icons
-  function open_pdf(ref_num, ref_year, row){
+
+    //this function use to open pdf file on clip icons
+    function open_pdf(ref_num, ref_year, row) {
       console.log("will open pdf soon")
       event.preventDefault();
       var url = "/preview_pdf"
@@ -123,17 +125,17 @@
         data: formData,
         contentType: false,
         processData: false,
-        success: function(response) {
-            var resData = response.doc_file ;
-            pdf_data = atob(resData);
-            var fileName = response.doc_name ;
-            var byteNumbers = new Array(pdf_data.length);
-            for (var i = 0; i < pdf_data.length; i++) {
-              byteNumbers[i] = pdf_data.charCodeAt(i);
-            }
-            openPDF(byteNumbers, fileName);
+        success: function (response) {
+          var resData = response.doc_file;
+          pdf_data = atob(resData);
+          var fileName = response.doc_name;
+          var byteNumbers = new Array(pdf_data.length);
+          for (var i = 0; i < pdf_data.length; i++) {
+            byteNumbers[i] = pdf_data.charCodeAt(i);
+          }
+          openPDF(byteNumbers, fileName);
         },
-        error: function(error) {
+        error: function (error) {
           Swal.fire({
             titleText: 'ไม่พบไฟล์ต้องการเพิ่มหรือไม่ ?',
             icon: 'question',
@@ -141,61 +143,62 @@
             confirmButtonColor: '#3EBC2A',
             cancelButtonColor: '#d33',
             confirmButtonText: 'ต้องการ',
-            cancelButtonText: 'ปิด',
+            cancelButtonText: 'ยกเลิก',
           }).then((result) => {
             if (result.isConfirmed) {
               prePopulateForm(row);
               $("#modal-form").modal();
-                }
-              });
-          }
-          
-        });
-      }
+            }
+          });
+        }
 
-
-  function openPDF(resData, fileName) {
-    var ieEDGE = navigator.userAgent.match(/Edge/g);
-    var ie = navigator.userAgent.match(/.NET/g); // IE 11+
-    var oldIE = navigator.userAgent.match(/MSIE/g); 
-    var bytes = new Uint8Array(resData); //use this if data is raw bytes else directly pass resData
-    var blob = new window.Blob([bytes], { type: 'application/pdf' });
-
-    if (ie || oldIE || ieEDGE) {
-       window.navigator.msSaveBlob(blob, fileName);
+      });
     }
-    else {
-       var fileURL = URL.createObjectURL(blob);
-       var win = window.open();
-       win.document.write('<iframe src="' + fileURL + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
 
-    }
-  }
-//preload pdf name on prepopulate document form
-  function preload_pdf(ref_num, ref_year){
-    event.preventDefault();
-    fileName = "";
-    var url = "/preview_pdf"
-    var formData = new FormData();
-    formData.append('ref_num', ref_num)
-    formData.append('ref_year', ref_year)
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: formData,
-      contentType: false,
-      processData: false,
-      async: false,
-      success: function(response) {
-        fileName = response.doc_name ;
-        
+
+    function openPDF(resData, fileName) {
+      var ieEDGE = navigator.userAgent.match(/Edge/g);
+      var ie = navigator.userAgent.match(/.NET/g); // IE 11+
+      var oldIE = navigator.userAgent.match(/MSIE/g);
+      var bytes = new Uint8Array(resData); //use this if data is raw bytes else directly pass resData
+      var blob = new window.Blob([bytes], { type: 'application/pdf' });
+
+      if (ie || oldIE || ieEDGE) {
+        window.navigator.msSaveBlob(blob, fileName);
       }
-    });
-    return fileName;
-  }
-  
+      else {
+        var fileURL = URL.createObjectURL(blob);
+        var win = window.open();
+        win.document.write('<iframe src="' + fileURL + '" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>')
 
- </script>
+      }
+    }
+    //preload pdf name on prepopulate document form
+    function preload_pdf(ref_num, ref_year) {
+      event.preventDefault();
+      fileName = "";
+      var url = "/preview_pdf"
+      var formData = new FormData();
+      formData.append('ref_num', ref_num)
+      formData.append('ref_year', ref_year)
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        async: false,
+        success: function (response) {
+          fileName = response.doc_name;
+          console.log("filename :", fileName);
+
+        }
+      });
+      return fileName;
+    }
+
+
+  </script>
   <script src="/static/js/sweetalert.js"></script>
 </body>
 

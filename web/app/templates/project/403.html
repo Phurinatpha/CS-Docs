@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <title>403 Forbidden</title>
+  <link rel="stylesheet" href="/static/css/403.css">
+
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="lock"></div>
+<div class="message">
+  <div class="button-container">
+    <h1>Error 403</h1>
+    <h2>การเข้าถึงหน้านี้ถูกจำกัด</h2>
+    <p>กรุณาตรวจสอบกับผู้ดูแลระบบ</p> </br>
+    <a href="{{ url_for('oauth_login') }}">
+
+      <button class="back-2-login">กลับหน้า Login</button>
+    </a>
+  </div>
+</div>
+<!-- partial -->
+
+<!-- Close button -->
+<!-- <div class="close-button" onclick="closePage()"><i class="bi bi-x-square"></i></div>
+
+<script>
+  function closePage() {
+    window.close(); // Close the current browser tab
+  }
+</script> -->
+
+</body>
+</html>

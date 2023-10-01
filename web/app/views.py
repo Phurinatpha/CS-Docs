@@ -16,6 +16,8 @@ from app import login_manager
 from app.models.user import User
 from app.models.Document import order_info, doc_info
 
+from datetime import datetime 
+
 
 client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
 client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
@@ -52,6 +54,10 @@ def home():
     else:
         return redirect(generate_auth_url())
 
+@app.route('/403')
+def forbidden():
+    return render_template("project/403.html")
+
 @app.route('/oauth/callback')
 def oauth_login():
     code = request.args.get('code')
@@ -79,7 +85,7 @@ def oauth_login():
             else:
                 app.logger.debug("-----------------------------in else user callback-----------------------------")
                 session.clear() #DO NOT MOVE OR DELETE, prevent who can not access
-                return 'Access denie' #Can edit here for good look view
+                return render_template("project/403.html")
         else:
             return 'Error getting access token'
     # error = request.args.get('error')
@@ -131,6 +137,7 @@ def index():
             lastname = user.lastname
             user_data_ = {
                 'id' : user.id,
+                'role' : user.role,
                 'name': firstname + " " + lastname,
                 'email': usr_email
             }
@@ -154,39 +161,47 @@ def index():
 #             return render_template("project/index_table.html", user=user_data_)
     
 #     return redirect(generate_auth_url())
-8
+
 
 
 
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
-    if request.method == 'POST':
-        doc_data = request.files.get('doc_data')
-        #app.logger.debug("doc data :",doc_data)
-        validated = True
-        validated_dict = dict()
+    access_token = session['access_token']
+    user_data = get_user_data(access_token)
+    email = user_data.get('cmuitaccount')
+    user = User.query.filter_by(email=email).first()
+    if user.role == True:
+        if request.method == 'POST':
+            doc_data = request.files.get('doc_data')
+            #app.logger.debug("doc data :",doc_data)
+            validated = True
+            validated_dict = dict()
+            delete_pdf = request.form.get('delete_pdf', '')
+            app.logger.debug("delete_pdf ",delete_pdf)
                 # Read the contents of the uploaded file as bytes
-        #ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
+            #ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
 
-        valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
+            valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
 
-        # Access the uploaded file using request.files
-        name_list =  request.form.get('name_list')
-        name_list = name_list.split(",")
-        name_list =  [i for i in name_list if i != ""]
-        #app.logger.debug("name_list = ",name_list)
-        # validate the input
-        for key in request.form:
-            if key not in valid_keys:
-                continue
-            value = request.form[key].strip()
-            if not value or value == 'undefined':
-                validated = False
-                break
-            app.logger.debug(value)
-            validated_dict[key] = value
+            # Access the uploaded file using request.files
+            name_list =  request.form.get('name_list')
+            name_list = name_list.split(",")
+            name_list =  [i for i in name_list if i != ""]
+            #app.logger.debug("name_list = ",name_list)
+            # validate the input
+            for key in request.form:
+                if key not in valid_keys:
+                    continue
+                value = request.form[key].strip()
+                if not value or value == 'undefined':
+                    validated = False
+                    break
+                app.logger.debug(value)
+                validated_dict[key] = value
 
         if validated:
+
             order = order_info.query.filter(and_(order_info.ref_num == int(validated_dict['ref_num']) , \
                                              order_info.ref_year == int(validated_dict['ref_year']))).first()
             app.logger.debug("order :",order)
@@ -212,7 +227,7 @@ def form():
                     doc_entry = doc_info(
                     order_refnum = order_entry.ref_num,
                     order_refyear = order_entry.ref_year,
-                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
                     doc_data=doc_content
                 )
                     db.session.add(doc_entry)   
@@ -227,26 +242,33 @@ def form():
                 user_id=validated_dict['user_id']
                 )
                 if doc_data != None :
-                    doc_content = doc_data.read()
                     doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
                                              doc_info.order_refyear == order.ref_year)).first()
+                    doc_content = doc_data.read()
                     if doc != None: 
                         doc_entry = doc.update(
                         doc_data=doc_content
-                        )
-                    else:
+                            )
+                    else :
                         doc_entry = doc_info(
                         order_refnum = order.ref_num,
                         order_refyear = order.ref_year,
                         filename= str(order.ref_num)+"/"+str(order.ref_year),
                         doc_data=doc_content)
                         db.session.add(doc_entry)
+                else:
+                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                             doc_info.order_refyear == order.ref_year)).first()
+                    if doc != None:
+                        if  delete_pdf == 'true':
+                            db.session.delete(doc)
                 
 
-            db.session.commit()
-            
+                db.session.commit()
+                
             return home()
-
+    else:
+        flash("You do not have permission.")
         return home()
     return render_template("project/index_table.html")
 
@@ -286,27 +308,34 @@ def remove():
         app.logger.debug(result)
         num = result.get('ref_num', '')
         year = result.get('ref_year', '')
-        try:
-            #contact = Contact.query.get(id_)
-            order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
-                                             order_info.ref_year == int(year))).first()
-            app.logger.debug("order :",order)
-            latest_order = order_info.query.order_by(order_info.ref_num.desc(),order_info.ref_year.desc()).first()
-            doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
-                                             doc_info.order_refyear == order.ref_year)).first()
-            app.logger.debug("latest :",latest_order)
-            if doc != None:
-                db.session.delete(doc)
-            if order != latest_order:
-                db.session.delete(order)
-            else :
-                order.mini_update(
-                                    subject=None
-                                  )
-            db.session.commit()
-        except Exception as ex:
-            app.logger.debug(ex)
-            raise
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        email = user_data.get('cmuitaccount')
+        user = User.query.filter_by(email=email).first()
+        if user.role == True:
+            try:
+                #contact = Contact.query.get(id_)
+                order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
+                                                order_info.ref_year == int(year))).first()
+                app.logger.debug("order :",order)
+                latest_order = order_info.query.order_by(order_info.ref_num.desc(),order_info.ref_year.desc()).first()
+                doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
+                                                doc_info.order_refyear == order.ref_year)).first()
+                app.logger.debug("latest :",latest_order)
+                if doc != None:
+                    db.session.delete(doc)
+                if order != latest_order:
+                    db.session.delete(order)
+                else :
+                    order.mini_update(
+                                        subject=None
+                                    )
+                db.session.commit()
+            except Exception as ex:
+                app.logger.debug(ex)
+                raise
+        else:
+            flash("You do not have permission to delete.")
     return home()
 
 @app.route('/search')
@@ -315,8 +344,12 @@ def search():
         # User is already authenticated, retrieve user data
         access_token = session['access_token']
         user_data = get_user_data(access_token)
+        email = user_data.get('cmuitaccount')
+        user = User.query.filter_by(email=email).first()
         if user_data:
             user_data_ = {
+                'id' : user.id,
+                'role' : user.role,
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
                 }
@@ -336,8 +369,12 @@ def access():
     if 'access_token' in session:
         access_token = session['access_token']
         user_data = get_user_data(access_token)
+        email = user_data.get('cmuitaccount')
+        user = User.query.filter_by(email=email).first()
         if user_data:
             user_data_ = {
+                'id' : user.id,
+                'role' : user.role,
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
             }
@@ -369,66 +406,74 @@ def user_data():
 
 @app.route('/user_form' , methods=('GET', 'POST'))
 def user_form():
-    if request.method == 'POST':
-        app.logger.debug("posted activate")
-        validated = True
-        validated_dict = dict()
-        valid_keys = ['role','email']
+    access_token = session['access_token']
+    user_data = get_user_data(access_token)
+    email = user_data.get('cmuitaccount')
+    user = User.query.filter_by(email=email).first()
+    if user.role == True:
+        if request.method == 'POST':
+            app.logger.debug("posted activate")
+            validated = True
+            validated_dict = dict()
+            valid_keys = ['role','email']
 
-        # Access the uploaded file using request.files
-        id_ = request.form.get('id','')
-        # validate the input
-        for key in request.form:
-            app.logger.debug(key)
-            if key not in valid_keys:
-                continue
-            value = request.form[key].strip()
-            if not value or value == 'undefined':
-                validated = False
-                break
-            app.logger.debug(value)
-            validated_dict[key] = value
+            # Access the uploaded file using request.files
+            id_ = request.form.get('id','')
+            # validate the input
+            for key in request.form:
+                app.logger.debug(key)
+                if key not in valid_keys:
+                    continue
+                value = request.form[key].strip()
+                if not value or value == 'undefined':
+                    validated = False
+                    break
+                app.logger.debug(value)
+                validated_dict[key] = value
 
-        if validated:
-            if not id_:
-                app.logger.debug("add new user")
-                app.logger.debug("role1 : " + validated_dict['role'])
-                # Create a new Document object with the uploaded file
-                if validated_dict['role'] == "True":
-                    role_ = True
-                elif validated_dict['role'] == "False":
-                    role_ = False
-                app.logger.debug("role2 : " + str(role_))
-                user_entry = User(
-                firstname="",
-                lastname="",
-                role=role_,
-                email=validated_dict['email']
-                )
-                db.session.add(user_entry)
-            else:
-                user = User.query.get(id_)
-                app.logger.debug("role : " + validated_dict['role'])
-                if validated_dict['role'] == "True":
-                    role_ = True
-                elif validated_dict['role'] == "False":
-                    role_ = False
-                app.logger.debug("role2 : " + str(role_))
-                user_entry = user.update(
-                email=validated_dict['email'],
-                role=role_
-                )
-            #     if doc_data != None :
-            #         doc_content = doc_data.read()
-            #         doc = doc_info.query.filter(doc_info.order_id == id_).first()   
-            #         doc_entry = doc.update(
-            #         filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
-            #         doc_data=doc_content
-            #         )
-            db.session.commit()
+            if validated:
+                if not id_:
+                    app.logger.debug("add new user")
+                    app.logger.debug("role1 : " + validated_dict['role'])
+                    # Create a new Document object with the uploaded file
+                    if validated_dict['role'] == "True":
+                        role_ = True
+                    elif validated_dict['role'] == "False":
+                        role_ = False
+                    app.logger.debug("role2 : " + str(role_))
+                    user_entry = User(
+                    firstname="",
+                    lastname="",
+                    role=role_,
+                    email=validated_dict['email']
+                    )
+                    db.session.add(user_entry)
+                else:
+                    user = User.query.get(id_)
+                    app.logger.debug("role : " + validated_dict['role'])
+                    if validated_dict['role'] == "True":
+                        role_ = True
+                    elif validated_dict['role'] == "False":
+                        role_ = False
+                    app.logger.debug("role2 : " + str(role_))
+                    user_entry = user.update(
+                    email=validated_dict['email'],
+                    role=role_
+                    )
+                #     if doc_data != None :
+                #         doc_content = doc_data.read()
+                #         doc = doc_info.query.filter(doc_info.order_id == id_).first()   
+                #         doc_entry = doc.update(
+                #         filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+                #         doc_data=doc_content
+                #         )
+                db.session.commit()
+                return home()
+
             return home()
-
-        return home()  
+        else:
+            flash("You do not have permission to delete.")
+            return home()
     return ''
 
 @app.route("/data")
@@ -440,15 +485,27 @@ def doc_data():
 
     return jsonify(documents)
 
-@app.route("/document")
+@app.route("/document" , methods=('GET', 'POST'))
 def data():
-    limit = int(request.args.get('limit', 1000))
     documents = []
+    if request.method == 'POST':
+        year = request.form.get('ref_year', '')
+        find_refnum = order_info.query.filter(order_info.ref_year == int(year) ).order_by(order_info.ref_num.desc()).first()
+        app.logger.debug("find_refnum",find_refnum)
+
+        return jsonify(find_refnum.to_dict())
+    limit = int(request.args.get('limit', 10000))
+    
     db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())
+    is_null = order_info.query.filter(order_info.subject == None ).first()
+    if is_null == None:
+        null = 0
+    else:
+        null = 1
     #db_documents = order_info.query.latest()
     #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    documents.insert(0, len(documents))
+    documents.insert(0, len(documents) - null)
     documents = documents[:limit]
     app.logger.debug(str(len(documents)) + " already entry")
 
@@ -496,17 +553,28 @@ def user_remove():
         result = request.form.to_dict()
         app.logger.debug(result)
         id_ = result.get('id', '')
-        try:
-            #contact = Contact.query.get(id_)
-            user = User.query.get(id_)
-            user_entry = user.update(
-                email=None,
-                role=None
-                )
-            db.session.commit()
-        except Exception as ex:
-            app.logger.debug(ex)
-            raise
+        is_null = order_info.query.filter(order_info.user_id == id_ ).first()
+        access_token = session['access_token']
+        user_data = get_user_data(access_token)
+        email = user_data.get('cmuitaccount')
+        user = User.query.filter_by(email=email).first()
+        if user.role == True:
+            try:
+                #contact = Contact.query.get(id_)
+                user = User.query.get(id_)
+                if is_null != None:
+                        user_entry = user.update(
+                    email=None,
+                    role=None
+                    )
+                else:
+                    db.session.delete(user)
+                db.session.commit()
+            except Exception as ex:
+                app.logger.debug(ex)
+                raise
+        else:
+            flash("You do not have permission to delete.")
     return home()
 
 # @app.route('/login', methods=('GET', 'POST'))
