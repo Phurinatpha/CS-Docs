@@ -126,6 +126,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 #refer_num{
     background: #e0e0e0;
+    cursor: not-allowed;
 }
 
 #thaiDatePicker{
