@@ -212,11 +212,16 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 /* td subject name */
 .table-striped > tbody > tr td:nth-child(3) {
   min-width: 250px; /* Set the maximum width before word wrap */
-  height: 81.75px;
+  height: 70px;
   word-wrap: break-word;
   text-align: left;
   padding-left: 20px;
   padding-right: 20px;  
+}
+/* td doc create name */
+.table-striped > tbody > tr td:nth-child(4) {
+  min-width: 180px; /* Set the maximum width before word wrap */
+  /* word-wrap: break-word; */
 }
 
 
