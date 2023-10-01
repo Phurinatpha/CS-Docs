@@ -83,10 +83,32 @@ body {
   align-items: center;
 }
 
+/* Hide navbar text content on mobile screens */
+@media (max-width: 780px) {
+  .dropdown-toggle{
+    padding: 10px;
+    height: 45px;
+  }
+  .dropdown-toggle span {
+    display: none;
+  }
+  .dropdown-toggle i {
+    padding-right: 0 !important;
+  }
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+  .dropdown-menu{
+    width: fit-content !important;
+    width: -moz-fit-content; /* to support Firefox 3+, Firefox for Android 4+ */
+  }
+}
 
 /*-----------------------------------Dropdown items-----------------------------------*/
 .dropdown-menu {
   width: 100%;
+  right: 0px;
   text-align: left;
 }
 
@@ -97,7 +119,6 @@ body {
 .dropdown-item i {
   padding-right: 12px;
   padding-left: 10%;
-
 }
 
 
