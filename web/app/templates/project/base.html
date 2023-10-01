@@ -58,27 +58,27 @@
         <span class="navbar-text">Computer Science CMU</span>
       </a>
 
-      <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
+      <!-- <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
         <span class="navbar-toggler-icon"></span>
-      </button>
+      </button> -->
 
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-md-auto">
+      <!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
+        <!-- <ul class="navbar-nav ml-md-auto"> -->
           <!-- Use ml-md-auto to push the dropdown to the right -->
-          <li class="nav-item">
+          <!-- <li class="nav-item"> -->
             <div class="dropdown">
               <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
-                <i class="bi bi-person-circle"></i> {{ user.name }}
-              </button>
+                <i class="bi bi-person-circle"></i> <span>{{ user.name }}</span>
+                </button>
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="{{ url_for('access') }}" id="access"><i class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
                 <a class="dropdown-item" href="{{ url_for('logout') }}" id="logout"><i class="fa-solid fa-right-from-bracket"></i>ออกจากระบบ</a>
               </div>
             </div>
-          </li>
-        </ul>
-      </div>
+          <!-- </li> -->
+        <!-- </ul> -->
+      <!-- </div> -->
     </div>
   </nav>
 
