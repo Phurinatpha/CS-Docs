@@ -19,6 +19,7 @@
 
 <div class="container">
   <div class="row" style="padding-top: 20px;">
+    {% if user.role == true %}
     <div class="create-form">
       <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal" data-target=".modal">
         <i class="bi bi-plus-circle-fill"></i>
@@ -140,6 +141,7 @@
         </button>
       </a>
     </div> -->
+    {% endif %}
   </div>
 </div>
 
@@ -210,6 +212,7 @@
                       ไฟล์แนบ
                     </span>
                   </th>
+                  {% if user.role == true %}
                   <!--dataFormat-->
                   <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
                     data-events="edit_del_Events">
@@ -217,6 +220,7 @@
                       แก้ไข / ลบ
                     </span>
                   </th>
+                  {% endif %}
                   <th class="text-center" data-field="ref_name" hidden>
                     <span class="text">
                       รายชื่อกรรมการ
@@ -369,14 +373,23 @@
     $('#document-table').bootstrapTable('load', document_data);
     showPage(pageNum);
   }
-
+  
   function clip_icon_Formatter(value, row, index) {
     return [
+      '{% if user.role == true %}',
       '<div class="text-center d-xxl-flex justify-content-xxl-center">',
       '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
       '<button class="pdf_viewer bi bi-paperclip" >', '</button>',
       '</span>',
-      '</div>'
+      '</div>',
+      '{% endif %}',
+      '{% if user.role == false %}',
+      '<div class="text-center d-xxl-flex justify-content-xxl-center">',
+      '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
+      '<button class="pdf_viewer_user bi bi-paperclip" >', '</button>',
+      '</span>',
+      '</div>',
+      '{% endif %}'
     ].join('')
   }
 
@@ -402,7 +415,16 @@
       ref_num = str_ref[0]
       ref_year = str_ref[1]
       open_pdf(ref_num, ref_year, row);
+    },
+
+    'click .pdf_viewer_user': function (e, value, row, index) {
+      refnum = row.ref_num;
+      str_ref = refnum.split("/");
+      ref_num = str_ref[0]
+      ref_year = str_ref[1]
+      open_pdf_user(ref_num, ref_year, row);
     }
+    
   }
 
   window.edit_del_Events = {

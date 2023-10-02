@@ -30,9 +30,9 @@ const sessionTimeoutDuration = 3600000; // 1 hr in milliseconds
 
 // Function to log the user out
 function logout() {
-  window.alert("กรุณาเข้าสู่ระบบใหม่อีกครั้ง");
+  user_logout();
   // Perform any necessary logout actions (e.g., clearing session, redirecting)
-  window.location.href = '/logout'; // Redirect to the logout route
+  // window.location.href = '/logout'; // Redirect to the logout route
 }
 
 // Function to reset the session timeout timer
