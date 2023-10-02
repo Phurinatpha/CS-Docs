@@ -192,7 +192,7 @@
         $('#access-table').bootstrapTable({
 
             data: user_data,
-            sortName: ['str_role', 'email'], // Set the initial sorting column
+            sortName: 'str_role', // Set the initial sorting column
             sortOrder: 'asc',    // Set the initial sorting order (ascending)
             columns: [
                 {
@@ -202,9 +202,9 @@
                     
                 },
                 {
-                    field: 'email',
-                    title: 'E-mail',
-                    sorter: customEmailSorter // Use custom sorting function for "Email" column
+                    // field: 'email',
+                    // title: 'E-mail',
+                    // sorter: customEmailSorter // Use custom sorting function for "Email" column
                 },
                 {
                     field: 'str_role',
@@ -245,20 +245,20 @@
         return roleOrder[roleA] - roleOrder[roleB];
     }
 
-    function customEmailSorter(a, b) {
-        const userEmail = "{{ user_email }}";
+    // function customEmailSorter(a, b) {
+    //     const userEmail = "{{ user_email }}";
 
 
-        if (a === userEmail && b === userEmail) {
-            return 0;
-        } else if (a === userEmail) {
-            return -1;
-        } else if (b === userEmail) {
-            return 1;
-        } else {
-            return a.localeCompare(b);
-        }
-    }
+    //     if (a === userEmail && b === userEmail) {
+    //         return 0;
+    //     } else if (a === userEmail) {
+    //         return -1;
+    //     } else if (b === userEmail) {
+    //         return 1;
+    //     } else {
+    //         return a.localeCompare(b);
+    //     }
+    // }
 
     $(document).ready(function () {
 
