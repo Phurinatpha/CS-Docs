@@ -87,7 +87,7 @@ def oauth_login():
                 session.clear() #DO NOT MOVE OR DELETE, prevent who can not access
                 return render_template("project/403.html")
         else:
-            return 'Error getting access token'
+            return redirect(url_for('index')) 
     # error = request.args.get('error')
     # error_description = request.args.get('error_description')
     return redirect(url_for('home'))

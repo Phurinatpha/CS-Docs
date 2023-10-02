@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="grant-btn-wrapper">
                                     <button class="grant-btn" type="submit" name="add-user-submit">
-                                        <i  class="fa-regular fa-floppy-disk"></i>บันทึกสิทธิ์</button>
+                                        <i class="fa-regular fa-floppy-disk"></i>บันทึกสิทธิ์</button>
                                 </div>
                             </form>
                         </div>
@@ -124,7 +124,7 @@
                                         </span>
                                     </th>
 
-                                    
+
 
                                     <th class="text-center" data-field="name">
                                         <span class="text">
@@ -132,7 +132,7 @@
                                         </span>
                                     </th>
 
-                                    <th class="text-center"  data-field="email">
+                                    <th class="text-center" data-field="email">
                                         <span class="text">
                                             E-mail
                                         </span>
@@ -233,15 +233,15 @@
 
     function refresh() {
         $.getJSON("/user", refresh_table);
-    
-      }
-    
-      function refresh_table(document_data) {
+
+    }
+
+    function refresh_table(document_data) {
         page = document.getElementById("pageNumbers");
         pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
         $('#access-table').bootstrapTable('load', document_data);
         showPage(pageNum);
-      }
+    }
 
     function delete_user(id) {
         event.preventDefault();
@@ -269,6 +269,8 @@
     $("#user_form").submit(function (event) {
         // prevent default html form submission action
         event.preventDefault();
+        // Show loading screen
+        show_loading();
         // Create a new FormData object
         var formData = new FormData();
         var ele = document.getElementsByName('answer-a');
@@ -291,11 +293,11 @@
             processData: false,
             success: function (response) {
                 Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'บันทึกสิทธิ์สำเร็จ',
-                showConfirmButton: false,
-                timer: 1500
+                    position: 'center',
+                    icon: 'success',
+                    title: 'บันทึกสิทธิ์สำเร็จ',
+                    showConfirmButton: false,
+                    timer: 1500
                 })
                 refresh();
                 $('#modal-user-form').modal('toggle');
