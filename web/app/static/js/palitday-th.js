@@ -17,5 +17,6 @@ var thaiDatePicker = new Palitday(
       const thaiBuddhistYear = selectedYear + 543;
       const inputField = document.getElementById('thaiDatePicker');
       inputField.value = inputField.value.replace(/\d{4}\s*/, thaiBuddhistYear); // Replace the year part of the input value
+      auto_refnum(inputField.value)
     }
   });
