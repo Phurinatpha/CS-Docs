@@ -372,14 +372,18 @@ def access():
         user_data = get_user_data(access_token)
         email = user_data.get('cmuitaccount')
         user = User.query.filter_by(email=email).first()
+        if user.role != True:
+            return redirect(url_for('home'))
         if user_data:
+            app.logger.debug(user.id)
             user_data_ = {
                 'id' : user.id,
                 'role' : user.role,
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
             }
-            return render_template("project/manage-access.html", user=user_data_)
+            user_email = user.email
+            return render_template("project/manage-access.html", user=user_data_,user_email=user_email)
     
     return redirect(generate_auth_url())
     

@@ -179,8 +179,16 @@
     function populate_table(user_data) {
         $('#access-table').bootstrapTable({
 
-            data: user_data
-
+            data: user_data,
+            sortName: 'str_role', // Set the initial sorting column
+            sortOrder: 'asc',    // Set the initial sorting order (ascending)
+            columns: [
+                {
+                    field: 'str_role',
+                    title: 'ลำดับ',
+                    sorter: customRoleSorter // Custom sort function
+                },
+            ]
 
         });
         $('#access-table').bootstrapTable('refreshOptions', {
@@ -189,12 +197,25 @@
                     return row.name != " " && row.email != null;
                 }
             }
+            
         });
         $('#access-table').bootstrapTable('hideColumn', 'id');
         //console.log("tr :", document.getElementsByTagName('tr').length);
         var js = document.createElement("script");
         js.src = "/static/js/pagination.js";
         document.head.appendChild(js);
+    }
+
+    // Custom sort function for the "role" column
+    function customRoleSorter(a, b) {
+        // Define the order in which roles should be sorted
+        const roleOrder = { 'ธุรการ': 0, 'บุคลากร': 1 };
+
+        const roleA = a;
+        const roleB = b;
+
+        // Compare roles based on the defined order
+        return roleOrder[roleA] - roleOrder[roleB];
     }
 
     $(document).ready(function () {
@@ -312,13 +333,14 @@
 
     //edit and delete button
     function edit_del_Formatter(value, row, index) {
-        return [
-            '<div class="btn-edit-del" >',
-            '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
-            '<button class="user_delete btn-del"  >', 'ลบ', '</button>',
-            '</div>'
-
+        if (row.email != "{{ user_email }}") {
+            return [
+                '<div class="btn-edit-del" >',
+                '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', 'แก้ไข', '</button>',
+                '<button class="user_delete btn-del"  >', 'ลบ', '</button>',
+                '</div>'
         ].join('')
+        }
     }
 
     //This part must be edit with user db
