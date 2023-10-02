@@ -234,12 +234,13 @@ def form():
                 
             else:
                 app.logger.debug("update")
-
+                edit_doc = order_info.query.filter(and_(order_info.ref_num == validated_dict['ref_num'],
+                                             order_info.ref_year == validated_dict['ref_year'])).first()
                 order_entry = order.update(
                 subject=validated_dict['subject'],
                 doc_date=validated_dict['doc_date'],
                 ref_name=name_list,
-                user_id=validated_dict['user_id']
+                user_id=edit_doc.user_id
                 )
                 if doc_data != None :
                     doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
