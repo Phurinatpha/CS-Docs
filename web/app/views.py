@@ -201,7 +201,6 @@ def form():
                 validated_dict[key] = value
 
         if validated:
-
             order = order_info.query.filter(and_(order_info.ref_num == int(validated_dict['ref_num']) , \
                                              order_info.ref_year == int(validated_dict['ref_year']))).first()
             app.logger.debug("order :",order)
@@ -227,11 +226,10 @@ def form():
                     doc_entry = doc_info(
                     order_refnum = order_entry.ref_num,
                     order_refyear = order_entry.ref_year,
-                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
                     doc_data=doc_content
-                )
-                    db.session.add(doc_entry)   
-                
+                    )
+                    db.session.add(doc_entry)
             else:
                 app.logger.debug("update")
                 edit_doc = order_info.query.filter(and_(order_info.ref_num == validated_dict['ref_num'],
@@ -265,7 +263,7 @@ def form():
                             db.session.delete(doc)
                 
 
-                db.session.commit()
+            db.session.commit()
                 
             return home()
     else:
@@ -497,8 +495,10 @@ def data():
         year = request.form.get('ref_year', '')
         find_refnum = order_info.query.filter(order_info.ref_year == int(year) ).order_by(order_info.ref_num.desc()).first()
         app.logger.debug("find_refnum",find_refnum)
-
-        return jsonify(find_refnum.to_dict())
+        if find_refnum != None: 
+            return jsonify(find_refnum.to_dict())
+        else:
+            return {'ref_num' : "0/0"}
     limit = int(request.args.get('limit', 10000))
     
     db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())

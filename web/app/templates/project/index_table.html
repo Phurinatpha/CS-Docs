@@ -57,7 +57,7 @@
                       <!--this input is user id set default to 1-->
                       <input type="hidden" id="usr_id" name="user_id" value="{{ user.id }}">
                       <!-- Separate select elements for day, month, and year -->
-                      <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required readonly>
+                      <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate"   required readonly>
                       <i class="bi bi-calendar"></i>
                     </div>
 
@@ -460,6 +460,7 @@
     ref_year = str_ref[1]
     $('#refer_num').val(parseInt(ref_num));
     $('#thaiDatePicker').val(row.ori_date);
+    $('#thaiDatePicker').off('blur');
     $('#descrip').val(row.subject);
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
@@ -506,10 +507,17 @@
     var defaultDate = new Date();
     thaiDatePicker.setDate(defaultDate);
     ori_date = document.getElementById("thaiDatePicker").value
+    $('#thaiDatePicker').on('blur', function() {
+      auto_refnum(this.value);
+    });
+    auto_refnum(ori_date);
+  }
+
+  function auto_refnum(ori_date){
+    console.log("ori_date",ori_date);
     str_date = ori_date.split("/");
     var formData = new FormData();
     formData.append('ref_year', str_date[2]);
-    // populateDaysAndYears();
     $.ajax({
       type: 'POST',
       data: formData,

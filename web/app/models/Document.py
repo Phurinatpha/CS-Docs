@@ -75,7 +75,8 @@ class doc_info(db.Model, SerializerMixin):
              ['order_refnum', 'order_refyear'],
             ['order_info.ref_num', 'order_info.ref_year'],
         ),
-)
+        db.UniqueConstraint('order_refnum', 'order_refyear', name='unique composite doc_info key')
+    )
 
     def __init__(self, order_refnum, order_refyear, filename, doc_data):
         self.order_refnum = order_refnum
