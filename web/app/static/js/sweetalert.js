@@ -86,3 +86,30 @@ function user_logout() {
     }
   });
 }
+
+function show_loading(){
+  Swal.fire({
+    title: 'กำลังบันทึก',
+    allowOutsideClick: false,
+    didOpen: () => {
+        Swal.showLoading()
+    },
+})
+}
+
+function submit_success(){
+  Swal.fire({
+    icon: 'success',
+    title: 'บันทึกเอกสารสำเร็จ',
+    showConfirmButton: false,
+    timer: 1500
+  })
+}
+
+function submit_err(){
+  Swal.fire({
+    icon: 'error',
+    title: 'เกิดข้อผิดพลาด',
+    text: 'ไม่สามารถบันทึกเอกสารได้',
+  });
+}

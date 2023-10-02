@@ -106,33 +106,27 @@ function removeUploadedFile() {
 $(document).ready(function () {
   $("#myForm").submit(function (event) {
     event.preventDefault();
-    
     // Show loading screen
-    Swal.fire({
-      title: 'กำลังบันทึก...',
-      html: '<i class="fas fa-spinner fa-pulse"></i>',
-      showConfirmButton: false,
-      allowOutsideClick: false,
-    });
+    show_loading();
 
     ori_date = document.getElementById("thaiDatePicker").value;
     str_date = ori_date.split("/");
     date = str_date[2] + "-" + str_date[1] + "-" + str_date[0];
-    
+
     var formData = new FormData();
     name_list = document.getElementById("name_list").value;
     name_list = name_list.split("\n");
-    
+
     var file = $('input[name="doc_data"]')[0].files[0];
     formData.append('doc_data', file);
-    
-    if (document.getElementById('drag-and-drop').style.display != 'none'){
-      formData.append('delete_pdf', true); 
+
+    if (document.getElementById('drag-and-drop').style.display != 'none') {
+      formData.append('delete_pdf', true);
     }
-    else{
+    else {
       formData.append('delete_pdf', false);
     }
-    
+
     formData.append('id', $('#doc_id').val());
     formData.append('subject', $('#descrip').val());
     formData.append('doc_date', date);
@@ -143,7 +137,7 @@ $(document).ready(function () {
 
     var $form = $(this);
     var url = $form.attr("action");
-    
+
     $.ajax({
       type: 'POST',
       url: url,
@@ -155,25 +149,13 @@ $(document).ready(function () {
         resetForm();
         refresh();
         get_countNumber();
-        Swal.fire({
-          icon: 'success',
-          title: 'บันทึกเอกสารสำเร็จ',
-          showConfirmButton: false,
-          timer: 1500
-        }).then(() => {
-          // Redirect or do other actions after success
-        });
+        //show sweet success
+        submit_success();
       },
       error: function (error) {
         console.error('Error', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'เกิดข้อผิดพลาด',
-          text: 'ไม่สามารถบันทึกเอกสารได้',
-        });
-      },
-      complete: function () {
-        Swal.close(); // Close loading screen
+        //show sweet error
+        submit_err();
       }
     });
   });
