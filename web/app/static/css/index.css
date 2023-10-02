@@ -231,11 +231,12 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   background-color: #e7e6e6;
 }
 
+
 /* Add hover effect to even rows */
-.table-striped>tbody>tr:nth-child(2n):hover>td,
+/* .table-striped>tbody>tr:nth-child(2n):hover>td,
 .table-striped>tbody>tr:nth-child(2n):hover>th {
   background-color: inherit;
-}
+} */
 
 /* h2 {
   padding-bottom: 10px;
