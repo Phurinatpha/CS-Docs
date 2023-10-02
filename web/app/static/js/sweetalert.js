@@ -71,7 +71,7 @@ function user_delete_sweet(id) {
 }
 
 function user_logout() {
-  console.log("delete")
+  console.log("logout")
   Swal.fire({
     titleText: 'กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
     icon: 'warning',
@@ -82,6 +82,9 @@ function user_logout() {
 
   }).then((result) => {
     if (result.isConfirmed) {
+      window.location.href = '/logout';
+    }
+    else{
       window.location.href = '/logout';
     }
   });
