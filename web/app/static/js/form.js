@@ -103,30 +103,36 @@ function removeUploadedFile() {
 
 
 
-
 $(document).ready(function () {
   $("#myForm").submit(function (event) {
-    // prevent default html form submission action
-    //event.preventDefault();
     event.preventDefault();
-    ori_date = document.getElementById("thaiDatePicker").value
+    
+    // Show loading screen
+    Swal.fire({
+      title: 'กำลังบันทึก...',
+      html: '<i class="fas fa-spinner fa-pulse"></i>',
+      showConfirmButton: false,
+      allowOutsideClick: false,
+    });
+
+    ori_date = document.getElementById("thaiDatePicker").value;
     str_date = ori_date.split("/");
-    date = str_date[2] + "-" + str_date[1] + "-" + str_date[0]
-    // Create a new FormData object
+    date = str_date[2] + "-" + str_date[1] + "-" + str_date[0];
+    
     var formData = new FormData();
-    name_list = document.getElementById("name_list").value
-    name_list = name_list.split("\n")
-    console.log(name_list)
-    // Append the file to the FormData object
+    name_list = document.getElementById("name_list").value;
+    name_list = name_list.split("\n");
+    
     var file = $('input[name="doc_data"]')[0].files[0];
     formData.append('doc_data', file);
+    
     if (document.getElementById('drag-and-drop').style.display != 'none'){
       formData.append('delete_pdf', true); 
     }
     else{
       formData.append('delete_pdf', false);
     }
-    // Add other form data to the FormData object
+    
     formData.append('id', $('#doc_id').val());
     formData.append('subject', $('#descrip').val());
     formData.append('doc_date', date);
@@ -135,10 +141,9 @@ $(document).ready(function () {
     formData.append('name_list', name_list);
     formData.append('user_id', $('#usr_id').val());
 
-
-    console.log(formData);
     var $form = $(this);
     var url = $form.attr("action");
+    
     $.ajax({
       type: 'POST',
       url: url,
@@ -151,22 +156,26 @@ $(document).ready(function () {
         refresh();
         get_countNumber();
         Swal.fire({
-          position: 'center',
           icon: 'success',
           title: 'บันทึกเอกสารสำเร็จ',
           showConfirmButton: false,
           timer: 1500
-        })
-
+        }).then(() => {
+          // Redirect or do other actions after success
+        });
       },
       error: function (error) {
         console.error('Error', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถบันทึกเอกสารได้',
+        });
+      },
+      complete: function () {
+        Swal.close(); // Close loading screen
       }
     });
   });
-
-  // Initialize the Thai date picker
-  // Call the setup function to initialize the Thai date picker
-
 });
 

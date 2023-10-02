@@ -25,6 +25,8 @@ function toggleNavbar() {
 
 // Set the session timeout duration in milliseconds (e.g., 1 hour)
 const sessionTimeoutDuration = 3600000; // 1 hr in milliseconds
+// const sessionTimeoutDuration = 5000; // 1 hr in milliseconds
+
 
 // Function to log the user out
 function logout() {
