@@ -226,11 +226,10 @@ def form():
                     doc_entry = doc_info(
                     order_refnum = order_entry.ref_num,
                     order_refyear = order_entry.ref_year,
-                    filename= str(ref_num)+"/"+str(validated_dict['ref_year']),
+                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
                     doc_data=doc_content
-                )
-                    db.session.add(doc_entry)   
-                
+                    )
+                    db.session.add(doc_entry)
             else:
                 app.logger.debug("update")
                 edit_doc = order_info.query.filter(and_(order_info.ref_num == validated_dict['ref_num'],
@@ -264,7 +263,7 @@ def form():
                             db.session.delete(doc)
                 
 
-                db.session.commit()
+            db.session.commit()
                 
             return home()
     else:
