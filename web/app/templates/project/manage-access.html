@@ -391,10 +391,10 @@
     function edit_del_Formatter(value, row, index) {
         if (row.email != "{{ user_email }}") {
             return [
-            '<div class="btn-edit-del">',
-            '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">','<img class="edit-img" src="/static/img/edit (2).png">', 'แก้ไข', '</button>',
-            '<button class="doc_delete btn-del"  >','<img class="del-img" src="/static/img/del (1).png">', 'ลบ', '</button>',
-            '</div>'
+                '<div class="btn-edit-del" >',
+                '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">','<img class="edit-img" src="/static/img/edit (2).png">', 'แก้ไข', '</button>',
+                '<button class="user_delete btn-del"  >','<img class="del-img" src="/static/img/del (1).png">', 'ลบ', '</button>',
+                '</div>'
         ].join('')
         }
     }
