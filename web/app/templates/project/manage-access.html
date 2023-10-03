@@ -233,6 +233,26 @@
         document.head.appendChild(js);
     }
 
+    function ShowMeAtFirst() {
+        $.getJSON("/user", moveUserEmailToTop);
+    }
+
+    function moveUserEmailToTop(user_data) {
+        console.log(user_data);
+        const user_email = "{{ user_email }}";
+
+        // Find the index of the user's email in the user_data array
+        const userIndex = user_data.findIndex((user) => user.email === user_email);
+    
+        // If the email is found, remove it from its current position
+        if (userIndex !== -1) {
+            const user = user_data.splice(userIndex, 1)[0];
+            // Insert the user's data at the beginning of the array
+            user_data.unshift(user);
+        }
+
+    }
+
     // Custom sort function for the "role" column
     function customRoleSorter(a, b) {
         // Define the order in which roles should be sorted
@@ -261,7 +281,6 @@
     // }
 
     $(document).ready(function () {
-
         $.ajax({
             dataType: "json",
             url: "/user",
@@ -291,18 +310,20 @@
         else {
             document.getElementById("user").checked = true;
         }
+        $('#access-table').bootstrapTable('refresh');
+        $('#user-table').bootstrapTable('resetView');
 
     }
 
     function refresh() {
         $.getJSON("/user", refresh_table);
-
     }
 
     function refresh_table(document_data) {
         page = document.getElementById("pageNumbers");
         pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
         $('#access-table').bootstrapTable('load', document_data);
+
         showPage(pageNum);
     }
 
@@ -363,14 +384,18 @@
                     timer: 1500
                 })
                 refresh();
+                $('#access-table').bootstrapTable('refresh');
+                ShowMeAtFirst();
                 $('#modal-user-form').modal('toggle');
                 document.getElementById('user_form').reset();
+                
 
             },
             error: function (error) {
                 console.error('Error', error);
             }
         });
+        
     });
 
     //edit and delete button
