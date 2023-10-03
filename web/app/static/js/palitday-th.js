@@ -19,3 +19,5 @@ var thaiDatePicker = new Palitday(
       inputField.value = inputField.value.replace(/\d{4}\s*/, thaiBuddhistYear); // Replace the year part of the input value
     }
   });
+
+  
