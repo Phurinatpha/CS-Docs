@@ -7,7 +7,11 @@ def role_name(role):
         return "ธุรการ"
     else:
         return "บุคลากร"
-
+def user_name(firstname, lastname):
+    if  firstname!= "":
+        return firstname +" "+ lastname
+    else:
+        return "ผู้ใช้งานยังไม่ได้เข้าสู่ระบบ"
 class User(db.Model, UserMixin):
     __tablename__ = "user"
 
@@ -37,7 +41,7 @@ class User(db.Model, UserMixin):
     def to_dict(self):
         return {
             'id': self.id,
-            'name': self.firstname + " " + self.lastname,
+            'name': user_name(self.firstname, self.lastname),
             'role' : self.role,
             'str_role': role_name(self.role),
             'email': self.email

@@ -16,7 +16,7 @@
             </a>
         </div>
         <div class="add-personel">
-            <button class="btn-act-m btn-primary btn-add-person " data-toggle="modal" data-target=".modal">
+            <button class="btn-act-m btn-primary btn-add-person " onClick="open_form()" data-toggle="modal" data-target=".modal">
                 <i class="bi bi-plus-circle-fill"></i>
                 เพิ่มบุคลาการ
             </button>
@@ -34,8 +34,8 @@
                                     <!-- <i class="bi bi-plus-circle-fill"></i> -->
                                     จัดการสิทธิ์การเข้าถึง
                                 </p>
-
-                                <!--  <div class="grant-group">
+                                <input type="text"  id="user_id" name="id" value="">
+                                <!--  <divclass="grant-group">
                                     <label>ชื่อจริง</label>
                                     <div class="input-container">-->
                                 <input type="hidden" id="input-fname" placeholder="ชื่อจริง" value="">
@@ -49,19 +49,19 @@
                                 <!-- </div>
                                 </div>-->
                                 <div class="grant-group">
-                                    <input type="hidden" id="user_id" name="id" value="">
+                                    
                                     <label>E-mail</label>
                                     <div class="input-container">
-                                        <input id="input-email" name="add-user-email" placeholder="E-mail address">
+                                        <input id="input-email" name="add-user-email" placeholder="E-mail address" required>
                                         <span class="input-group-addon">@cmu.ac.th</span>
                                     </div>
                                 </div>
                                 <div class="grant-group-level">
                                     <label>ระดับสิทธิ์การเข้าถึง</label>
-                                    <input type="radio" id="admin" name="answer-a" value="True">
+                                    <input type="radio" id="admin" name="answer-a" value="True" required>
                                     <label class="radio" for="admin">ธุรการ</label>
 
-                                    <input type="radio" id="user" name="answer-a" value="False">
+                                    <input type="radio" id="user" name="answer-a" value="False" required >
                                     <label class="radio" for="user">บุคลากร</label>
                                 </div>
                                 <div class="grant-btn-wrapper">
@@ -300,7 +300,8 @@
 
 
     function prePopulateForm(row) {
-        document.getElementById('user_form').reset();
+        document.getElementById('user_id').hidden = true
+        document.getElementById("user_form").reset();
         $('#user_id').val(row.id);
         email = row.email.split("@");
         $('#input-email').val(email[0]);
@@ -350,6 +351,13 @@
         });
     }
 
+
+      function open_form() {
+        console.log("Form openned");
+        document.getElementById('user_id').hidden = true;
+        document.getElementById("user_form").reset();
+
+      }
     $("#user_form").submit(function (event) {
         // prevent default html form submission action
         event.preventDefault();
@@ -364,6 +372,7 @@
         }
         console.log(role);
         formData.append('id', $('#user_id').val());
+        console.log("id :", $('#user_id').val())
         formData.append('role', role);
         formData.append('email', $('#input-email').val() + "@cmu.ac.th");
         console.log(formData);
@@ -384,8 +393,7 @@
                     timer: 1500
                 })
                 refresh();
-                $('#access-table').bootstrapTable('refresh');
-                ShowMeAtFirst();
+                document.getElementById("user_form").reset();
                 $('#modal-user-form').modal('toggle');
                 document.getElementById('user_form').reset();
                 

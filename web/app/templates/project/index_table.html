@@ -91,8 +91,9 @@
                     <p class="attachment">3 ) ไฟล์แนบ</p>
                     <div class="form-group-3">
                       <div id="drag-and-drop" ondrop="handleDrop(event)" ondragover="allowDrop(event)">
-                        <h1>ลากและวางไฟล์ที่นี่</h1>
-                        <p class="or">หรือ</p>
+                        <!-- <h1>ลากและวางไฟล์ที่นี่</h1>
+                        <p class="or">หรือ</p> -->
+                        <i class="bi bi-archive"></i>
                         <input type="file" id="file-input" name="doc_data" style="display:none;"
                           onchange="handleFileSelect(event)" accept=".pdf">
                         <p class="click-to-add"><label for="file-input">กดเพื่อเลือกไฟล์แนบ</label></p>
@@ -179,7 +180,7 @@
               data-search-selector="#customSearch" id="document-table">
               <thead>
                 <tr>
-                  <th class="text-center" data-formatter="runningFormatter">
+                  <th class="text-center" data-formatter="runningFormatter" data-searchable="false">
                     <span class="text">
                       ลำดับ
                     </span>
@@ -204,10 +205,10 @@
                       วันที่ออกคำสั่ง
                     </span>
                   </th>
-                  <th data-field="ori_date" hidden>
+                  <th data-field="ori_date" hidden data-searchable="false">
                   </th>
                   <th class="text-center" data-field="operation" data-formatter="clip_icon_Formatter"
-                    data-events="clip_icon_Events">
+                    data-events="clip_icon_Events" data-searchable="false">
                     <span class="text">
                       ไฟล์แนบ
                     </span>
@@ -215,7 +216,7 @@
                   {% if user.role == true %}
                   <!--dataFormat-->
                   <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
-                    data-events="edit_del_Events">
+                    data-events="edit_del_Events" data-searchable="false">
                     <span class="text">
                       แก้ไข / ลบ
                     </span>
@@ -226,8 +227,8 @@
                       รายชื่อกรรมการ
                     </span>
                   </th>
-                  <th data-field="id" hidden>
-                    <span class="text">
+                  <th class="exclude" data-field="id" hidden>
+                    <span class="text" data-searchable="false">
                       id
                     </span>
                   </th>
@@ -537,8 +538,12 @@
 
 
 
-  $('#document-table').on('search.bs.table', function () {
+
+  $('#document-table').on('search.bs.table', function (e, text) {
     showPage(1);
+    row = $('#document-table').bootstrapTable('getOptions').totalRows
+    document.getElementById("count_doc").innerHTML = row;
+    document.getElementById("count_doc-s").innerHTML = row;
   });
   
   //Disable body scrollbar

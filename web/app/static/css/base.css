@@ -66,8 +66,7 @@ body {
 }
 
 .dropdown-toggle:hover {
-  color: #fff;
-  background-color: #353434;
+  opacity: 0.8;
 }
 
 .dropdown-toggle::after {
@@ -105,20 +104,28 @@ body {
   }
 }
 
+
 /*-----------------------------------Dropdown items-----------------------------------*/
 .dropdown-menu {
   width: 100%;
   right: 0px;
   text-align: left;
+  padding: 8px;
 }
 
+.dropdown-item{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .dropdown-item:hover {
-  background-color: #e0e0e0;
+  /* background-color: #e0e0e0; */
+  background-color: #dee0e4;
+  border-radius: 10px;
 }
 
 .dropdown-item i {
   padding-right: 12px;
-  padding-left: 10%;
+  padding-left: 5%;
 }
 
 
