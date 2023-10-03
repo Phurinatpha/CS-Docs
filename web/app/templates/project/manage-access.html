@@ -272,9 +272,8 @@
             dataType: "json",
             url: "/user",
             success: function (data) {
-                console.log("data :", data.length);
-                document.getElementById("user-count").innerHTML = data.length;
-                document.getElementById("user-count-s").innerHTML = data.length;
+                document.getElementById("user-count").innerHTML = data[0];
+                document.getElementById("user-count-s").innerHTML = data[0];
                 populate_table(data);
             }
         });
@@ -284,7 +283,18 @@
         return index + 1;
     }
 
-
+    function get_countNumber() {
+        $.ajax({
+          dataType: "json",
+          url: "/user",
+          data: { limit: 1 },
+          success: function (data) {
+            console.log("data length:", data.length);
+            document.getElementById("user-count").innerHTML = data[0];
+            document.getElementById("user-count-s").innerHTML = data[0];
+          }
+        });
+      }
 
     function prePopulateForm(row) {
         document.getElementById('user_id').hidden = true
@@ -331,6 +341,7 @@
                 //console.log('Success', response);
                 console.log("deleted!!");
                 refresh();
+                get_countNumber();
             },
             error: function (error) {
                 console.error('Error', error);
@@ -380,9 +391,9 @@
                     timer: 1500
                 })
                 refresh();
+                get_countNumber();
                 document.getElementById("user_form").reset();
                 $('#modal-user-form').modal('toggle');
-                document.getElementById('user_form').reset();
 
             },
             error: function (error) {

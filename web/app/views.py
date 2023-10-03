@@ -205,7 +205,8 @@ def form():
                                              order_info.ref_year == int(validated_dict['ref_year']))).first()
             app.logger.debug("order :",order)
             if order == None:
-                empty_order = order_info.query.filter(order_info.subject == None).first()
+                empty_order = order_info.query.filter(and_(order_info.subject == None,
+                                                           order_info.ref_year == int(validated_dict['ref_year']))).first()
                 #app.logger.debug("empty_order", empty_order)
                 if empty_order != None:
                     app.logger.debug(empty_order)
@@ -399,14 +400,6 @@ def db_connection():
     except Exception as e:
         return '<h1>db is broken.</h1>' + str(e)
 
-@app.route("/user")
-def user_data():
-    documents = []
-    db_documents = User.query.order_by(User.id.desc())
-    documents = list(map(lambda x: x.to_dict(), db_documents))
-    app.logger.debug(str(len(documents)) + " already entry") 
-    return jsonify(documents)
-
 @app.route('/user_form' , methods=('GET', 'POST'))
 def user_form():
     access_token = session['access_token']
@@ -488,6 +481,18 @@ def doc_data():
 
     return jsonify(documents)
 
+@app.route("/user")
+def user_data():
+    documents = []
+    limit = int(request.args.get('limit', 100000000))
+    db_documents = User.query.order_by(User.id.desc())
+    is_null = User.query.filter(User.email == None ).count()
+    documents = list(map(lambda x: x.to_dict(), db_documents))
+    documents.insert(0, len(documents) - is_null)
+    documents = documents[:limit]
+    app.logger.debug(str(len(documents)) + " already entry") 
+    return jsonify(documents)
+
 @app.route("/document" , methods=('GET', 'POST'))
 def data():
     documents = []
@@ -499,18 +504,15 @@ def data():
             return jsonify(find_refnum.to_dict())
         else:
             return {'ref_num' : "0/0"}
-    limit = int(request.args.get('limit', 10000))
+    limit = int(request.args.get('limit', 100000000))
     
     db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())
-    is_null = order_info.query.filter(order_info.subject == None ).first()
-    if is_null == None:
-        null = 0
-    else:
-        null = 1
+    is_null = order_info.query.filter(order_info.subject == None ).count()
+    app.logger.debug("is_null",is_null)
     #db_documents = order_info.query.latest()
     #db_documents = db_documents.limit(10)
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    documents.insert(0, len(documents) - null)
+    documents.insert(0, len(documents) - is_null)
     documents = documents[:limit]
     app.logger.debug(str(len(documents)) + " already entry")
 
