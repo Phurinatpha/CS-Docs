@@ -59,11 +59,11 @@
                                 </div>
                                 <div class="grant-group-level">
                                     <label>ระดับสิทธิ์การเข้าถึง</label>
-                                    <input type="radio" id="admin" name="answer-a" value="True" required>
-                                    <label class="radio" for="admin">ธุรการ</label>
+                                    <input type="radio" id="admin" name="answer-a" value="True" disabled required>
+                                    <label class="radio" id="label-a" for="admin">ธุรการ</label>
 
-                                    <input type="radio" id="user" name="answer-a" value="False" required >
-                                    <label class="radio" for="user">บุคลากร</label>
+                                    <input type="radio" id="user" name="answer-a" value="False" disabled required >
+                                    <label class="radio" id="label-u" for="user">บุคลากร</label>
                                 </div>
                                 <div class="grant-btn-wrapper">
                                     <button class="grant-btn" type="submit" id="add-user-submit" name="add-user-submit" disabled>
@@ -456,13 +456,25 @@
   function checkEmailInput() {
   const fill_email = $("#input-email").val().trim();
   const addBtn = $('#add-user-submit');
+  const radio_admin = $('#admin');
+  const label_admin = $('#label-a');
+  const radio_user = $('#user');
+  const label_user = $('#label-u');
 
   if (fill_email === '') {
     addBtn.prop('disabled', true);
+    radio_admin.prop('disabled', true);
+    radio_user.prop('disabled', true);
     addBtn.css('background', '#CCCCCC'); // Change background to gray
+    label_admin.css('color', '#CCCCCC'); 
+    label_user.css('color', '#CCCCCC'); 
     addBtn.css('cursor', 'not-allowed'); 
   } else{
     addBtn.prop('disabled', false);
+    radio_admin.prop('disabled', false);
+    radio_user.prop('disabled', false);
+    label_admin.css('color', '#000000'); 
+    label_user.css('color', '#000000'); 
     addBtn.css('background', '#3EBC2A'); // Change background to green
     addBtn.css('cursor', 'pointer'); 
   }
