@@ -27,6 +27,8 @@ $('#modal-form').on('hidden.bs.modal', function () {
   checkTextarea();
 });
 
+
+// <!------------------------------------------Checking textarea------------------------------------------>
 function checkTextarea() {
   const content = $("#descrip").val().trim();
   const submitBtn = $('#submit-btn');
@@ -35,7 +37,7 @@ function checkTextarea() {
     submitBtn.prop('disabled', true);
     submitBtn.css('background', '#CCCCCC'); // Change background to gray
     submitBtn.css('cursor', 'not-allowed'); 
-  } else if (content !== '') {
+  } else {
     submitBtn.prop('disabled', false);
     submitBtn.css('background', '#3EBC2A'); // Change background to green
     submitBtn.css('cursor', 'pointer'); 

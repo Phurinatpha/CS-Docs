@@ -66,7 +66,7 @@
                                     <label class="radio" for="user">บุคลากร</label>
                                 </div>
                                 <div class="grant-btn-wrapper">
-                                    <button class="grant-btn" type="submit" name="add-user-submit">
+                                    <button class="grant-btn" type="submit" id="add-user-submit" name="add-user-submit" disabled>
                                         <i class="fa-regular fa-floppy-disk"></i>บันทึกสิทธิ์</button>
                                 </div>
                             </form>
@@ -310,7 +310,7 @@
         }
         $('#access-table').bootstrapTable('refresh');
         $('#user-table').bootstrapTable('resetView');
-
+        checkEmailInput();
     }
 
     function refresh() {
@@ -354,6 +354,7 @@
         console.log("Form openned");
         document.getElementById('user_id').hidden = true;
         document.getElementById("user_form").reset();
+        checkEmailInput();
 
       }
     $("#user_form").submit(function (event) {
@@ -450,6 +451,24 @@
     document.getElementById("user-count").innerHTML = row;
     document.getElementById("user-count-s").innerHTML = row;
   });
+
+  //Enable / Disable submit btn by checking email
+  function checkEmailInput() {
+  const fill_email = $("#input-email").val().trim();
+  const addBtn = $('#add-user-submit');
+
+  if (fill_email === '') {
+    addBtn.prop('disabled', true);
+    addBtn.css('background', '#CCCCCC'); // Change background to gray
+    addBtn.css('cursor', 'not-allowed'); 
+  } else{
+    addBtn.prop('disabled', false);
+    addBtn.css('background', '#3EBC2A'); // Change background to green
+    addBtn.css('cursor', 'pointer'); 
+  }
+}
+  //Enable / Disable submit btn by checking email
+  $(document).on('keyup', '#input-email', checkEmailInput);
 </script>
 
 

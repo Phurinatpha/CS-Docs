@@ -173,12 +173,14 @@ label {
 .grant-btn {
   display: flex;
   align-items: center;
-  background: #022851;
+  /* background: #022851; */
+  background: #CCCCCC;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
   font-size: 17px;
-  cursor: pointer;
+  /* cursor: pointer; */
+  cursor: not-allowed;
   transition: 0.3s;
   border-radius: 10px;
   margin-top: 20px;

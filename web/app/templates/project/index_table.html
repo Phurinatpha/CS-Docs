@@ -552,9 +552,6 @@
     });
   }
 
-
-
-
   $('#document-table').on('search.bs.table', function (e, text) {
     showPage(1);
     row = $('#document-table').bootstrapTable('getOptions').totalRows
@@ -567,37 +564,8 @@
     $("body").addClass("modal-open"); //.modal-open is in base.css
   });
 
-//   var checkTextarea = () => {
-//   const content = $("#descrip").val().trim();
-//   const submitBtn = $('#submit-btn');
-
-//   if (content === '') {
-//     submitBtn.prop('disabled', true);
-//     submitBtn.css('background', '#CCCCCC'); // Change background to gray
-//     submitBtn.css('cursor', 'not-allowed'); 
-//   } else{
-//     submitBtn.prop('disabled', false);
-//     submitBtn.css('background', '#3EBC2A'); // Change background to green
-//     submitBtn.css('cursor', 'pointer'); 
-//   }
-// };
-
-//Enable / Disable submit btn by checking textarea
-$(document).on('keyup', '#descrip', checkTextarea);
-
-// // Event delegation to handle the close button click event
-// document.addEventListener('click', function (event) {
-//   if (event.target && event.target.id === 'closeModal') {
-//     resetForm();
-//     checkTextarea(); // Call checkTextarea when the modal is closed
-//   }
-// });
-
-// // Clear input in modal while clicking outside
-// $('#modal-form').on('hidden.bs.modal', function () {
-//   resetForm();
-//   checkTextarea(); // Call checkTextarea when the modal is hidden
-// });
+  //Enable / Disable submit btn by checking textarea
+  $(document).on('keyup', '#descrip', checkTextarea);
 
 </script>
 
