@@ -17,13 +17,30 @@ function resetForm() {
 document.addEventListener('click', function (event) {
   if (event.target && event.target.id === 'closeModal') {
     resetForm();
+    checkTextarea();
   }
 });
 
 //Clear input in model while clicking outside
 $('#modal-form').on('hidden.bs.modal', function () {
   resetForm()
+  checkTextarea();
 });
+
+function checkTextarea() {
+  const content = $("#descrip").val().trim();
+  const submitBtn = $('#submit-btn');
+
+  if (content === '') {
+    submitBtn.prop('disabled', true);
+    submitBtn.css('background', '#CCCCCC'); // Change background to gray
+    submitBtn.css('cursor', 'not-allowed'); 
+  } else if (content !== '') {
+    submitBtn.prop('disabled', false);
+    submitBtn.css('background', '#3EBC2A'); // Change background to green
+    submitBtn.css('cursor', 'pointer'); 
+  }
+}
 
 
 // <!--------------------------------------------3rd part-------------------------------------------->

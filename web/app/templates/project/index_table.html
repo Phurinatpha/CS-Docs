@@ -47,7 +47,7 @@
 
                     <div class="form-group">
                       <label for="refer_num">เลขที่คำสั่ง</label>
-                      <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num" >
+                      <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
                     </div>
 
                     <div class="form-group">
@@ -57,7 +57,7 @@
                       <!--this input is user id set default to 1-->
                       <input type="hidden" id="usr_id" name="user_id" value="{{ user.id }}">
                       <!-- Separate select elements for day, month, and year -->
-                      <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate"   required readonly>
+                      <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required readonly>
                       <i class="bi bi-calendar"></i>
                     </div>
 
@@ -97,11 +97,13 @@
                           <!-- <h1>ลากและวางไฟล์ที่นี่</h1>
                           <p class="or">หรือ</p> -->
                           <!-- <i class="bi bi-archive"></i> -->
-                          <p class="click-to-add"><label for="file-input" id="click-to-add">กดเพื่อเลือกไฟล์แนบ</label></p>
+                          <p class="click-to-add"><label for="file-input" id="click-to-add">กดเพื่อเลือกไฟล์แนบ</label>
+                          </p>
 
                         </div>
                       </label>
-                      <input type="file" id="file-input" name="doc_data" style="display:none;" onchange="handleFileSelect(event)" accept=".pdf">
+                      <input type="file" id="file-input" name="doc_data" style="display:none;"
+                        onchange="handleFileSelect(event)" accept=".pdf">
 
                       <div id="uploaded-file-container">
                         <h3>ชื่อไฟล์</h3>
@@ -116,7 +118,7 @@
                   </div>
 
                   <div class="index-btn-wrapper">
-                    <button class="index-btn" type="submit" name="submit"><i
+                    <button class="index-btn" type="submit" id="submit-btn" name="submit" disabled><i
                         class="fa-regular fa-floppy-disk"></i>บันทึกเอกสารคำสั่ง</button>
                   </div>
                 </div>
@@ -148,9 +150,9 @@
     </div> -->
     {% endif %}
     {% if user.role == false %}
-      <div class="blank-space">
+    <div class="blank-space">
 
-      </div>
+    </div>
     {% endif %}
   </div>
 </div>
@@ -158,7 +160,7 @@
 <div class="table-container">
   <div class="container">
     <div class="col-md-12" style="margin-top: 30px;">
-      <div class="doc-head"> 
+      <div class="doc-head">
         <img class="book-img" src="/static/img/open-book.png">
         รายการเอกสารคำสั่งภายในภาควิชาวิทยาการคอมพิวเตอร์
       </div>
@@ -386,7 +388,7 @@
     $('#document-table').bootstrapTable('load', document_data);
     showPage(pageNum);
   }
-  
+
   function clip_icon_Formatter(value, row, index) {
     return [
       '{% if user.role == true %}',
@@ -410,8 +412,8 @@
   function edit_del_Formatter(value, row, index) {
     return [
       '<div class="btn-edit-del">',
-      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">','<img class="edit-img" src="/static/img/edit (2).png">', 'แก้ไข', '</button>',
-      '<button class="doc_delete btn-del"  >','<img class="del-img" src="/static/img/del (1).png">', 'ลบ', '</button>',
+      '<button type="button"  class="doc_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', '<img class="edit-img" src="/static/img/edit (2).png">', 'แก้ไข', '</button>',
+      '<button class="doc_delete btn-del"  >', '<img class="del-img" src="/static/img/del (1).png">', 'ลบ', '</button>',
       '</div>'
 
     ].join('')
@@ -437,7 +439,7 @@
       ref_year = str_ref[1]
       open_pdf_user(ref_num, ref_year, row);
     }
-    
+
   }
 
   window.edit_del_Events = {
@@ -485,6 +487,8 @@
       uploadedFileContainer.style.display = 'block';
       dragAndDropZone.style.display = 'none';
     }
+    // Trigger the checkTextarea function after populating the textarea.
+    checkTextarea();
   }
 
 
@@ -520,14 +524,14 @@
     var defaultDate = new Date();
     thaiDatePicker.setDate(defaultDate);
     ori_date = document.getElementById("thaiDatePicker").value
-    $('#thaiDatePicker').on('blur', function() {
+    $('#thaiDatePicker').on('blur', function () {
       auto_refnum(this.value);
     });
     auto_refnum(ori_date);
   }
 
-  function auto_refnum(ori_date){
-    console.log("ori_date",ori_date);
+  function auto_refnum(ori_date) {
+    console.log("ori_date", ori_date);
     str_date = ori_date.split("/");
     var formData = new FormData();
     formData.append('ref_year', str_date[2]);
@@ -557,11 +561,44 @@
     document.getElementById("count_doc").innerHTML = row;
     document.getElementById("count_doc-s").innerHTML = row;
   });
-  
+
   //Disable body scrollbar
   $('.modal').on('shown.bs.modal', function (e) {
     $("body").addClass("modal-open"); //.modal-open is in base.css
   });
+
+//   var checkTextarea = () => {
+//   const content = $("#descrip").val().trim();
+//   const submitBtn = $('#submit-btn');
+
+//   if (content === '') {
+//     submitBtn.prop('disabled', true);
+//     submitBtn.css('background', '#CCCCCC'); // Change background to gray
+//     submitBtn.css('cursor', 'not-allowed'); 
+//   } else{
+//     submitBtn.prop('disabled', false);
+//     submitBtn.css('background', '#3EBC2A'); // Change background to green
+//     submitBtn.css('cursor', 'pointer'); 
+//   }
+// };
+
+//Enable / Disable submit btn by checking textarea
+$(document).on('keyup', '#descrip', checkTextarea);
+
+// // Event delegation to handle the close button click event
+// document.addEventListener('click', function (event) {
+//   if (event.target && event.target.id === 'closeModal') {
+//     resetForm();
+//     checkTextarea(); // Call checkTextarea when the modal is closed
+//   }
+// });
+
+// // Clear input in modal while clicking outside
+// $('#modal-form').on('hidden.bs.modal', function () {
+//   resetForm();
+//   checkTextarea(); // Call checkTextarea when the modal is hidden
+// });
+
 </script>
 
 
