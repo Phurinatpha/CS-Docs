@@ -97,18 +97,38 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   display: table-cell;
 }
 
+.book-img{
+  height:36px;
+  margin-right: 5px;
+}
+.edit-img{
+  height:16px;
+  margin-right: 5px;
+
+}
+
+.del-img{
+  height:16px;
+  margin-right: 5px;
+  margin-left: -15px;
+}
+
+
+
+.doc-head {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D9D9D9;
+}
+
 .sub-doc-header {
   /* for mobile responsive remove display: flex */
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
   margin-top: 10px;
-}
-
-.doc-head {
-  font-size: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #D9D9D9;
 }
 
 .sub-doc {
@@ -130,6 +150,10 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 #show-per-page {
   color: red;
   margin: 0 5px 0 5px;
+}
+
+.blank-space{
+  margin-top: 20px;
 }
 
 
@@ -183,7 +207,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .table-container {
   box-shadow: 0 5px 3px rgba(0, 0, 0, 0.1);
   /* Add drop shadow */
-  border-radius: 8px;
+  border-radius: 10px;
   border-bottom: 1px solid #dadada;
   border-right: 1px solid #dadada;
   border-left: 1px solid #dadada;
@@ -192,6 +216,9 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   /* margin-bottom: 120px; */
 }
 
+.table-responsive{
+  border-radius: 10px;
+}
 
 .table th {
   background-color: #022851;
@@ -229,6 +256,8 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .table-striped>tbody>tr:nth-child(2n)>td,
 .table-striped>tbody>tr:nth-child(2n)>th {
   background-color: #e7e6e6;
+  /* Disable hover effect */
+  box-shadow: none; 
 }
 
 
@@ -279,12 +308,15 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 /* Styling for the buttons inside the table cell */
 .table .btn-edit {
-  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95px;
   /* Change this value to adjust the button width */
   padding: 0px;
   padding-top: 0px;
   margin-bottom: 7px;
-  border-radius: 7px;
+  border-radius: 8px;
   margin-top: 5%;
   border: none;
   color: #ffffff;
@@ -298,11 +330,14 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 }
 
 .table .btn-del {
-  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95px;
   padding: 0px;
   padding-top: 0px;
   margin-bottom: 5%;
-  border-radius: 7px;
+  border-radius: 8px;
   border: none;
   color: #ffffff;
   background-color: #DE4545;
@@ -360,7 +395,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   padding-right: 10px;
   margin-right: 5px;
   margin-left: 5px;
-  border-radius: 5px;
+  border-radius: 10px;
   /* width: 100px; */
   height: 30px;
   line-height: 30px;
@@ -389,7 +424,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   margin-right: 5px;
   margin-left: 5px;
   color: black;
-  border-radius: 5px;
+  border-radius: 10px;
   padding: 0;
   border: 1px solid #D9D9D9;
 }

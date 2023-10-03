@@ -1,7 +1,7 @@
 form {
     background: #ffffff;
     margin: 10px auto;
-    padding: 15px 40px 40px 40px;
+    padding: 15px 40px 15px 40px;
     width: 100%;
 }
 
@@ -54,7 +54,8 @@ textarea:focus{
     font-size: 17px;
     cursor: pointer;
     transition: 0.3s;
-    width: 90%;
+    /* width: 90%; */
+    width: 57%;
     border-radius: 10px;
 }
 
@@ -157,7 +158,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    height: 60px;
+    height: 46px;
     width: 60%;
     resize: vertical;
     /* Allow vertical resizing of the textarea */
@@ -228,6 +229,17 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     padding: 10px 0px 0px 0px;
 }
 
+
+.pdf-img{
+    margin-top: 22px;
+    margin-bottom: 20px;
+    height:100px;
+}
+
+#click-to-add{
+    cursor: pointer;
+}
+
 .click-to-add {
     position: relative;
     font-size: 18px;
@@ -235,6 +247,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     cursor: pointer;
     text-decoration: none;
     color: #000;
+    
 }
 
 .click-to-add:after {
@@ -259,9 +272,9 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     display: none;
 }
 
-#drag-and-drop {
+#drag-and-drop{
     display: flex;
-    height: 200px;
+    height: 300px;
     width: 60%;
     border: 1px dashed #aaa;
     padding: 20px;
@@ -270,23 +283,21 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-}
-#drag-and-drop i{
-    color: rgb(43, 80, 245);
-    margin-bottom: 10px;
-    font-size: 48px;
+    cursor: pointer;
 }
 
 #uploaded-file-container {
-    width: 70%;
+    width: 60%;
     height: 200px;
     border: 1px dashed #aaa;
+    border-radius: 10px;
     padding: 20px;
     /* DO NOT REMOVE this "display setting" is a part of upload file 
     this will make part of display uploaded file to be hidden
     before upload file*/
     display: none;
     text-align: left;
+    word-break: break-all;
 }
 
 .file-container {
@@ -298,10 +309,19 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     /* This will make the paragraph take up remaining space */
 }
 
+.bi-check-circle-fill{
+    padding-left: 10px;
+}
+
 #remove-btn {
-    margin-left: 10px;
+    margin-left: 5px;
     /* Add some space between the paragraph and the icon */
     cursor: pointer;
+}
+#remove-btn:hover{
+    transition: 0.3s;
+    transform: scale(1.1);
+    color: red;
 }
 
 
