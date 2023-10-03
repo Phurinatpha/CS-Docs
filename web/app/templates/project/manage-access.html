@@ -123,7 +123,7 @@
                             data-search="true" data-searchable="true" data-search-selector="#customSearch">
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-formatter="runningFormatter">
+                                    <th class="text-center" data-formatter="runningFormatter" data-searchable="false">
                                         <span class="text">
                                             ลำดับ
                                         </span>
@@ -150,13 +150,13 @@
                                     </th>
 
                                     <th class="text-center" data-field="data-buttons"
-                                        data-formatter="edit_del_Formatter" data-events="operateEvents">
+                                        data-formatter="edit_del_Formatter" data-events="operateEvents" data-searchable="false">
                                         <span class="text">
                                             แก้ไขสิทธิ์การเข้าถึง
                                         </span>
                                     </th>
 
-                                    <th data-field="id" hidden>
+                                    <th data-field="id" data-searchable="false" hidden > 
                                         <span class="text">
                                             id
                                         </span>
@@ -432,6 +432,13 @@
             prePopulateForm(row);
         }
     }
+
+    $('#access-table').on('search.bs.table', function (e, text) {
+    showPage(1);
+    row = $('#access-table').bootstrapTable('getOptions').totalRows
+    document.getElementById("user-count").innerHTML = row;
+    document.getElementById("user-count-s").innerHTML = row;
+  });
 </script>
 
 

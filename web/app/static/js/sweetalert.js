@@ -5,7 +5,7 @@ function delete_button_sweet(ref_num, ref_year) {
     titleText: 'ยืนยันการลบข้อมูล ?',
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#3EBC2A',
     cancelButtonColor: '#d33',
     confirmButtonText: 'ลบข้อมูล',
     cancelButtonText: 'ยกเลิก',
@@ -41,7 +41,7 @@ function user_delete_sweet(id) {
     titleText: 'ยืนยันการลบข้อมูล ?',
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#3EBC2A',
     cancelButtonColor: '#d33',
     confirmButtonText: 'ลบข้อมูล',
     cancelButtonText: 'ยกเลิก',
@@ -76,8 +76,17 @@ function user_logout() {
     titleText: 'กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
     icon: 'warning',
     showCancelButton: false,
-    confirmButtonColor: '#3085d6',
+    confirmButtonColor: '#3EBC2A',
     confirmButtonText: 'ตกลง',
+    html: 'ปิดอัตโนมัติใน <b></b> วินาที', // Change the text to indicate seconds
+    timer: 5000, // Change the timer to 5 seconds
+    timerProgressBar: true,
+    didOpen: () => {
+      const b = Swal.getHtmlContainer().querySelector('b')
+      timerInterval = setInterval(() => {
+        b.textContent = Math.round(Swal.getTimerLeft() / 1000);
+      }, 100); // Update the timer every second
+    },
 
 
   }).then((result) => {
