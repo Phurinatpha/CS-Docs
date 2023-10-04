@@ -224,14 +224,8 @@
             ]
 
         });
-        $('#access-table').bootstrapTable('refreshOptions', {
-            filterOptions: {
-                'filterAlgorithm': (row, filters) => {
-                    return row.name != " " && row.email != null;
-                }
-            }
-            
-        });
+
+
         $('#access-table').bootstrapTable('hideColumn', 'id');
         //console.log("tr :", document.getElementsByTagName('tr').length);
         var js = document.createElement("script");
@@ -275,7 +269,7 @@
             success: function (data) {
                 document.getElementById("user-count").innerHTML = data[0];
                 document.getElementById("user-count-s").innerHTML = data[0];
-                populate_table(data);
+                populate_table(data.slice(1));
             }
         });
     });
@@ -319,10 +313,12 @@
     }
 
     function refresh_table(document_data) {
+        document_data = document_data.slice(1)
         page = document.getElementById("pageNumbers");
         pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
         $('#access-table').bootstrapTable('load', document_data);
-        //populate_table(document_data)
+        console.log(document_data);
+        populate_table(document_data);
         showPage(pageNum);
     }
 

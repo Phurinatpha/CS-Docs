@@ -318,7 +318,8 @@ def remove():
                 order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
                                                 order_info.ref_year == int(year))).first()
                 app.logger.debug("order :",order)
-                latest_order = order_info.query.order_by(order_info.ref_num.desc(),order_info.ref_year.desc()).first()
+                latest_order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
+                                                order_info.ref_year == int(year))).order_by(order_info.ref_year.desc(),order_info.ref_num.desc()).first()
                 doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
                                                 doc_info.order_refyear == order.ref_year)).first()
                 app.logger.debug("latest :",latest_order)
