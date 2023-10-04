@@ -247,12 +247,24 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   padding-left: 20px;
   padding-right: 20px;  
 }
+
 /* td doc create name */
 .table-striped > tbody > tr td:nth-child(4) {
-  min-width: 180px; /* Set the maximum width before word wrap */
-  /* word-wrap: break-word; */
+  min-width: 180px; 
 }
 
+/* td doc create date */
+.table-striped > tbody > tr td:nth-child(5) {
+  min-width: 150px; 
+}
+
+.table-striped > tbody > tr td:nth-child(6) {
+  min-width: 90px; 
+}
+
+.table-striped > tbody > tr td:nth-child(7) {
+  min-width: 130px; 
+}
 
 /* Apply alternating background colors to even rows */
 .table-striped>tbody>tr:nth-child(2n)>td,
