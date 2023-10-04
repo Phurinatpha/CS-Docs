@@ -229,6 +229,8 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 /* All rows under th */
 .table-striped>tbody>tr>td {
   font-size: 15px;
+   /* Disable hover effect */
+   box-shadow: none; 
 }
 
 /* th subject name */
@@ -256,8 +258,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .table-striped>tbody>tr:nth-child(2n)>td,
 .table-striped>tbody>tr:nth-child(2n)>th {
   background-color: #e7e6e6;
-  /* Disable hover effect */
-  box-shadow: none; 
+ 
 }
 
 
