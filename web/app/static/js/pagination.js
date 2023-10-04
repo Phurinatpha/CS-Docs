@@ -32,7 +32,7 @@ function updatePaginationLinksVisibility() {
         prevPageMobile.style.display = '';
         prevPage.style.display = '';
     }
-    
+
     const body = document.getElementsByTagName('tbody')[0];
     const rows = body.getElementsByTagName('tr');
     const totalPages = Math.ceil(rows.length / rowsPerPage);
@@ -142,21 +142,24 @@ function showPage(page) {
 showPage(currentPage);
 
 //Handle previous page click
-document.getElementById('prevPage').addEventListener('click', () => {
+function handlePrevPageClick() {
     if (currentPage > 1) {
         currentPage--;
         showPage(currentPage);
     }
-});
+}
+document.getElementById('prevPage').addEventListener('click', handlePrevPageClick);
+document.getElementById('prevPage-mobile').addEventListener('click', handlePrevPageClick);
 
 // Handle next page click
-document.getElementById('nextPage').addEventListener('click', () => {
+function handleNextPageClick() {
     const rows = document.getElementsByTagName('tr');
-
     const totalPages = Math.ceil(rows.length / rowsPerPage);
 
     if (currentPage < totalPages) {
         currentPage++;
         showPage(currentPage);
     }
-});
+}
+document.getElementById('nextPage').addEventListener('click', handleNextPageClick);
+document.getElementById('nextPage-mobile').addEventListener('click', handleNextPageClick);
