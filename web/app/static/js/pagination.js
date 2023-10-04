@@ -18,6 +18,34 @@ function highlightCurrentPageLink() {
     }
 }
 
+// Function to update the visibility of "Previous" and "Next" links
+function updatePaginationLinksVisibility() {
+    const prevPageMobile = document.getElementById('prevPage-mobile');
+    const prevPage = document.getElementById('prevPage');
+    const nextPageMobile = document.getElementById('nextPage-mobile');
+    const nextPage = document.getElementById('nextPage');
+
+    if (currentPage === 1) {
+        prevPageMobile.style.display = 'none';
+        prevPage.style.display = 'none';
+    } else {
+        prevPageMobile.style.display = '';
+        prevPage.style.display = '';
+    }
+    
+    const body = document.getElementsByTagName('tbody')[0];
+    const rows = body.getElementsByTagName('tr');
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    console.log("totalPages = " + totalPages);
+    if (currentPage === totalPages) {
+        nextPageMobile.style.display = 'none';
+        nextPage.style.display = 'none';
+    } else {
+        nextPageMobile.style.display = '';
+        nextPage.style.display = '';
+    }
+}
+
 // Function to show the specified page
 function showPage(page) {
     const body = document.getElementsByTagName('tbody')[0];
@@ -105,6 +133,9 @@ function showPage(page) {
 
     // Highlight the current page link
     highlightCurrentPageLink();
+
+    // After showing the rows, update pagination links visibility
+    updatePaginationLinksVisibility();
 }
 
 // Show the initial page
