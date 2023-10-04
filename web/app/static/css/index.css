@@ -462,6 +462,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   .sub-doc {
     text-align: center;
     margin-bottom: 5px;
+    margin-top: 5px;
   }
 
   .sub-doc-header {
@@ -537,10 +538,15 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     display: block;
     text-align: center;
     margin-bottom: 5px;
+    margin-top: 5px;
   }
 
   .doc-search {
     width: 100%;
+  }
+  .doc-head {
+    justify-content: center;
+    /* text-align: center; */
   }
 
   /* .create-form {
