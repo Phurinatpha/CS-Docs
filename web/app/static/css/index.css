@@ -223,7 +223,8 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .table th {
   background-color: #022851;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 100;
 }
 
 /* All rows under th */
@@ -258,10 +259,12 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   min-width: 150px; 
 }
 
+/* td clip paper */
 .table-striped > tbody > tr td:nth-child(6) {
   min-width: 90px; 
 }
 
+/* td doc edit/del */
 .table-striped > tbody > tr td:nth-child(7) {
   min-width: 130px; 
 }
@@ -414,7 +417,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   line-height: 30px;
   text-align: center;
   color: #333;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   transition: .3s linear;
   text-decoration: none;
