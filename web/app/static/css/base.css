@@ -142,7 +142,7 @@ footer {
 }
 
 footer a {
-  font-size: 10px;
+  font-size: 11px;
   color: #fff;
   /* Remove underline from links */
   text-decoration: none;
@@ -157,8 +157,8 @@ footer ul {
 }
 
 footer li {
-  margin-top: -9px;
-  margin-bottom: -9px;
+  margin-top: -7px;
+  margin-bottom: -7px;
 }
 
 

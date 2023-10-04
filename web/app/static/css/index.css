@@ -543,6 +543,12 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     width: 100%;
   }
 
+  /* .create-form {
+    display: flex;
+    flex: 0 0 100%;
+    max-width: 100%;
+    justify-content: center;
+  } */
 
   .pagination-links a{
     width: 25px;
