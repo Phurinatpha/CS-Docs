@@ -144,29 +144,6 @@ function add_access_err(){
   })
 }
 
-function non_doc_admin(){
-  Swal.fire({
-    titleText: 'ไม่พบไฟล์เอกสารคำสั่ง',
-    text: 'ต้องการเพิ่มไฟล์หรือไม่ ?',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonColor: '#3EBC2A',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'ต้องการ',
-    cancelButtonText: 'ยกเลิก',
-    
-  }).then((result) => {
-    if (result.isConfirmed) {
-      prePopulateForm(row);
-      $("#modal-form").modal();
-    }
-  });
-  // Apply custom styles to the SweetAlert Text
-  $('.swal2-container .swal2-html-container').css({
-    'font-size': '20px',
-    'overflow': 'visible'
-  });
-}
 
 function non_doc_user(){
   Swal.fire({
