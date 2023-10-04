@@ -198,8 +198,8 @@ label {
 }
 
 .grant-container {
-  margin: 10px auto;
-  width: 93.4%;
+  margin: 10px;
+  /* width: 93.4%; */
 }
 
 .grant-header {
