@@ -453,7 +453,7 @@ def user_form():
                     elif validated_dict['role'] == "False":
                         role_ = False
                     app.logger.debug("role2 : " + str(role_))
-                    user_entry = user.update(
+                    user_entry = user.update_role(
                     role=role_
                     )
                 #     if doc_data != None :
