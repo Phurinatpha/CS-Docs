@@ -316,9 +316,10 @@
         document_data = document_data.slice(1)
         page = document.getElementById("pageNumbers");
         pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
+        populate_table(document_data);
         $('#access-table').bootstrapTable('load', document_data);
         console.log(document_data);
-        populate_table(document_data);
+        //populate_table(document_data);
         showPage(pageNum);
     }
 
