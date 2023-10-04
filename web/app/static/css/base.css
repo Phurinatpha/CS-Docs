@@ -177,6 +177,19 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   padding: 25px 0 50px 0;
 }
 
+/* sweetalert loading */
+div:where(.swal2-container) h2:where(.swal2-title) {
+  padding: 24px 30px 24px 30px !important;
+}
+
+div:where(.swal2-container) div:where(.swal2-loader) {
+  width: 4.5em !important;
+  height: 4.5em !important;
+  margin: 13px 0.875em !important;
+  border-width: 0.3em !important;
+}
+
+
 /* text of sweetalert */
 div:where(.swal2-container) .swal2-html-container {
   overflow: visible !important;

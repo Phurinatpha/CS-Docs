@@ -170,6 +170,7 @@ $(document).ready(function () {
         get_countNumber();
         //show sweet success
         submit_success();
+        
       },
       error: function (error) {
         console.error('Error', error);
