@@ -27,9 +27,8 @@ class User(db.Model, UserMixin):
         self.role = role
         self.email = email
 
-    def update(self, role, email):
+    def update(self, role):
         self.role = role
-        self.email = email
         
     def update_name(self, firstname, lastname):
         self.firstname = firstname
