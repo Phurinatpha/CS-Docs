@@ -485,10 +485,10 @@ def doc_data():
 def user_data():
     documents = []
     limit = int(request.args.get('limit', 100000000))
-    db_documents = User.query.order_by(User.id.desc())
-    is_null = User.query.filter(User.email == None ).count()
+    db_documents = User.query.filter(User.email != None).order_by(User.id.desc())
+    #is_null = User.query.filter(User.email == None ).count()
     documents = list(map(lambda x: x.to_dict(), db_documents))
-    documents.insert(0, len(documents) - is_null)
+    documents.insert(0, len(documents) )
     documents = documents[:limit]
     app.logger.debug(str(len(documents)) + " already entry") 
     return jsonify(documents)
