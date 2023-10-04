@@ -118,10 +118,62 @@ function submit_success(){
   })
 }
 
+function add_access(){
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'บันทึกสิทธิ์สำเร็จ',
+    showConfirmButton: false,
+    timer: 1500
+})
+}
+
 function submit_err(){
   Swal.fire({
     icon: 'error',
     title: 'เกิดข้อผิดพลาด',
     text: 'ไม่สามารถบันทึกเอกสารได้',
+  })
+}
+
+function add_access_err(){
+  Swal.fire({
+    icon: 'error',
+    title: 'เกิดข้อผิดพลาด',
+    text: 'ไม่สามารถบันทึกสิทธิ์ได้',
+  })
+}
+
+function non_doc_admin(){
+  Swal.fire({
+    titleText: 'ไม่พบไฟล์เอกสารคำสั่ง',
+    text: 'ต้องการเพิ่มไฟล์หรือไม่ ?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3EBC2A',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'ต้องการ',
+    cancelButtonText: 'ยกเลิก',
+    
+  }).then((result) => {
+    if (result.isConfirmed) {
+      prePopulateForm(row);
+      $("#modal-form").modal();
+    }
   });
+  // Apply custom styles to the SweetAlert Text
+  $('.swal2-container .swal2-html-container').css({
+    'font-size': '20px',
+    'overflow': 'visible'
+  });
+}
+
+function non_doc_user(){
+  Swal.fire({
+    title: 'ไม่พบไฟล์เอกสารคำสั่ง',
+    text: 'ขณะนี้ยังไม่มีการเพิ่มเอกสารคำสั่ง',
+    icon: 'error',
+    confirmButtonColor: '#3EBC2A',
+    confirmButtonText: 'ตกลง',             
+  })
 }

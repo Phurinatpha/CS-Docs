@@ -90,7 +90,7 @@
         </div>
 
         <div class="doc-head"> 
-            <img class="book-img" src="/static/img/user.png">
+            <img class="book-img" src="/static/img/multiple-users.png">
             ผู้มีสิทธิ์การเข้าถึง
           </div>
       
@@ -180,6 +180,7 @@
 </div>
 
 
+<script src="/static/js/sweetalert.js"></script>
 <script>
     function populate_table(user_data) {
         // Assuming your email is stored in a variable called user_email
@@ -384,13 +385,7 @@
             contentType: false,
             processData: false,
             success: function (response) {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: 'บันทึกสิทธิ์สำเร็จ',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
+                add_access();
                 refresh();
                 get_countNumber();
                 document.getElementById("user_form").reset();
@@ -398,6 +393,7 @@
 
             },
             error: function (error) {
+                add_access_err();
                 console.error('Error', error);
             }
         });
