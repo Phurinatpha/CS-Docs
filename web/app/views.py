@@ -454,7 +454,6 @@ def user_form():
                         role_ = False
                     app.logger.debug("role2 : " + str(role_))
                     user_entry = user.update(
-                    email=validated_dict['email'],
                     role=role_
                     )
                 #     if doc_data != None :

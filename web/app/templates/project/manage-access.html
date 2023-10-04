@@ -51,8 +51,8 @@
                                 </div>-->
                                 <div class="grant-group">
                                     
-                                    <label>E-mail</label>
-                                    <div class="input-container">
+                                    <label id="email-label">E-mail</label>
+                                    <div class="input-container" id="email-block">
                                         <input id="input-email" name="add-user-email" placeholder="E-mail address" required>
                                         <span class="input-group-addon">@cmu.ac.th</span>
                                     </div>
@@ -294,6 +294,8 @@
     function prePopulateForm(row) {
         document.getElementById('user_id').hidden = true
         document.getElementById("user_form").reset();
+        document.getElementById("email-label").style.display = "none";
+        document.getElementById("email-block").style.display = "none";
         $('#user_id').val(row.id);
         email = row.email.split("@");
         $('#input-email').val(email[0]);
@@ -352,6 +354,8 @@
         console.log("Form openned");
         document.getElementById('user_id').hidden = true;
         document.getElementById("user_form").reset();
+        document.getElementById("email-label").style.display = "flex";
+        document.getElementById("email-block").style.display = "flex";
         checkEmailInput();
 
       }
