@@ -18,12 +18,11 @@ from app.models.Document import order_info, doc_info
 
 from datetime import datetime 
 
-
-client_id = 'RHUnMd53w7Tb0NbSbBdj8D0rqchhtFpcA1gnNaMZ'  # The client ID assigned to you by the provider
-client_secret = 'rt1cJmNSfKaqAbUmUC8J5XK0VQN9FZea0r4SPXSc'  # The client secret assigned to you by the provider
+client_id=app.config['CLIENT_ID']
+client_secret=app.config['CLIENT_SECERT']
 
 # here is the proble check in oauth config
-redirect_uri = 'http://localhost:56789/oauth/callback'  # redirect_uri (This should match your OAuth configuration) 
+redirect_uri = 'http://139.162.42.190/oauth/callback'  # redirect_uri (This should match your OAuth configuration) 
 
 oauth_scope = "cmuitaccount.basicinfo"
 oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx"
@@ -32,17 +31,12 @@ wsapi_get_basicinfo_url = "https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitacc
 
 login_manager = LoginManager(app)
 
-# if 'access_token' in session and session.permanent and session.modified:
-#     # Manually clear the session
-#     session.pop('access_token', None)
-
 @login_manager.user_loader
 def load_user(user_id):
-    # since the user_id is just the primary key of our
-    # user table, use it in the query for the user
     return User.query.get(int(user_id))
 
 def generate_auth_url():
+
     return f"{oauth_auth_url}?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&scope={oauth_scope}"
 
 @app.route('/')
@@ -144,26 +138,6 @@ def index():
         return render_template("project/index_table.html", user=user_data_)
     
     return redirect(generate_auth_url())
-
-
-    # return render_template("project/index_table.html") #for without login test
-
-# @app.route('/base')
-# def base():
-#     if 'access_token' in session:
-#         access_token = session['access_token']
-#         user_data = get_user_data(access_token)
-#         if user_data:
-#             user_data_ = {
-#                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
-#                 'email': user_data.get('cmuitaccount')
-#             }
-#             return render_template("project/index_table.html", user=user_data_)
-    
-#     return redirect(generate_auth_url())
-
-
-
 
 @app.route('/form' , methods=('GET', 'POST'))
 def form():
