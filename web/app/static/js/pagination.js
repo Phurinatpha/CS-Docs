@@ -36,7 +36,6 @@ function updatePaginationLinksVisibility() {
     const body = document.getElementsByTagName('tbody')[0];
     const rows = body.getElementsByTagName('tr');
     const totalPages = Math.ceil(rows.length / rowsPerPage);
-    console.log("totalPages = " + totalPages);
     if (currentPage === totalPages) {
         nextPageMobile.style.display = 'none';
         nextPage.style.display = 'none';
@@ -50,7 +49,6 @@ function updatePaginationLinksVisibility() {
 function showPage(page) {
     const body = document.getElementsByTagName('tbody')[0];
     const rows = body.getElementsByTagName('tr');
-    console.log("rows :", rows.length)
     const totalPages = Math.ceil(rows.length / rowsPerPage);
 
     //Hide all rows

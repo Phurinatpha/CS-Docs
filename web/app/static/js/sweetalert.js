@@ -1,6 +1,5 @@
 // Add a click event listener to all "delete" buttons with the class "btn-del"
 function delete_button_sweet(ref_num, ref_year) {
-  console.log("delete")
   Swal.fire({
     titleText: 'ยืนยันการลบข้อมูล ?',
     icon: 'warning',
@@ -36,7 +35,6 @@ function delete_button_sweet(ref_num, ref_year) {
 
 
 function user_delete_sweet(id) {
-  console.log("delete")
   Swal.fire({
     titleText: 'ยืนยันการลบข้อมูล ?',
     icon: 'warning',
@@ -71,7 +69,6 @@ function user_delete_sweet(id) {
 }
 
 function user_logout() {
-  console.log("logout")
   Swal.fire({
     titleText: 'กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
     icon: 'warning',
