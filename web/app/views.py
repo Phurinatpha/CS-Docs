@@ -3,12 +3,8 @@ from flask import jsonify, render_template,request, url_for, flash, redirect, se
 import requests
 import json
 import base64
-from sqlalchemy import desc
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.urls import url_parse
 from sqlalchemy.sql import text, and_
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-import datetime
 from app import app
 from app import db
 from app import login_manager
@@ -16,18 +12,14 @@ from app import login_manager
 from app.models.user import User
 from app.models.Document import order_info, doc_info
 
-from datetime import datetime 
 
 client_id=app.config['CLIENT_ID']
 client_secret=app.config['CLIENT_SECERT']
-
-# here is the proble check in oauth config
-redirect_uri = 'http://139.162.42.190/oauth/callback'  # redirect_uri (This should match your OAuth configuration) 
-
-oauth_scope = "cmuitaccount.basicinfo"
-oauth_auth_url = "https://oauth.cmu.ac.th/v1/Authorize.aspx"
-oauth_token_url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
-wsapi_get_basicinfo_url = "https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo"
+redirect_uri = app.config['REDIRECT_URI']
+oauth_scope = app.config['SCOPE']
+oauth_auth_url = app.config['AUTH_URL']
+oauth_token_url = app.config['TOKEN_URL']
+wsapi_get_basicinfo_url = app.config['GET_USER']
 
 login_manager = LoginManager(app)
 
@@ -42,8 +34,6 @@ def generate_auth_url():
 @app.route('/')
 def home():
     if 'access_token' in session:
-        app.logger.debug("homeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-
         return redirect(url_for("index"))
     else:
         return redirect(generate_auth_url())
@@ -56,11 +46,8 @@ def forbidden():
 def oauth_login():
     code = request.args.get('code')
     if code:
-        app.logger.debug("-----------------------------in if code callback-----------------------------")
-
         access_token = get_oauth_token(code)
         if access_token:
-            app.logger.debug("-----------------------------in if access callback-----------------------------")
             session['access_token'] = access_token
             user_data = get_user_data(access_token)
             email = user_data.get('cmuitaccount')
@@ -68,7 +55,6 @@ def oauth_login():
             
             if user:
                 if user.firstname == '':
-                    app.logger.debug("-----------------------------in if user callback-----------------------------")
                     new_firstname = user_data.get('firstname_TH')
                     new_lastname = user_data['lastname_TH']
                     user.update_name(new_firstname, new_lastname)
@@ -77,19 +63,16 @@ def oauth_login():
                 else:
                     return redirect(url_for('index'))   
             else:
-                app.logger.debug("-----------------------------in else user callback-----------------------------")
                 session.clear() #DO NOT MOVE OR DELETE, prevent who can not access
                 return render_template("project/403.html")
         else:
             return redirect(url_for('index')) 
-    # error = request.args.get('error')
-    # error_description = request.args.get('error_description')
+
     return redirect(url_for('home'))
 
 @app.route('/logout')
 def logout():
     session.clear()
-    # logout_user()
     return redirect(url_for('home'))
 
 def get_oauth_token(code):
@@ -153,9 +136,6 @@ def form():
             validated_dict = dict()
             delete_pdf = request.form.get('delete_pdf', '')
             app.logger.debug("delete_pdf ",delete_pdf)
-                # Read the contents of the uploaded file as bytes
-            #ref_num = order_info.query.order_by(desc(order_info.id)).first().ref_num
-
             valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
 
             # Access the uploaded file using request.files
@@ -491,24 +471,7 @@ def data():
     app.logger.debug(str(len(documents)) + " already entry")
 
     return jsonify(documents)
-    #if request.method == 'POST':
-       # documents = []
-      #  db_documents = order_info.query.order_by(desc(order_info.id))
-       # app.logger.debug("post doc")
-       # result = request.form.to_dict()
-       # page = result.get('page', '')
-       # app.logger.debug("page :",page)
-       # if page != 0 :
-            # offset= int(page)*10
-            # app.logger.debug(offset)
-            # db_documents = db_documents.offset(offset).limit(10)
-        # else:
-            # db_documents = db_documents.offset(page).limit(10)
-        # documents = list(map(lambda x: x.to_dict(), db_documents))
-        # app.logger.debug("documents =", documents)
-        # return jsonify(documents)
-
-
+  
 @app.route('/download/<int:doc_id>')
 def download(doc_id):
     doc =  doc_info.query.filter(doc_info.order_id == doc_id).first()
@@ -523,10 +486,6 @@ def download(doc_id):
         )
     else:
         return "File not found"
-# @app.route('/dashboard')
-# def dashboard():
-#     return 
-
 
 @app.route('/user_delete', methods=('GET', 'POST'))
 def user_remove():
@@ -557,30 +516,3 @@ def user_remove():
         else:
             flash("You do not have permission to delete.")
     return home()
-
-# @app.route('/login', methods=('GET', 'POST'))
-# def login():
-#     if request.method == 'POST':
-#         # login code goes here
-#         email = request.form.get('email')
-#         password = request.form.get('password')
-#         remember = bool(request.form.get('remember'))
-
-
-#         user = User.query.filter_by(email=email).first()
- 
-#         # check if the user actually exists
-#         # take the user-supplied password, hash it, and compare it to the
-#         # hashed password in the database
-#         if not user or not check_password_hash(user.password, password):
-#             flash('Please check your login details and try again.')
-#             # if the user doesn't exist or password is wrong, reload the page
-#             return redirect(url_for('login'))
-#         # if the above check passes, then we know the user has the right
-#         # credentials
-#         login_user(user, remember=remember)
-#         next_page = request.args.get('next')
-#         if not next_page or url_parse(next_page).netloc != '':
-#             next_page = url_for('home')
-#         return redirect(next_page)
-#     return render_template('project/login.html')

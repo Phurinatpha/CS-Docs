@@ -179,307 +179,303 @@
     <a href="#" id="nextPage">หน้าถัดไป <i class="fas fa-chevron-right"></i></a>
 </div>
 
-
-<!-- <script src="/static/js/sweetalert.js"></script> -->
 <script>
     function populate_table(user_data) {
-        // Assuming your email is stored in a variable called user_email
-        const user_email = "{{ user_email }}";
+    // Assuming your email is stored in a variable called user_email
+    const user_email = "{{ user_email }}";
 
-        // Find the index of your email in the user_data array
-        const userIndex = user_data.findIndex((user) => user.email === user_email);
+    // Find the index of your email in the user_data array
+    const userIndex = user_data.findIndex((user) => user.email === user_email);
 
-        // If your email is found, remove it from its current position
-        if (userIndex !== -1) {
-            const user = user_data.splice(userIndex, 1)[0];
-            // Insert your email data at the beginning of the array
-            user_data.unshift(user);
-        }
-        $('#access-table').bootstrapTable({
-
-            data: user_data,
-            sortName: 'str_role', // Set the initial sorting column
-            sortOrder: 'asc',    // Set the initial sorting order (ascending)
-            columns: [
-                {
-
-                },
-                {
-                    
-                },
-                {
-                    // field: 'email',
-                    // title: 'E-mail',
-                    // sorter: customEmailSorter // Use custom sorting function for "Email" column
-                },
-                {
-                    field: 'str_role',
-                    title: 'ระดับสิทธิ์การเข้าถึง',
-                    sorter: customRoleSorter // Custom sort function
-                },
-                {
-                    
-                },
-                
-            ]
-
-        });
-
-
-        $('#access-table').bootstrapTable('hideColumn', 'id');
-        //console.log("tr :", document.getElementsByTagName('tr').length);
-        var js = document.createElement("script");
-        js.src = "/static/js/pagination.js";
-        document.head.appendChild(js);
+    // If your email is found, remove it from its current position
+    if (userIndex !== -1) {
+        const user = user_data.splice(userIndex, 1)[0];
+        // Insert your email data at the beginning of the array
+        user_data.unshift(user);
     }
+    $('#access-table').bootstrapTable({
 
+        data: user_data,
+        sortName: 'str_role', // Set the initial sorting column
+        sortOrder: 'asc',    // Set the initial sorting order (ascending)
+        columns: [
+            {
 
+            },
+            {
 
-    // Custom sort function for the "role" column
-    function customRoleSorter(a, b) {
-        // Define the order in which roles should be sorted
-        const roleOrder = { 'ธุรการ': 0, 'บุคลากร': 1 };
+            },
+            {
+                // field: 'email',
+                // title: 'E-mail',
+                // sorter: customEmailSorter // Use custom sorting function for "Email" column
+            },
+            {
+                field: 'str_role',
+                title: 'ระดับสิทธิ์การเข้าถึง',
+                sorter: customRoleSorter // Custom sort function
+            },
+            {
 
-        const roleA = a;
-        const roleB = b;
+            },
 
-        // Compare roles based on the defined order
-        return roleOrder[roleA] - roleOrder[roleB];
-    }
+        ]
 
-    // function customEmailSorter(a, b) {
-    //     const userEmail = "{{ user_email }}";
-
-
-    //     if (a === userEmail && b === userEmail) {
-    //         return 0;
-    //     } else if (a === userEmail) {
-    //         return -1;
-    //     } else if (b === userEmail) {
-    //         return 1;
-    //     } else {
-    //         return a.localeCompare(b);
-    //     }
-    // }
-
-    $(document).ready(function () {
-        $.ajax({
-            dataType: "json",
-            url: "/user",
-            success: function (data) {
-                document.getElementById("user-count").innerHTML = data[0];
-                document.getElementById("user-count-s").innerHTML = data[0];
-                populate_table(data.slice(1));
-            }
-        });
     });
-    //run number function
-    function runningFormatter(value, row, index) {
-        return index + 1;
-    }
 
-    function get_countNumber() {
-        $.ajax({
-          dataType: "json",
-          url: "/user",
-          data: { limit: 1 },
-          success: function (data) {
+
+    $('#access-table').bootstrapTable('hideColumn', 'id');
+    //console.log("tr :", document.getElementsByTagName('tr').length);
+    var js = document.createElement("script");
+    js.src = "/static/js/pagination.js";
+    document.head.appendChild(js);
+}
+
+
+
+// Custom sort function for the "role" column
+function customRoleSorter(a, b) {
+    // Define the order in which roles should be sorted
+    const roleOrder = { 'ธุรการ': 0, 'บุคลากร': 1 };
+
+    const roleA = a;
+    const roleB = b;
+
+    // Compare roles based on the defined order
+    return roleOrder[roleA] - roleOrder[roleB];
+}
+
+// function customEmailSorter(a, b) {
+//     const userEmail = "{{ user_email }}";
+
+
+//     if (a === userEmail && b === userEmail) {
+//         return 0;
+//     } else if (a === userEmail) {
+//         return -1;
+//     } else if (b === userEmail) {
+//         return 1;
+//     } else {
+//         return a.localeCompare(b);
+//     }
+// }
+
+$(document).ready(function () {
+    $.ajax({
+        dataType: "json",
+        url: "/user",
+        success: function (data) {
+            document.getElementById("user-count").innerHTML = data[0];
+            document.getElementById("user-count-s").innerHTML = data[0];
+            populate_table(data.slice(1));
+        }
+    });
+});
+//run number function
+function runningFormatter(value, row, index) {
+    return index + 1;
+}
+
+function get_countNumber() {
+    $.ajax({
+        dataType: "json",
+        url: "/user",
+        data: { limit: 1 },
+        success: function (data) {
             console.log("data length:", data.length);
             document.getElementById("user-count").innerHTML = data[0];
             document.getElementById("user-count-s").innerHTML = data[0];
-          }
-        });
-      }
-
-    function prePopulateForm(row) {
-        document.getElementById('user_id').hidden = true
-        document.getElementById("user_form").reset();
-        document.getElementById("email-label").style.display = "none";
-        document.getElementById("email-block").style.display = "none";
-        $('#user_id').val(row.id);
-        email = row.email.split("@");
-        $('#input-email').val(email[0]);
-        if (row.str_role == "ธุรการ") {
-            document.getElementById("admin").checked = true;
         }
-        else {
-            document.getElementById("user").checked = true;
+    });
+}
+
+function prePopulateForm(row) {
+    document.getElementById('user_id').hidden = true
+    document.getElementById("user_form").reset();
+    document.getElementById("email-label").style.display = "none";
+    document.getElementById("email-block").style.display = "none";
+    $('#user_id').val(row.id);
+    email = row.email.split("@");
+    $('#input-email').val(email[0]);
+    if (row.str_role == "ธุรการ") {
+        document.getElementById("admin").checked = true;
+    }
+    else {
+        document.getElementById("user").checked = true;
+    }
+    $('#access-table').bootstrapTable('refresh');
+    $('#user-table').bootstrapTable('resetView');
+    checkEmailInput();
+}
+
+function refresh() {
+    $.getJSON("/user", refresh_table);
+}
+
+function refresh_table(document_data) {
+    document_data = document_data.slice(1)
+    page = document.getElementById("pageNumbers");
+    pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
+    populate_table(document_data);
+    $('#access-table').bootstrapTable('load', document_data);
+    console.log(document_data);
+    //populate_table(document_data);
+    showPage(pageNum);
+}
+
+function delete_user(id) {
+    event.preventDefault();
+    del = id
+    var url = "/user_delete"
+    var formData = new FormData();
+    formData.append('id', del)
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            //console.log('Success', response);
+            console.log("deleted!!");
+            refresh();
+            get_countNumber();
+        },
+        error: function (error) {
+            console.error('Error', error);
         }
-        $('#access-table').bootstrapTable('refresh');
-        $('#user-table').bootstrapTable('resetView');
-        checkEmailInput();
+    });
+}
+
+
+function open_form() {
+    console.log("Form openned");
+    document.getElementById('user_id').hidden = true;
+    document.getElementById("user_form").reset();
+    document.getElementById("email-label").style.display = "flex";
+    document.getElementById("email-block").style.display = "flex";
+    checkEmailInput();
+
+}
+$("#user_form").submit(function (event) {
+    // prevent default html form submission action
+    event.preventDefault();
+    // Show loading screen
+    show_loading();
+    // Create a new FormData object
+    var formData = new FormData();
+    var ele = document.getElementsByName('answer-a');
+    for (i = 0; i < ele.length; i++) {
+        if (ele[i].checked)
+            var role = ele[i].value;
     }
+    console.log(role);
+    formData.append('id', $('#user_id').val());
+    console.log("id :", $('#user_id').val())
+    formData.append('role', role);
+    formData.append('email', $('#input-email').val() + "@cmu.ac.th");
+    console.log(formData);
+    var $form = $(this);
+    var url = $form.attr("action");
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            add_access();
+            refresh();
+            get_countNumber();
+            document.getElementById("user_form").reset();
+            $('#modal-user-form').modal('toggle');
 
-    function refresh() {
-        $.getJSON("/user", refresh_table);
-    }
-
-    function refresh_table(document_data) {
-        document_data = document_data.slice(1)
-        page = document.getElementById("pageNumbers");
-        pageNum = page.getElementsByClassName("current-page")[0].innerHTML;
-        populate_table(document_data);
-        $('#access-table').bootstrapTable('load', document_data);
-        console.log(document_data);
-        //populate_table(document_data);
-        showPage(pageNum);
-    }
-
-    function delete_user(id) {
-        event.preventDefault();
-        del = id
-        var url = "/user_delete"
-        var formData = new FormData();
-        formData.append('id', del)
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                //console.log('Success', response);
-                console.log("deleted!!");
-                refresh();
-                get_countNumber();
-            },
-            error: function (error) {
-                console.error('Error', error);
-            }
-        });
-    }
-
-
-      function open_form() {
-        console.log("Form openned");
-        document.getElementById('user_id').hidden = true;
-        document.getElementById("user_form").reset();
-        document.getElementById("email-label").style.display = "flex";
-        document.getElementById("email-block").style.display = "flex";
-        checkEmailInput();
-
-      }
-    $("#user_form").submit(function (event) {
-        // prevent default html form submission action
-        event.preventDefault();
-        // Show loading screen
-        show_loading();
-        // Create a new FormData object
-        var formData = new FormData();
-        var ele = document.getElementsByName('answer-a');
-        for (i = 0; i < ele.length; i++) {
-            if (ele[i].checked)
-                var role = ele[i].value;
+        },
+        error: function (error) {
+            add_access_err();
+            console.error('Error', error);
         }
-        console.log(role);
-        formData.append('id', $('#user_id').val());
-        console.log("id :", $('#user_id').val())
-        formData.append('role', role);
-        formData.append('email', $('#input-email').val() + "@cmu.ac.th");
-        console.log(formData);
-        var $form = $(this);
-        var url = $form.attr("action");
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                add_access();
-                refresh();
-                get_countNumber();
-                document.getElementById("user_form").reset();
-                $('#modal-user-form').modal('toggle');
-
-            },
-            error: function (error) {
-                add_access_err();
-                console.error('Error', error);
-            }
-        });
-        
     });
 
-    //edit and delete button
-    function edit_del_Formatter(value, row, index) {
-        if (row.email != "{{ user_email }}") {
-            return [
-                '<div class="btn-edit-del" >',
-                '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">','<img class="edit-img" src="/static/img/edit (2).png">', 'แก้ไข', '</button>',
-                '<button class="user_delete btn-del"  >','<img class="del-img" src="/static/img/del (1).png">', 'ลบ', '</button>',
-                '</div>'
+});
+
+//edit and delete button
+function edit_del_Formatter(value, row, index) {
+    if (row.email != "{{ user_email }}") {
+        return [
+            '<div class="btn-edit-del" >',
+            '<button type="button"  class="user_edit btn-edit"   id="btn-edit" data-toggle="modal" data-target=".modal">', '<img class="edit-img" src="/static/img/edit (2).png">', 'แก้ไข', '</button>',
+            '<button class="user_delete btn-del"  >', '<img class="del-img" src="/static/img/del (1).png">', 'ลบ', '</button>',
+            '</div>'
         ].join('')
-        }
-        else{
-            return ''
-        }
     }
-
-    //This part must be edit with user db
-    //    window.operateEvents = {
-    //       'click .doc_delete': function (e, value, row, index) {
-    //            console.log("docdelete");
-    //            delete_button_sweet(row.id);
-    //            delete_user(row.id)
-    //        },
-    //        'click .doc_edit': function (e, value, row, index) {
-    //console.log("edit");
-    //            prePopulateForm(row);
-    //
-    //        }
-    //    }
-
-    //This part must be edit with user db
-    window.operateEvents = {
-        'click .user_delete': function (e, value, row, index) {
-            console.log("usrdelete");
-            user_delete_sweet(row.id);
-        },
-        'click .user_edit': function (e, value, row, index) {
-            console.log("edit");
-            prePopulateForm(row);
-        }
+    else {
+        return ''
     }
+}
 
-    $('#access-table').on('search.bs.table', function (e, text) {
+//This part must be edit with user db
+//    window.operateEvents = {
+//       'click .doc_delete': function (e, value, row, index) {
+//            console.log("docdelete");
+//            delete_button_sweet(row.id);
+//            delete_user(row.id)
+//        },
+//        'click .doc_edit': function (e, value, row, index) {
+//console.log("edit");
+//            prePopulateForm(row);
+//
+//        }
+//    }
+
+//This part must be edit with user db
+window.operateEvents = {
+    'click .user_delete': function (e, value, row, index) {
+        console.log("usrdelete");
+        user_delete_sweet(row.id);
+    },
+    'click .user_edit': function (e, value, row, index) {
+        console.log("edit");
+        prePopulateForm(row);
+    }
+}
+
+$('#access-table').on('search.bs.table', function (e, text) {
     showPage(1);
     row = $('#access-table').bootstrapTable('getOptions').totalRows
     document.getElementById("user-count").innerHTML = row;
     document.getElementById("user-count-s").innerHTML = row;
-  });
+});
 
-  //Enable / Disable submit btn by checking email
-  function checkEmailInput() {
-  const fill_email = $("#input-email").val().trim();
-  const addBtn = $('#add-user-submit');
-  const radio_admin = $('#admin');
-  const label_admin = $('#label-a');
-  const radio_user = $('#user');
-  const label_user = $('#label-u');
+//Enable / Disable submit btn by checking email
+function checkEmailInput() {
+    const fill_email = $("#input-email").val().trim();
+    const addBtn = $('#add-user-submit');
+    const radio_admin = $('#admin');
+    const label_admin = $('#label-a');
+    const radio_user = $('#user');
+    const label_user = $('#label-u');
 
-  if (fill_email === '') {
-    addBtn.prop('disabled', true);
-    radio_admin.prop('disabled', true);
-    radio_user.prop('disabled', true);
-    addBtn.css('background', '#CCCCCC'); // Change background to gray
-    label_admin.css('color', '#CCCCCC'); 
-    label_user.css('color', '#CCCCCC'); 
-    addBtn.css('cursor', 'not-allowed'); 
-  } else{
-    addBtn.prop('disabled', false);
-    radio_admin.prop('disabled', false);
-    radio_user.prop('disabled', false);
-    label_admin.css('color', '#000000'); 
-    label_user.css('color', '#000000'); 
-    addBtn.css('background', '#3EBC2A'); // Change background to green
-    addBtn.css('cursor', 'pointer'); 
-  }
+    if (fill_email === '') {
+        addBtn.prop('disabled', true);
+        radio_admin.prop('disabled', true);
+        radio_user.prop('disabled', true);
+        addBtn.css('background', '#CCCCCC'); // Change background to gray
+        label_admin.css('color', '#CCCCCC');
+        label_user.css('color', '#CCCCCC');
+        addBtn.css('cursor', 'not-allowed');
+    } else {
+        addBtn.prop('disabled', false);
+        radio_admin.prop('disabled', false);
+        radio_user.prop('disabled', false);
+        label_admin.css('color', '#000000');
+        label_user.css('color', '#000000');
+        addBtn.css('background', '#3EBC2A'); // Change background to green
+        addBtn.css('cursor', 'pointer');
+    }
 }
-  //Enable / Disable submit btn by checking email
-  $(document).on('keyup', '#input-email', checkEmailInput);
+//Enable / Disable submit btn by checking email
+$(document).on('keyup', '#input-email', checkEmailInput);
 </script>
-
-
 
 {% endblock %}

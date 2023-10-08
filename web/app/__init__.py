@@ -15,6 +15,12 @@ app.permanent_session_lifetime = timedelta(minutes=60) # session timeout
 
 app.config['CLIENT_ID'] = os.getenv("CLIENT_ID", None)
 app.config['CLIENT_SECERT'] = os.getenv("CLIENT_SECERT", None)
+app.config['REDIRECT_URI']= os.getenv("REDIRECT_URI", None)
+app.config['SCOPE']= os.getenv("SCOPE", None)
+app.config['AUTH_URL']= os.getenv("AUTH_URL", None)
+app.config['TOKEN_URL']= os.getenv("TOKEN_URL", None)
+app.config['GET_USER']= os.getenv("GET_USER", None)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL", "sqlite://")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
