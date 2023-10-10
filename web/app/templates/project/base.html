@@ -118,7 +118,6 @@
 
     //this function use to open pdf file on clip icons as admin
     function open_pdf(ref_num, ref_year, row) {
-      console.log("will open pdf soon")
       event.preventDefault();
       var url = "/preview_pdf"
       var formData = new FormData();
@@ -170,7 +169,6 @@
 
     //this function use to open pdf file on clip icons as normal user
     function open_pdf_user(ref_num, ref_year, row) {
-      console.log("will open pdf soon")
       event.preventDefault();
       var url = "/preview_pdf"
       var formData = new FormData();
@@ -240,7 +238,6 @@
         async: false,
         success: function (response) {
           fileName = response.doc_name;
-          console.log("filename :", fileName);
 
         }
       });

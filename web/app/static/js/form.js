@@ -70,7 +70,6 @@ function handleFile(file) {
   document.getElementById('uploaded-file-name').textContent = uploadedFileName;
   uploadedFileContainer.style.display = 'block';
   dragAndDropZone.style.display = 'none';
-  // console.log(file.name)
 }
 
 function removeUploadedFile() {
