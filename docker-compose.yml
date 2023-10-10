@@ -3,7 +3,7 @@ services:
   web:
     build: web
     ports:
-      - "80:8000"
+      - "56789:8000"
     volumes:
       - ./web:/app
     env_file:
