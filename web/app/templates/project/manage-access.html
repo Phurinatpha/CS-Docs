@@ -143,7 +143,7 @@
                                         </span>
                                     </th>
 
-                                    <th class="text-center" data-field="str_role">
+                                    <th class="text-center" data-field="str_is_admin">
                                         <span class="text">
                                             ระดับสิทธิ์การเข้าถึง
                                         </span>
@@ -196,7 +196,7 @@
     $('#access-table').bootstrapTable({
 
         data: user_data,
-        sortName: 'str_role', // Set the initial sorting column
+        sortName: 'str_is_admin', // Set the initial sorting column
         sortOrder: 'asc',    // Set the initial sorting order (ascending)
         columns: [
             {
@@ -211,9 +211,9 @@
                 // sorter: customEmailSorter // Use custom sorting function for "Email" column
             },
             {
-                field: 'str_role',
+                field: 'str_is_admin',
                 title: 'ระดับสิทธิ์การเข้าถึง',
-                sorter: customRoleSorter // Custom sort function
+                sorter: customis_adminSorter // Custom sort function
             },
             {
 
@@ -233,16 +233,16 @@
 
 
 
-// Custom sort function for the "role" column
-function customRoleSorter(a, b) {
-    // Define the order in which roles should be sorted
-    const roleOrder = { 'ธุรการ': 0, 'บุคลากร': 1 };
+// Custom sort function for the "is_admin" column
+function customis_adminSorter(a, b) {
+    // Define the order in which is_admins should be sorted
+    const is_adminOrder = { 'ธุรการ': 0, 'บุคลากร': 1 };
 
-    const roleA = a;
-    const roleB = b;
+    const is_adminA = a;
+    const is_adminB = b;
 
-    // Compare roles based on the defined order
-    return roleOrder[roleA] - roleOrder[roleB];
+    // Compare is_admins based on the defined order
+    return is_adminOrder[is_adminA] - is_adminOrder[is_adminB];
 }
 
 // function customEmailSorter(a, b) {
@@ -297,7 +297,7 @@ function prePopulateForm(row) {
     $('#user_id').val(row.id);
     email = row.email.split("@");
     $('#input-email').val(email[0]);
-    if (row.str_role == "ธุรการ") {
+    if (row.str_is_admin == "ธุรการ") {
         document.getElementById("admin").checked = true;
     }
     else {
@@ -367,12 +367,12 @@ $("#user_form").submit(function (event) {
     var ele = document.getElementsByName('answer-a');
     for (i = 0; i < ele.length; i++) {
         if (ele[i].checked)
-            var role = ele[i].value;
+            var is_admin = ele[i].value;
     }
-    console.log(role);
+    console.log(is_admin);
     formData.append('id', $('#user_id').val());
     console.log("id :", $('#user_id').val())
-    formData.append('role', role);
+    formData.append('is_admin', is_admin);
     formData.append('email', $('#input-email').val() + "@cmu.ac.th");
     console.log(formData);
     var $form = $(this);

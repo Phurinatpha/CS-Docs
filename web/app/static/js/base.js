@@ -49,7 +49,7 @@ let sessionTimeoutTimer = setTimeout(logout, sessionTimeoutDuration);
 // document.addEventListener('keydown', resetSessionTimeout);
 
 // Add a click event listener to all "delete" buttons with the class "btn-del"
-function delete_button_sweet(ref_num, ref_year) {
+function delete_button_sweet(order_num, order_year) {
   console.log("delete")
   Swal.fire({
     titleText: 'ยืนยันการลบข้อมูล ?',
@@ -64,7 +64,7 @@ function delete_button_sweet(ref_num, ref_year) {
   }).then((result) => {
     if (result.isConfirmed) {
 
-      delete_doc(ref_num, ref_year)
+      delete_doc(order_num, order_year)
       Swal.fire({
         title: 'ลบเอกสารคำสั่งสำเร็จ !',
         icon: 'success',

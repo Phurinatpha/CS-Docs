@@ -19,7 +19,7 @@
 
 <div class="container">
   <div class="row" style="padding-top: 20px;">
-    {% if user.role == true %}
+    {% if user.is_admin == true %}
     <div class="create-form">
       <button class="btn-act btn-primary btn-create" onClick="open_form()" data-toggle="modal" data-target=".modal">
         <i class="bi bi-plus-circle-fill"></i>
@@ -47,7 +47,7 @@
 
                     <div class="form-group">
                       <label for="refer_num">เลขที่คำสั่ง</label>
-                      <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="ref_num">
+                      <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="order_num">
                     </div>
 
                     <div class="form-group">
@@ -63,7 +63,7 @@
 
 
 
-                    <input type="hidden" id="date_combind" name="doc_date" required></input>
+                    <input type="hidden" id="date_combind" name="order_date" required></input>
                     <div class="form-group-subject">
                       <label for="descrip">เรื่อง</label>
                       <textarea id="descrip" name="subject" required></textarea>
@@ -150,7 +150,7 @@
       </a>
     </div> -->
     {% endif %}
-    {% if user.role == false %}
+    {% if user.is_admin == false %}
     <div class="blank-space">
 
     </div>
@@ -200,7 +200,7 @@
                       ลำดับ
                     </span>
                   </th>
-                  <th class="text-center" style="width: 100px;" data-field="ref_num">
+                  <th class="text-center" style="width: 100px;" data-field="order_num">
                     <span class="text">
                       เลขคําสั่ง
                     </span>
@@ -215,7 +215,7 @@
                       ผู้สร้างเอกสาร
                     </span>
                   </th>
-                  <th class="text-center" data-field="doc_date">
+                  <th class="text-center" data-field="order_date">
                     <span class="text">
                       วันที่ออกคำสั่ง
                     </span>
@@ -228,7 +228,7 @@
                       ไฟล์แนบ
                     </span>
                   </th>
-                  {% if user.role == true %}
+                  {% if user.is_admin == true %}
                   <!--dataFormat-->
                   <th class="text-center" data-field="data-buttons" data-formatter="edit_del_Formatter"
                     data-events="edit_del_Events" data-searchable="false">
@@ -254,7 +254,7 @@
           <div class="text-center">
             <div class="spinner-border text-primary"
               style="width: 3rem; height: 3rem;  border:solid 5px #fff;  border-bottom-color: #022851;" id="spinner"
-              role="status">
+              is_admin="status">
               <span class="sr-only c"></span>
             </div>
           </div>
@@ -337,14 +337,14 @@
 
   function clip_icon_Formatter(value, row, index) {
     return [
-      '{% if user.role == true %}',
+      '{% if user.is_admin == true %}',
       '<div class="text-center d-xxl-flex justify-content-xxl-center">',
       '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
       '<button class="pdf_viewer bi bi-paperclip" >', '</button>',
       '</span>',
       '</div>',
       '{% endif %}',
-      '{% if user.role == false %}',
+      '{% if user.is_admin == false %}',
       '<div class="text-center d-xxl-flex justify-content-xxl-center">',
       '<span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon">',
       '<button class="pdf_viewer_user bi bi-paperclip" >', '</button>',
@@ -372,29 +372,29 @@
 
   window.clip_icon_Events = {
     'click .pdf_viewer': function (e, value, row, index) {
-      refnum = row.ref_num;
+      refnum = row.order_num;
       str_ref = refnum.split("/");
-      ref_num = str_ref[0]
-      ref_year = str_ref[1]
-      open_pdf(ref_num, ref_year, row);
+      order_num = str_ref[0]
+      order_year = str_ref[1]
+      open_pdf(order_num, order_year, row);
     },
 
     'click .pdf_viewer_user': function (e, value, row, index) {
-      refnum = row.ref_num;
+      refnum = row.order_num;
       str_ref = refnum.split("/");
-      ref_num = str_ref[0]
-      ref_year = str_ref[1]
-      open_pdf_user(ref_num, ref_year, row);
+      order_num = str_ref[0]
+      order_year = str_ref[1]
+      open_pdf_user(order_num, order_year, row);
     }
   }
 
   window.edit_del_Events = {
     'click .doc_delete': function (e, value, row, index) {
-      refnum = row.ref_num;
+      refnum = row.order_num;
       str_ref = refnum.split("/");
-      ref_num = str_ref[0]
-      ref_year = str_ref[1]
-      delete_button_sweet(ref_num, ref_year);
+      order_num = str_ref[0]
+      order_year = str_ref[1]
+      delete_button_sweet(order_num, order_year);
     },
     'click .doc_edit': function (e, value, row, index) {
       prePopulateForm(row);
@@ -419,17 +419,17 @@
 
   function prePopulateForm(row) {
     document.getElementById('myForm').reset();
-    refnum = row.ref_num;
+    refnum = row.order_num;
     str_ref = refnum.split("/");
-    ref_num = str_ref[0]
-    ref_year = str_ref[1]
-    $('#refer_num').val(parseInt(ref_num));
+    order_num = str_ref[0]
+    order_year = str_ref[1]
+    $('#refer_num').val(parseInt(order_num));
     $('#thaiDatePicker').val(row.ori_date);
     $('#thaiDatePicker').off('blur');
     $('#descrip').val(row.subject);
     str_ref_name = row.ref_name.replace(",", "\n");
     $('#name_list').val(str_ref_name);
-    uploadedFileName = preload_pdf(ref_num, ref_year);
+    uploadedFileName = preload_pdf(order_num, order_year);
 
     if (uploadedFileName != "") {
       var uploadedFileContainer = document.getElementById('uploaded-file-container');
@@ -444,12 +444,12 @@
   }
 
 
-  function delete_doc(ref_num, ref_year) {
+  function delete_doc(order_num, order_year) {
     event.preventDefault();
     var url = "/delete"
     var formData = new FormData();
-    formData.append('ref_num', ref_num)
-    formData.append('ref_year', ref_year)
+    formData.append('order_num', order_num)
+    formData.append('order_year', order_year)
     $.ajax({
       type: 'POST',
       url: url,
@@ -482,7 +482,7 @@
   function auto_refnum(ori_date) {
     str_date = ori_date.split("/");
     var formData = new FormData();
-    formData.append('ref_year', str_date[2]);
+    formData.append('order_year', str_date[2]);
     $.ajax({
       type: 'POST',
       data: formData,
@@ -490,11 +490,11 @@
       contentType: false,
       processData: false,
       success: function (data) {
-        data_ref = data.ref_num
+        data_ref = data.order_num
         arr_ref = data_ref.split("/");
-        ref_num = parseInt(arr_ref[0]);
+        order_num = parseInt(arr_ref[0]);
 
-        document.getElementById("refer_num").value = ref_num + 1;
+        document.getElementById("refer_num").value = order_num + 1;
       }
     });
   }

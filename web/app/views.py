@@ -114,7 +114,7 @@ def index():
             lastname = user.lastname
             user_data_ = {
                 'id' : user.id,
-                'role' : user.role,
+                'is_admin' : user.is_admin,
                 'name': firstname + " " + lastname,
                 'email': usr_email
             }
@@ -128,7 +128,7 @@ def form():
     user_data = get_user_data(access_token)
     email = user_data.get('cmuitaccount')
     user = User.query.filter_by(email=email).first()
-    if user.role == True:
+    if user.is_admin == True:
         if request.method == 'POST':
             doc_data = request.files.get('doc_data')
             #app.logger.debug("doc data :",doc_data)
@@ -136,7 +136,7 @@ def form():
             validated_dict = dict()
             delete_pdf = request.form.get('delete_pdf', '')
             app.logger.debug("delete_pdf ",delete_pdf)
-            valid_keys = ['subject','ref_num', 'doc_date' ,'ref_year','user_id']
+            valid_keys = ['subject','order_num', 'order_date' ,'order_year','user_id']
 
             # Access the uploaded file using request.files
             name_list =  request.form.get('name_list')
@@ -155,12 +155,12 @@ def form():
                 validated_dict[key] = value
 
         if validated:
-            order = order_info.query.filter(and_(order_info.ref_num == int(validated_dict['ref_num']) , \
-                                             order_info.ref_year == int(validated_dict['ref_year']))).first()
+            order = order_info.query.filter(and_(order_info.order_num == int(validated_dict['order_num']) , \
+                                             order_info.order_year == int(validated_dict['order_year']))).first()
             app.logger.debug("order :",order)
             if order == None:
                 empty_order = order_info.query.filter(and_(order_info.subject == None,
-                                                           order_info.ref_year == int(validated_dict['ref_year']))).first()
+                                                           order_info.order_year == int(validated_dict['order_year']))).first()
                 #app.logger.debug("empty_order", empty_order)
                 if empty_order != None:
                     app.logger.debug(empty_order)
@@ -168,9 +168,9 @@ def form():
                     db.session.commit()
                 order_entry = order_info(
                 subject=validated_dict['subject'],
-                doc_date=validated_dict['doc_date'],
-                ref_num= validated_dict['ref_num'],
-                ref_year=validated_dict['ref_year'],
+                order_date=validated_dict['order_date'],
+                order_num= validated_dict['order_num'],
+                order_year=validated_dict['order_year'],
                 ref_name=name_list,
                 user_id=validated_dict['user_id']
                 )
@@ -179,25 +179,25 @@ def form():
                 if doc_data != None :
                     doc_content = doc_data.read()
                     doc_entry = doc_info(
-                    order_refnum = order_entry.ref_num,
-                    order_refyear = order_entry.ref_year,
-                    filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+                    order_refnum = order_entry.order_num,
+                    order_refyear = order_entry.order_year,
+                    filename= str(validated_dict['order_num'])+"/"+str(validated_dict['order_year']),
                     doc_data=doc_content
                     )
                     db.session.add(doc_entry)
             else:
                 app.logger.debug("update")
-                edit_doc = order_info.query.filter(and_(order_info.ref_num == validated_dict['ref_num'],
-                                             order_info.ref_year == validated_dict['ref_year'])).first()
+                edit_doc = order_info.query.filter(and_(order_info.order_num == validated_dict['order_num'],
+                                             order_info.order_year == validated_dict['order_year'])).first()
                 order_entry = order.update(
                 subject=validated_dict['subject'],
-                doc_date=validated_dict['doc_date'],
+                order_date=validated_dict['order_date'],
                 ref_name=name_list,
                 user_id=edit_doc.user_id
                 )
                 if doc_data != None :
-                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
-                                             doc_info.order_refyear == order.ref_year)).first()
+                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.order_num,
+                                             doc_info.order_refyear == order.order_year)).first()
                     doc_content = doc_data.read()
                     if doc != None: 
                         doc_entry = doc.update(
@@ -205,14 +205,14 @@ def form():
                             )
                     else :
                         doc_entry = doc_info(
-                        order_refnum = order.ref_num,
-                        order_refyear = order.ref_year,
-                        filename= str(order.ref_num)+"/"+str(order.ref_year),
+                        order_refnum = order.order_num,
+                        order_refyear = order.order_year,
+                        filename= str(order.order_num)+"/"+str(order.order_year),
                         doc_data=doc_content)
                         db.session.add(doc_entry)
                 else:
-                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
-                                             doc_info.order_refyear == order.ref_year)).first()
+                    doc = doc_info.query.filter(and_(doc_info.order_refnum == order.order_num,
+                                             doc_info.order_refyear == order.order_year)).first()
                     if doc != None:
                         if  delete_pdf == 'true':
                             db.session.delete(doc)
@@ -232,14 +232,14 @@ def preview_pdf():
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(result)
-        num = result.get('ref_num', '')
-        year = result.get('ref_year', '')
-        app.logger.debug('ref_num',num,'ref_year',year)
+        num = result.get('order_num', '')
+        year = result.get('order_year', '')
+        app.logger.debug('order_num',num,'order_year',year)
         try:
-            order = order_info.query.filter(and_(order_info.ref_num == int(num) , \
-                                             order_info.ref_year == int(year))).first()
-            doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
-                                             doc_info.order_refyear == order.ref_year)).first()
+            order = order_info.query.filter(and_(order_info.order_num == int(num) , \
+                                             order_info.order_year == int(year))).first()
+            doc = doc_info.query.filter(and_(doc_info.order_refnum == order.order_num,
+                                             doc_info.order_refyear == order.order_year)).first()
             if doc is not None:  # Check if a document was found
                 doc_data = doc.doc_data
                 encoded_pdf_data = base64.b64encode(doc_data).decode('utf-8')
@@ -260,22 +260,22 @@ def remove():
     if request.method == 'POST':
         result = request.form.to_dict()
         app.logger.debug(result)
-        num = result.get('ref_num', '')
-        year = result.get('ref_year', '')
+        num = result.get('order_num', '')
+        year = result.get('order_year', '')
         access_token = session['access_token']
         user_data = get_user_data(access_token)
         email = user_data.get('cmuitaccount')
         user = User.query.filter_by(email=email).first()
-        if user.role == True:
+        if user.is_admin == True:
             try:
                 #contact = Contact.query.get(id_)
-                order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
-                                                order_info.ref_year == int(year))).first()
+                order = order_info.query.filter(and_(order_info.order_num == int(num) ,
+                                                order_info.order_year == int(year))).first()
                 app.logger.debug("order :",order)
-                latest_order = order_info.query.filter(and_(order_info.ref_num == int(num) ,
-                                                order_info.ref_year == int(year))).order_by(order_info.ref_year.desc(),order_info.ref_num.desc()).first()
-                doc = doc_info.query.filter(and_(doc_info.order_refnum == order.ref_num,
-                                                doc_info.order_refyear == order.ref_year)).first()
+                latest_order = order_info.query.filter(and_(order_info.order_num == int(num) ,
+                                                order_info.order_year == int(year))).order_by(order_info.order_year.desc(),order_info.order_num.desc()).first()
+                doc = doc_info.query.filter(and_(doc_info.order_refnum == order.order_num,
+                                                doc_info.order_refyear == order.order_year)).first()
                 app.logger.debug("latest :",latest_order)
                 if doc != None:
                     db.session.delete(doc)
@@ -304,7 +304,7 @@ def search():
         if user_data:
             user_data_ = {
                 'id' : user.id,
-                'role' : user.role,
+                'is_admin' : user.is_admin,
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
                 }
@@ -326,13 +326,13 @@ def access():
         user_data = get_user_data(access_token)
         email = user_data.get('cmuitaccount')
         user = User.query.filter_by(email=email).first()
-        if user.role != True:
+        if user.is_admin != True:
             return redirect(url_for('home'))
         if user_data:
             app.logger.debug(user.id)
             user_data_ = {
                 'id' : user.id,
-                'role' : user.role,
+                'is_admin' : user.is_admin,
                 'name': user_data.get('firstname_TH') + " " + user_data.get('lastname_TH'),
                 'email': user_data.get('cmuitaccount')
             }
@@ -361,12 +361,12 @@ def user_form():
     user_data = get_user_data(access_token)
     email = user_data.get('cmuitaccount')
     user = User.query.filter_by(email=email).first()
-    if user.role == True:
+    if user.is_admin == True:
         if request.method == 'POST':
             app.logger.debug("posted activate")
             validated = True
             validated_dict = dict()
-            valid_keys = ['role','email']
+            valid_keys = ['is_admin','email']
 
             # Access the uploaded file using request.files
             id_ = request.form.get('id','')
@@ -385,36 +385,36 @@ def user_form():
             if validated:
                 if not id_:
                     app.logger.debug("add new user")
-                    app.logger.debug("role1 : " + validated_dict['role'])
+                    app.logger.debug("is_admin1 : " + validated_dict['is_admin'])
                     # Create a new Document object with the uploaded file
-                    if validated_dict['role'] == "True":
-                        role_ = True
-                    elif validated_dict['role'] == "False":
-                        role_ = False
-                    app.logger.debug("role2 : " + str(role_))
+                    if validated_dict['is_admin'] == "True":
+                        is_admin_ = True
+                    elif validated_dict['is_admin'] == "False":
+                        is_admin_ = False
+                    app.logger.debug("is_admin2 : " + str(is_admin_))
                     user_entry = User(
                     firstname="",
                     lastname="",
-                    role=role_,
+                    is_admin=is_admin_,
                     email=validated_dict['email']
                     )
                     db.session.add(user_entry)
                 else:
                     user = User.query.get(id_)
-                    app.logger.debug("role : " + validated_dict['role'])
-                    if validated_dict['role'] == "True":
-                        role_ = True
-                    elif validated_dict['role'] == "False":
-                        role_ = False
-                    app.logger.debug("role2 : " + str(role_))
-                    user_entry = user.update_role(
-                    role=role_
+                    app.logger.debug("is_admin : " + validated_dict['is_admin'])
+                    if validated_dict['is_admin'] == "True":
+                        is_admin_ = True
+                    elif validated_dict['is_admin'] == "False":
+                        is_admin_ = False
+                    app.logger.debug("is_admin2 : " + str(is_admin_))
+                    user_entry = user.update_is_admin(
+                    is_admin=is_admin_
                     )
                 #     if doc_data != None :
                 #         doc_content = doc_data.read()
                 #         doc = doc_info.query.filter(doc_info.order_id == id_).first()   
                 #         doc_entry = doc.update(
-                #         filename= str(validated_dict['ref_num'])+"/"+str(validated_dict['ref_year']),
+                #         filename= str(validated_dict['order_num'])+"/"+str(validated_dict['order_year']),
                 #         doc_data=doc_content
                 #         )
                 db.session.commit()
@@ -451,16 +451,16 @@ def user_data():
 def data():
     documents = []
     if request.method == 'POST':
-        year = request.form.get('ref_year', '')
-        find_refnum = order_info.query.filter(order_info.ref_year == int(year) ).order_by(order_info.ref_num.desc()).first()
+        year = request.form.get('order_year', '')
+        find_refnum = order_info.query.filter(order_info.order_year == int(year) ).order_by(order_info.order_num.desc()).first()
         app.logger.debug("find_refnum",find_refnum)
         if find_refnum != None: 
             return jsonify(find_refnum.to_dict())
         else:
-            return {'ref_num' : "0/0"}
+            return {'order_num' : "0/0"}
     limit = int(request.args.get('limit', 100000000))
     
-    db_documents = order_info.query.order_by(order_info.ref_year.desc(), order_info.ref_num.desc())
+    db_documents = order_info.query.order_by(order_info.order_year.desc(), order_info.order_num.desc())
     is_null = order_info.query.filter(order_info.subject == None ).count()
     app.logger.debug("is_null",is_null)
     #db_documents = order_info.query.latest()
@@ -498,14 +498,14 @@ def user_remove():
         user_data = get_user_data(access_token)
         email = user_data.get('cmuitaccount')
         user = User.query.filter_by(email=email).first()
-        if user.role == True:
+        if user.is_admin == True:
             try:
                 #contact = Contact.query.get(id_)
                 user = User.query.get(id_)
                 if is_null != None:
                         user_entry = user.update(
                     email=None,
-                    role=None
+                    is_admin=None
                     )
                 else:
                     db.session.delete(user)

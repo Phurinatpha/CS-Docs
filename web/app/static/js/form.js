@@ -121,9 +121,9 @@ $(document).ready(function () {
 
     formData.append('id', $('#doc_id').val());
     formData.append('subject', $('#descrip').val());
-    formData.append('doc_date', date);
-    formData.append('ref_num', $('#refer_num').val());
-    formData.append('ref_year', str_date[2]);
+    formData.append('order_date', date);
+    formData.append('order_num', $('#refer_num').val());
+    formData.append('order_year', str_date[2]);
     formData.append('name_list', name_list);
     formData.append('user_id', $('#usr_id').val());
 

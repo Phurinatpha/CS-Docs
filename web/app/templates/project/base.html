@@ -74,7 +74,7 @@
           <i class="bi bi-person-circle"></i> <span>{{ user.name }}</span>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          {% if user.role == true %}
+          {% if user.is_admin == true %}
           <a class="dropdown-item" href="{{ url_for('access') }}" id="access"><i
               class="fa-solid fa-gear"></i>ตั้งค่าสิทธิ์การเข้าถึง</a>
           {% endif %}
@@ -117,12 +117,12 @@
 
 
     //this function use to open pdf file on clip icons as admin
-    function open_pdf(ref_num, ref_year, row) {
+    function open_pdf(order_num, order_year, row) {
       event.preventDefault();
       var url = "/preview_pdf"
       var formData = new FormData();
-      formData.append('ref_num', ref_num)
-      formData.append('ref_year', ref_year)
+      formData.append('order_num', order_num)
+      formData.append('order_year', order_year)
       $.ajax({
         type: 'POST',
         url: url,
@@ -168,12 +168,12 @@
 
 
     //this function use to open pdf file on clip icons as normal user
-    function open_pdf_user(ref_num, ref_year, row) {
+    function open_pdf_user(order_num, order_year, row) {
       event.preventDefault();
       var url = "/preview_pdf"
       var formData = new FormData();
-      formData.append('ref_num', ref_num)
-      formData.append('ref_year', ref_year)
+      formData.append('order_num', order_num)
+      formData.append('order_year', order_year)
       $.ajax({
         type: 'POST',
         url: url,
@@ -222,13 +222,13 @@
       }
     }
     //preload pdf name on prepopulate document form
-    function preload_pdf(ref_num, ref_year) {
+    function preload_pdf(order_num, order_year) {
       event.preventDefault();
       fileName = "";
       var url = "/preview_pdf"
       var formData = new FormData();
-      formData.append('ref_num', ref_num)
-      formData.append('ref_year', ref_year)
+      formData.append('order_num', order_num)
+      formData.append('order_year', order_year)
       $.ajax({
         type: 'POST',
         url: url,
