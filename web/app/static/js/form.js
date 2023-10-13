@@ -36,11 +36,11 @@ function checkTextarea() {
   if (content === '') {
     submitBtn.prop('disabled', true);
     submitBtn.css('background', '#CCCCCC'); // Change background to gray
-    submitBtn.css('cursor', 'not-allowed'); 
+    submitBtn.css('cursor', 'not-allowed');
   } else {
     submitBtn.prop('disabled', false);
     submitBtn.css('background', '#3EBC2A'); // Change background to green
-    submitBtn.css('cursor', 'pointer'); 
+    submitBtn.css('cursor', 'pointer');
   }
 }
 
@@ -92,9 +92,6 @@ function removeUploadedFile() {
   dragAndDropZone.style.display = 'flex';
 }
 
-
-
-
 $(document).ready(function () {
   $("#myForm").submit(function (event) {
     event.preventDefault();
@@ -143,7 +140,7 @@ $(document).ready(function () {
         get_countNumber();
         //show sweet success
         submit_success();
-        
+
       },
       error: function (error) {
         console.error('Error', error);

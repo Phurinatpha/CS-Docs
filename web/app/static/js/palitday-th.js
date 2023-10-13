@@ -20,4 +20,3 @@ var thaiDatePicker = new Palitday(
     }
   });
 
-  

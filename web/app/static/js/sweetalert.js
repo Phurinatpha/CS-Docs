@@ -1,4 +1,4 @@
-// Add a click event listener to all "delete" buttons with the class "btn-del"
+
 function delete_button_sweet(order_num, order_year) {
   Swal.fire({
     titleText: 'ยืนยันการลบข้อมูล ?',
@@ -8,8 +8,6 @@ function delete_button_sweet(order_num, order_year) {
     cancelButtonColor: '#d33',
     confirmButtonText: 'ลบข้อมูล',
     cancelButtonText: 'ยกเลิก',
-
-
   }).then((result) => {
     if (result.isConfirmed) {
 
@@ -33,7 +31,6 @@ function delete_button_sweet(order_num, order_year) {
   });
 }
 
-
 function user_delete_sweet(id) {
   Swal.fire({
     titleText: 'ยืนยันการลบข้อมูล ?',
@@ -43,11 +40,8 @@ function user_delete_sweet(id) {
     cancelButtonColor: '#d33',
     confirmButtonText: 'ลบข้อมูล',
     cancelButtonText: 'ยกเลิก',
-
-
   }).then((result) => {
     if (result.isConfirmed) {
-
       delete_user(id)
       Swal.fire({
         title: 'ลบสิทธิ์สำเร็จ !',
@@ -84,8 +78,6 @@ function user_logout() {
         b.textContent = Math.round(Swal.getTimerLeft() / 1000);
       }, 100); // Update the timer every second
     },
-
-
   }).then((result) => {
     if (result.isConfirmed) {
       window.location.href = '/logout';
@@ -140,7 +132,6 @@ function add_access_err(){
     text: 'ไม่สามารถบันทึกสิทธิ์ได้',
   })
 }
-
 
 function non_doc_user(){
   Swal.fire({

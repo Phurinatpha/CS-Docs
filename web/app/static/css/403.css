@@ -17,20 +17,6 @@ body {
   background-color: #ffffff;
 }
 
-/* Add styles for the close button */
-/* .close-button {
-  position: absolute;
-  font-size: 60px;
-  top: 30px; 
-  right: 30px; 
-  cursor: pointer;
-  color: #FF4742;
-  font-size: 24px;
-}
-.close-button i {
-  font-size: 40px;
-} */
-
 h1 {
   margin: 20px 0 0 0;
   font-size: 24px;
@@ -74,7 +60,6 @@ p{
   text-align: center;
   
 }
-
 
 .back-2-login:hover,
 .back-2-login:active {

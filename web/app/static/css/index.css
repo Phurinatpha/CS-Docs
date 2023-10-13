@@ -4,7 +4,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 }
 
 
-
 /*-----------------------------------Three main buttons-----------------------------------*/
 .btn-act {
   padding: 5px 10px;
@@ -30,7 +29,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 .btn-primary:hover{
   transform: scale(1.05);
-  /* transition: 0.2s; */
   background-color: #0e3e72;
 }
 
@@ -79,7 +77,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 /* Apply styles to the second column */
 .col-md-6.d-sm-flex {
   display: table;
-
   width: 100%;
 }
 
@@ -113,8 +110,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   margin-left: -15px;
 }
 
-
-
 .doc-head {
   display: flex;
   align-items: center;
@@ -136,13 +131,13 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   flex-wrap: wrap;
   align-content: space-around;
   font-size: 16px;
-
 }
 
 .sub-doc-mobile {
   display: none;
   font-size: 16px;
 }
+
 #all-doc,
 #all-founded,
 #count_doc,
@@ -167,9 +162,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 #customSearch {
   font-size: 16px;
   width: 100%;
-  /* height: 35px; */
   padding: 6px 20px 6px 40px;
-  /* Adjust the padding as needed */
   text-align: center;
   outline: none;
 }
@@ -181,26 +174,14 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   box-shadow:0 0 5px 0px #36485c;
 }
 
-
 .doc-search .bi-search {
   position: absolute;
   top: 5%;
   left: 20px;
-  /* Adjust the left position as needed */
   font-size: 18px;
   color: #022851;
-  /* Adjust the icon color as needed */
   cursor: unset;
 }
-
-/* .doc-search .bi-plus{
-  position: absolute;
-  top: 5%;
-  right: 10px; 
-  font-size: 18px; 
-  color: #000; 
-
-} */
 
 
 /*-----------------------------------Table-----------------------------------*/
@@ -211,9 +192,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   border-bottom: 1px solid #dadada;
   border-right: 1px solid #dadada;
   border-left: 1px solid #dadada;
-  /* For making space between table and footer */
-  /* Might remove when add nav page */
-  /* margin-bottom: 120px; */
 }
 
 .table-responsive{
@@ -241,7 +219,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 
 /* td subject name */
 .table-striped > tbody > tr td:nth-child(3) {
-  min-width: 250px; /* Set the maximum width before word wrap */
+  min-width: 250px; 
   height: 81.75px;
   word-wrap: break-word;
   text-align: left;
@@ -276,24 +254,11 @@ div:where(.swal2-container) div:where(.swal2-popup) {
  
 }
 
-
-/* Add hover effect to even rows */
-/* .table-striped>tbody>tr:nth-child(2n):hover>td,
-.table-striped>tbody>tr:nth-child(2n):hover>th {
-  background-color: inherit;
-} */
-
-/* h2 {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #D9D9D9;
-} */
-
 .even-row .text-center,
 .even-row .text-start {
   background: #e0e0e0;
 }
 
-/* Apply styles to the row */
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -310,7 +275,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
 .bi.bi-paperclip:hover {
   color: blue;
   transform: scale(1.15);
-  /* transform: translateY(-5px); */
 }
 
 
@@ -319,7 +283,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Align buttons horizontally in the center */
 }
 
 /* Styling for the buttons inside the table cell */
@@ -328,7 +291,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   justify-content: center;
   align-items: center;
   width: 95px;
-  /* Change this value to adjust the button width */
   padding: 0px;
   padding-top: 0px;
   margin-bottom: 7px;
@@ -382,22 +344,18 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   font-size: 24px;
   font-weight: bold;
   color: #333;
-  /* Choose your preferred color for the close button */
   cursor: pointer;
   background: none;
   border: none;
 }
 
-/* Adding a hover effect to the close button */
 .close:hover {
   color: #ff0000;
-  /* Choose your preferred color for the close button on hover */
 }
 
 
 /*-----------------------------------Pagination-----------------------------------*/
 .pagination {
-
   display: flex;
   position: relative;
   border-radius: 50px;
@@ -412,7 +370,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   margin-right: 5px;
   margin-left: 5px;
   border-radius: 10px;
-  /* width: 100px; */
   height: 30px;
   line-height: 30px;
   text-align: center;
@@ -464,16 +421,15 @@ div:where(.swal2-container) div:where(.swal2-popup) {
       min-width: 80%;
       padding-top:0px;
       padding-bottom: 0px;
-
   }
 }
 
 @media only screen and (min-width: 768px){
-  
   #prevPage-mobile, #nextPage-mobile{
     display: none;
   }
 }
+
 @media only screen and (max-width: 767px) {
   .sub-doc {
     text-align: center;
@@ -489,7 +445,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     width: 100%;
   }
 
-  
   #prevPage-mobile, #nextPage-mobile{
     display: none;
   }
@@ -499,6 +454,7 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   #prevPage-mobile, #nextPage-mobile{
     display: inline;
   }
+
   #prevPage, #nextPage{
     display: none;
   }
@@ -540,7 +496,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
     min-width: 95%;
   }
 
- 
   .sub-doc-header {
     display: inline;
   }
@@ -562,21 +517,11 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   }
   .doc-head {
     justify-content: center;
-    /* text-align: center; */
   }
-
-  /* .create-form {
-    display: flex;
-    flex: 0 0 100%;
-    max-width: 100%;
-    justify-content: center;
-  } */
 
   .pagination-links a{
     width: 25px;
   }
- 
-
 }
 
 @media only screen and (max-width: 376px) {

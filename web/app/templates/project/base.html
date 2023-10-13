@@ -60,15 +60,6 @@
         <img class="navbar-img" src="/static/img/cs_cmu_1.png" alt="Computer Science CMU">
         <span class="navbar-text">Computer Science CMU</span>
       </a>
-
-      <!-- <button class="navbar-toggler" type="button" onclick="toggleNavbar()">
-        <span class="navbar-toggler-icon"></span>
-      </button> -->
-
-      <!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
-      <!-- <ul class="navbar-nav ml-md-auto"> -->
-      <!-- Use ml-md-auto to push the dropdown to the right -->
-      <!-- <li class="nav-item"> -->
       <div class="dropdown">
         <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="bi bi-person-circle"></i> <span>{{ user.name }}</span>
@@ -82,14 +73,10 @@
               class="fa-solid fa-right-from-bracket"></i>ออกจากระบบ</a>
         </div>
       </div>
-      <!-- </li> -->
-      <!-- </ul> -->
-      <!-- </div> -->
     </div>
   </nav>
 
   <div class="container" id="main_screen">
-
     {% block content %}
     {% endblock %}
   </div>
@@ -112,7 +99,6 @@
   </footer>
 
   <script src="/static/js/base.js"></script>
-  <!-- <script src="/static/js/sweetalert.js"></script> -->
   <script>
 
 

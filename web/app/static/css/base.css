@@ -118,7 +118,6 @@ body {
   padding-bottom: 10px;
 }
 .dropdown-item:hover {
-  /* background-color: #e0e0e0; */
   background-color: #dee0e4;
   border-radius: 10px;
 }
@@ -134,9 +133,7 @@ footer {
   margin-top: auto;
   width: 100%;
   bottom: 0px;
-  /* Dark background color */
   background-color: #000000;
-  /* Text color */
   color: #fff;
   font-size: 10px;
 }
@@ -144,14 +141,12 @@ footer {
 footer a {
   font-size: 11px;
   color: #fff;
-  /* Remove underline from links */
   text-decoration: none;
 }
 
 footer ul {
   /* Remove bullet points from the list */
   list-style: none;
-  /* Margin for top and bottom */
   margin: 10px 0 15px 0;
   padding: 0px
 }
@@ -160,7 +155,6 @@ footer li {
   margin-top: -7px;
   margin-bottom: -7px;
 }
-
 
 
 /*-----------------------------------SweetAlert Button-----------------------------------*/
@@ -196,8 +190,6 @@ div:where(.swal2-container) .swal2-html-container {
 }
 
 
-
-
 /*-----------------------------------------Responsive-----------------------------------------*/
 @media only screen and (max-width: 1200px) {
   .container,
@@ -206,6 +198,7 @@ div:where(.swal2-container) .swal2-html-container {
     max-width: 100%;
   }
 }
+
 @media only screen and (max-width: 767px){
   .dropdown-item{
     display: flex;
@@ -238,5 +231,4 @@ div:where(.swal2-container) .swal2-html-container {
   .container {
     padding: 0px 10px 0px 10px;
   }
-
 }

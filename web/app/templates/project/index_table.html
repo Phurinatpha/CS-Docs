@@ -29,27 +29,20 @@
       <div class="modal fade" id="modal-form" data-keyboard="false">
         <div class="modal-dialog modal-full">
           <div class="modal-content">
-
-
             <!-- Modal body -->
             <div class="modal-body">
               <button type="button" id="closeModal" class="close" data-dismiss="modal">&times;</button>
               <!-- Add your content here -->
               <form id="myForm" action="/form" method="post" autocomplete="off" enctype="multipart/form-data">
-
-
                 <p class="pop-up-header">เอกสารคำสั่ง</p>
-
                 <!-----------------------------------1st part----------------------------------->
                 <div class="tab" id="tab-1">
                   <div class="tab-container">
                     <p class="attachment">1 ) ส่วนหัวข้อของเอกสาร</p>
-
                     <div class="form-group">
                       <label for="refer_num">เลขที่คำสั่ง</label>
                       <input disabled type="number" placeholder="เลขที่คำสั่ง" id="refer_num" name="order_num">
                     </div>
-
                     <div class="form-group">
                       <label for="thaiDatePicker">เอกสารลงวันที่</label>
                       <!--this input is id of order_table-->
@@ -60,18 +53,13 @@
                       <input type="text" id="thaiDatePicker" placeholder="วันที่" name="thaiDate" required readonly>
                       <i class="bi bi-calendar"></i>
                     </div>
-
-
-
                     <input type="hidden" id="date_combind" name="order_date" required></input>
                     <div class="form-group-subject">
                       <label for="descrip">เรื่อง</label>
                       <textarea id="descrip" name="subject" required></textarea>
                     </div>
                   </div>
-
                 </div>
-
                 <!-----------------------------------2nd part----------------------------------->
                 <div class="tab" id="tab-2">
                   <div class="tab-container">
@@ -84,7 +72,6 @@
                     </div>
                   </div>
                 </div>
-
                 <!-----------------------------------3rd part----------------------------------->
                 <div class="tab" id="tab-3">
                   <div class="tab-container">
@@ -99,12 +86,10 @@
                           <!-- <i class="bi bi-archive"></i> -->
                           <p class="click-to-add"><label for="file-input" id="click-to-add">กดเพื่อเลือกไฟล์แนบ</label>
                           </p>
-
                         </div>
                       </label>
                       <input type="file" id="file-input" name="doc_data" style="display:none;"
                         onchange="handleFileSelect(event)" accept=".pdf">
-
                       <div id="uploaded-file-container">
                         <h3>ชื่อไฟล์</h3>
                         <div class="file-container">
@@ -112,36 +97,27 @@
                           <i class="bi bi-check-circle-fill" style="color: #3EBC2A;"></i>
                           <span id="remove-btn" onclick="removeUploadedFile()"><i class="bi bi-trash-fill"></i> </span>
                         </div>
-
                       </div>
                     </div>
                   </div>
-
                   <div class="index-btn-wrapper">
                     <button class="index-btn" type="submit" id="submit-btn" name="submit" disabled>
-                      <!-- <i class="fa-regular fa-floppy-disk"></i>บันทึกเอกสารคำสั่ง</button> -->
                       <i class="bi bi-floppy"></i>บันทึกเอกสารคำสั่ง</button>
                   </div>
                 </div>
               </form>
-
-
             </div>
-
-
           </div>
         </div>
       </div>
       <!-- End of Modal zone -->
-
     </div>
-
+    <!-- Button for Advance Search -->
     <!-- <div class="search-form">
       <button class="btn-act btn-primary d-sm-table " type="button">
         <i class="bi bi-book"></i>
         เอกสารคำสั่ง
       </button>
-
       <a href="{{ url_for('search') }}" style="text-decoration: none;">
         <button class="btn-act btn-primary d-sm-table " type="button">
           <i class="bi bi-search"></i>
@@ -151,9 +127,7 @@
     </div> -->
     {% endif %}
     {% if user.is_admin == false %}
-    <div class="blank-space">
-
-    </div>
+    <div class="blank-space"></div>
     {% endif %}
   </div>
 </div>
@@ -177,12 +151,9 @@
           <span id="show-per-page">10</span> รายการ
         </p>
 
-
-
         <div class="doc-search">
           <i class="bi bi-search"></i>
           <input type="text" id="customSearch" placeholder="ค้นหารายการเอกสารคำสั่ง">
-          <!-- <i class="bi bi-plus"></i> -->
         </div>
 
       </div>

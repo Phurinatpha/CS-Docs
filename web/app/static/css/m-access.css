@@ -66,7 +66,6 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   font-size: 16px;
 }
 
-
 #user-count,
 #user-count-s,
 #show-per-page {
@@ -80,11 +79,9 @@ div:where(.swal2-container) div:where(.swal2-popup) {
   min-width: 45% !important;
   padding-top: 45px !important;
   padding-bottom: 45px !important;
-
 }
 
 label {
-  /* Optional styling for the label text */
   width: 180px;
   font-weight: bold;
   margin-right: 28px;
@@ -107,7 +104,6 @@ label {
   border: 1px solid #aaaaaa;;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  
   outline: none;
 }
 
@@ -122,23 +118,17 @@ label {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Aligns items vertically within the flex container */
   margin-bottom: 20px;
-  /* Adds space between this and other form groups */
   padding: 0px 10px 0px 10px;
 }
 
 .grant-group .input-container {
   display: flex;
-  /* border: 1px solid #ccc;
-  border-radius: 7px; */
 }
 
 .grant-group input {
-  /* flex: 1;   */
   padding: 10px;
   position: absolute;
-  /* Add padding for spacing */
 }
 
 .grant-group .input-group-addon {
@@ -148,10 +138,8 @@ label {
   background-color: #e7e6e6;
   border: 1px solid #aaaaaa;;
   border-width:1px 1px 1px 0;
-  /* Add left border to the span element */
   padding: 10px;
   padding-left: 30px;
-  /* Add padding for spacing */
 }
 
 .grant-group-level{
@@ -174,13 +162,11 @@ label {
 .grant-btn {
   display: flex;
   align-items: center;
-  /* background: #022851; */
   background: #CCCCCC;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
   font-size: 17px;
-  /* cursor: pointer; */
   cursor: not-allowed;
   transition: 0.3s;
   border-radius: 10px;
@@ -199,7 +185,6 @@ label {
 
 .grant-container {
   margin: 10px;
-  /* width: 93.4%; */
 }
 
 .grant-header {
@@ -217,24 +202,16 @@ label {
   display: flex;
   align-items: center;
   margin-right: 10px;
-  /* Add some spacing between the icon and text if needed */
 }
 
 
-
-
 /*-----------------------------------Table-----------------------------------*/
-
 .access-container {
   box-shadow: 0 5px 3px rgba(0, 0, 0, 0.1);
-  /* Add drop shadow */
   border-radius: 8px;
   border-bottom: 1px solid #dadada;
   border-right: 1px solid #dadada;
   border-left: 1px solid #dadada;
-  /* For making space between table and footer */
-  /* Might remove when add nav page */
-  /* margin-bottom: 120px; */
 }
 
 .add-personel {
@@ -247,12 +224,10 @@ label {
 
 .table-striped > tbody > tr td:nth-child(2) {
   min-width: 200px !important; /* Set the maximum width before word wrap */
-  /* color: red; */
 }
 
 .table-striped > tbody > tr td:nth-child(3) {
   min-width: 200px !important; /* Set the maximum width before word wrap */
-  /* color: aqua; */
 }
 
 /*-----------------------------------------Responsive-----------------------------------------*/
